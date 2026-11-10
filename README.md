@@ -24,6 +24,8 @@ Ask Claude for video prompts and video-prompt-director works the way a director 
 - **Exact dialogue.** Your lines stay word for word, attributed to the right speaker, with the listener reacting.
 - **Continuity across shots.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot, with a ledger when you want to check it.
 - **A check before you see anything.** Every prompt is validated for action, progression, plausibility, contradictions and fit with the target model, then fixed.
+- **Rules out what models add on their own.** No generated text, subtitles, logos or music unless you ask, no extra people, no cloned faces, no wardrobe drift.
+- **Works with manual workflows.** For Google Flow done by hand, it writes a handoff card per shot, with file names and a check for each clip you download before you upload it to your own system.
 - **Model files with sources and dates.** Seedance, Veo and Flow, and Runway each have a file that states what is documented, where, and when it was checked. Kling 4.0 and 3.0 are covered the same way. The skill does not invent model limits.
 
 It does not generate video, and it does not change the code of the project you have open.
@@ -87,6 +89,7 @@ Or install the CLI once with `npm install -g @akoru/video-prompt-director` and r
 | A dialogue scene | "Write the shot prompts for this exchange. Keep my lines exactly." |
 | Repair | "This prompt gives me a frozen character. Fix it." |
 | Another model | "Adapt shot 3 for Runway." |
+| Manual Flow | "I generate in Flow by hand. Give me a card per shot." |
 | Continuity | "Check these five prompts for continuity and fix them." |
 
 Give it your reference images and say what each one controls (face, wardrobe, location). It accepts existing scripts, storyboards and shot descriptions from any source.

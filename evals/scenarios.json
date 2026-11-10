@@ -205,5 +205,59 @@
       }
     ],
     "rubric": "States what each reference controls, reinforces exact wardrobe once, keeps the kitchen layout and window position, and does not claim reference limits or syntax beyond what the Veo file documents."
+  },
+  {
+    "id": "11-no-text-by-default",
+    "title": "Rules out generated text and extras by default",
+    "prompt": "Write a 6-second Seedance prompt for a wide shot of dragon boat athletes preparing on a dock at midday. They wear red life jackets and carry wooden paddles. There is a banner and a scoreboard in the background.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/constraints\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "no (readable )?(text|letters|writing)|without (any )?(text|writing)|text-free",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "subtitle",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Rules out generated text on the banner, scoreboard and life jackets by name, no subtitles, logos or watermarks, no music, distinct faces with no cloned people, plain wardrobe stated, background movement natural but small, one continuous shot. Does not ask for readable text unless the user did."
+  },
+  {
+    "id": "12-flow-manual-handoff",
+    "title": "Manual Flow handoff cards",
+    "prompt": "I make clips by hand in Google Flow, download them, and upload them to my own editing system. Here are two approved panels. Panel 1 (6 s): MIRA, green wool coat, steps into a dark kitchen and sets her keys on the counter. Panel 2 (6 s): close-up, she notices a sealed envelope and stops. I have three reference images: A = Mira's face, B = the coat, C = the kitchen. Give me what I need.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/manual-flow-handoff\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "take ?1|take1|_take",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "image|reference|attach",
+        "flags": "i",
+        "min": 3
+      }
+    ],
+    "rubric": "Produces one handoff card per panel with a file name, the Flow mode and length as the user's account shows (asks or states which model it assumed, citing the checked date), attachments numbered with roles, a paste-ready prompt with exclusions, check-after-download items, and starts-from and ends-on states that chain the two shots. Does not claim Flow features beyond the Veo file."
   }
 ]

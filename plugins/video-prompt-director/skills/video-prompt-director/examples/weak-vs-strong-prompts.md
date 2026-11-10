@@ -1,12 +1,14 @@
 # Weak vs strong video prompts
 
-Four moments, each written weak and strong. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
+Six moments, each written weak and strong, plus a handoff card. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
 
 Contents:
 1. Natural human movement
 2. Emotional acting
 3. A dialogue scene
 4. A multi-character interaction
+5. Ruling out what the model adds
+6. A manual Flow handoff card
 
 ## 1. Natural human movement
 
@@ -59,6 +61,8 @@ Contents:
 - A model that takes spoken lines in a special notation (for example braces in Seedance) needs that notation; see its model file.
 
 ## 4. A multi-character interaction
+5. Ruling out what the model adds
+6. A manual Flow handoff card
 
 **Weak**
 
@@ -74,6 +78,42 @@ Contents:
 - The two characters do different things: she acts, he restrains.
 - The ending state is stated: she is gone, he is still looking at the door.
 - Only simple contact (a hand on a handle); no complicated physical interaction between bodies.
+
+## 5. Ruling out what the model adds
+
+**Weak** (a group scene with the defaults left open)
+
+> Hundreds of athletes prepare dragon boats on a sunny dock, wearing red life jackets. Cinematic, lively.
+
+**Strong** (6 s, wide shot, locked off)
+
+> Wide shot, eye level, locked-off camera, midday sun, a wooden dock lined with dragon boats. About thirty athletes prepare for a race: some carry plain wooden paddles to the boats, some adjust their life jackets, a few talk in pairs. Every athlete has a distinct face, build and age; no two people look alike. All wear plain solid-red life jackets with no letters, numbers, logos or patterns on the front or back. Nobody stands frozen: movement is small and natural, and none of it pulls attention from the center of the dock. One continuous shot with no cuts. No readable text anywhere in the frame, no subtitles, no logos or watermarks, and no music.
+
+**Why it works**
+- The defaults are named for the surfaces in the shot: life jackets, signs, the frame as a whole.
+- A crowd gets "distinct faces" and "no two people look alike", which counters cloned faces.
+- The wardrobe is plain by statement, not by omission.
+- Background movement is allowed but kept small, so the crowd is neither frozen nor distracting.
+
+## 6. A manual Flow handoff card
+
+For a user who generates in Flow by hand and uploads the clips to their own system. Only the Prompt line is pasted into Flow.
+
+```
+Shot E04_S03   download as: E04_S03_take1.mp4
+Flow model and mode: as shown in your Flow account (for example ingredients to video)
+Length: 6 s    Aspect ratio: 9:16
+Attach: image A = Mira's face and hair; image B = her green coat; image C = the kitchen
+Prompt:
+  Medium shot, eye level, locked-off camera, soft window light from the left. Mira, with the face and hair from
+  image A, wears exactly the green wool coat from image B, with no added items. The kitchen matches image C, window on
+  the left. She steps in from the right, sets her keys on the counter with her right hand, and stops, eyes on the
+  counter. In frame: Mira only; no one else appears. One continuous shot, no cuts. No readable text, no subtitles,
+  no logos or watermarks, no music.
+Check after download: coat unchanged; keys in the right hand; no text or watermark; no cut; ends with Mira still at the counter
+Starts from: Mira in the doorway, keys in her right hand
+Ends on: Mira at the counter, keys down, looking at the envelope
+```
 
 ## Using these examples
 

@@ -47,6 +47,8 @@ Sources (official):
 
 ## How the skill applies this
 
+- If the user generates in Flow by hand and uploads the clips elsewhere, use `references/manual-flow-handoff.md`.
+
 - Name the model and surface before writing limits into a prompt.
 - Ask for one continuous shot unless the storyboard wants cuts.
 - Use `[0-5s]` or "After 3 seconds" beats; this model family documents them.

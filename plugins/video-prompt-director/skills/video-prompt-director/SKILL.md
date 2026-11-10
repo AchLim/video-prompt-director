@@ -28,10 +28,11 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | Request looks like | Workflow | Deliver | Load |
 |---|---|---|---|
 | A script or scene and no storyboard | A. Storyboard | Numbered panels, each with its story purpose, for the user to approve | `references/storyboard.md`, `references/cinematography.md` |
-| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/cinematography.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, then the model file |
-| An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, plus the craft files the problems touch |
+| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/cinematography.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` for the level expected |
+| An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
+| The user generates by hand in Google Flow (or another web tool) and uploads the clips elsewhere | F. Manual handoff | One handoff card per shot, file names, and a check for each downloaded clip | `references/manual-flow-handoff.md`, `references/models/veo.md` |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
@@ -53,6 +54,8 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Continuity is part of the prompt.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot. State them in every prompt that needs them; a video model sees only the prompt in front of it. See `references/continuity.md`.
 
+**Rule out what models add on their own.** By default: no generated text, subtitles, logos or watermarks, no background music, no extra people, no change to faces or wardrobe, and no zoom or dissolve at a cut. List who is in each shot and state that no one else appears. Apply the user's changes to these defaults. See `references/constraints.md`.
+
 **Never invent model facts.** Do not state a model's limits, supported inputs, prompt-length cap or price from memory. Use `references/models/`, which gives each documented fact with its source and verification date. If a fact is missing or old, say so and ask the user to confirm it in the model's current documentation.
 
 ## 3. Output format
@@ -67,7 +70,7 @@ Action (timed): 0.0-2.0 s ... / 2.0-4.5 s ... / 4.5-6.0 s ...
 Performance: faces and bodies, who reacts to whom.
 Environment: light, background activity, anything that must stay fixed.
 Prompt: one self-contained paragraph in English, ready to paste.
-Negative prompt: only if the model supports it; only relevant items.
+Negative prompt: only if the model supports it; only relevant items (see `references/constraints.md`).
 Continuity: what carries in from the previous shot and out to the next.
 ```
 
@@ -91,6 +94,8 @@ Load only what the current task needs.
 - `references/performance.md`: human movement, natural acting, emotional direction, multiple characters, background activity, dialogue and listeners.
 - `references/physical-realism.md`: object and hand interactions, anatomy and motion failures, simple choreography.
 - `references/continuity.md`: character identity, wardrobe, props, spatial relationships, screen direction, shot-to-shot checks, reference-image roles, the continuity ledger.
+- `references/constraints.md`: defaults that every production prompt rules out (text and subtitles, music, extra people, identity and wardrobe drift, cuts, replayed actions, leaked instructions) and how to word them.
+- `references/manual-flow-handoff.md`: generating by hand in Google Flow, handoff cards, file names, checking downloads, chaining shots, what to record when uploading to the user's system.
 - `references/prompt-quality.md`: the validation checklist, scoring, contradiction and length checks, and how to revise.
 - `references/models/seedance.md`: Seedance (BytePlus ModelArk) limits, reference syntax, audio notation and prompting guidance, with sources and verification date.
 - `references/models/veo.md`: Google Veo, Gemini Omni Flash and Flow, with sources and verification date.
