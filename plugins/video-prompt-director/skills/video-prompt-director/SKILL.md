@@ -95,6 +95,6 @@ Load only what the current task needs.
 - `references/models/seedance.md`: Seedance (BytePlus ModelArk) limits, reference syntax, audio notation and prompting guidance, with sources and verification date.
 - `references/models/veo.md`: Google Veo, Gemini Omni Flash and Flow, with sources and verification date.
 - `references/models/runway.md`: Runway API models, durations, aspect ratios, prompt limit, with sources and verification date.
-- `references/models/kling.md`: Kling status (nothing verified yet) and how to proceed.
+- `references/models/kling.md`: Kling 4.0, 4.0 Flash and 3.0 text-to-video limits, reference syntax and prompting guidance, with sources and verification date.
 - `references/models/other.md`: any other model, and how to add a model file.
 - `examples/weak-vs-strong-prompts.md`: weak and strong prompts for natural movement, emotional acting, dialogue and multi-character scenes.

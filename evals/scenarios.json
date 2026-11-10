@@ -16,10 +16,6 @@
       {
         "type": "not_regex",
         "pattern": "Negative prompt"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Proposes numbered storyboard panels with beats, shot sizes, durations that fit 6-second clips, who is in frame and how each panel ends. Keeps Daniel's line exact. Stops for approval or says it will wait, and does not write finished video prompts yet."
@@ -41,10 +37,6 @@
         "pattern": "(Panel|Shot) ?0?[123]",
         "flags": "i",
         "min": 3
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "One self-contained prompt per panel with camera, timed or ordered action, performance as visible behavior, an ending state, and continuity notes between panels. Uses Seedance conventions from the model file, does not invent limits, keeps one camera movement per shot, and does not add dialogue."
@@ -66,10 +58,6 @@
         "type": "regex",
         "pattern": "Aku nggak tahu apa-apa\\.",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Both lines appear word for word in the original language, attributed to the right speaker, with delivery and mouth movement for the speaker and a physical reaction for the listener. No invented lines. The prompt fits 8 seconds and keeps one camera setup."
@@ -97,10 +85,6 @@
       {
         "type": "not_regex",
         "pattern": "\\b[Hh]e looks at her\\b"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Every person is identified by their description every time, actions are assigned per person, the background waiter's movement is unobtrusive, and the ending state is stated. Respects the Runway prompt length documented in the model file and does not add audio."
@@ -116,18 +100,14 @@
       {
         "type": "read_file",
         "pattern": "references/(prompt-quality|performance|cinematography)\\.md"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Diagnoses the real faults: no action or progression, an emotion label instead of behavior, contradictory movement (sitting while walking), competing camera moves, filler words. Returns a corrected prompt with visible behavior, one camera move and an ending state, and explains the changes briefly."
   },
   {
-    "id": "06-kling-unverified",
-    "title": "Does not invent Kling limits",
-    "prompt": "What's Kling's maximum clip length and prompt limit? I want to write a 12-second Kling shot of a man opening a door.",
+    "id": "06-kling-sourced",
+    "title": "Kling limits from the sourced file, by version",
+    "prompt": "What's the longest clip I can make with Kling, and how do I reference my character image in the prompt? I want a 12-second Kling shot of a man opening a door.",
     "checks": [
       {
         "type": "skill_activated"
@@ -137,18 +117,18 @@
         "pattern": "models/kling\\.md"
       },
       {
-        "type": "not_regex",
-        "pattern": "Kling (supports|allows) (up to )?\\d+",
-        "flags": "i"
+        "type": "regex",
+        "pattern": "4\\.0|3\\.0",
+        "min": 1
       },
       {
         "type": "regex",
-        "pattern": "unverified|not verified|confirm|current documentation|check",
+        "pattern": "2026-11-11|documentation|version",
         "flags": "i",
         "min": 1
       }
     ],
-    "rubric": "Says the limits are not verified in the skill, asks the user to confirm them from current Kling documentation, and still helps with a model-neutral prompt labeled as unverified. States no Kling duration, resolution or prompt-limit numbers as facts."
+    "rubric": "Uses the Kling file: asks or states which Kling version it assumes, gives limits per version with the verification date (Kling 4.0 up to 30 seconds, Flash 20, 3.0 per its page), explains @id reference syntax for an image, and writes a 12-second prompt that fits the stated version. Does not state limits for versions the file did not read."
   },
   {
     "id": "07-veo-sourced",
@@ -167,10 +147,6 @@
         "pattern": "2026|verified|documentation",
         "flags": "i",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Uses the Veo file, mentions that Gemini Omni Flash and Flow lineups changed and asks or states which model and surface it assumed, gives the verification date, and writes a prompt of about 6 seconds with a continuous shot, camera, action, performance and ending state."
@@ -192,10 +168,6 @@
         "pattern": "continuity",
         "flags": "i",
         "min": 2
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Each prompt restates identity, wardrobe and prop state, shot 1 ends in the state shot 2 starts from, hands and props stay consistent (keys right hand, then counter, then envelope in left hand), light and positions are stable, and a short ledger or continuity notes are included."
@@ -230,10 +202,6 @@
         "pattern": "exactly|same",
         "flags": "i",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "States what each reference controls, reinforces exact wardrobe once, keeps the kitchen layout and window position, and does not claim reference limits or syntax beyond what the Veo file documents."

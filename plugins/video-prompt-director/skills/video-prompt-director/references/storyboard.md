@@ -5,8 +5,9 @@ Contents:
 2. Accepting what the user already has
 3. Panel format
 4. How to cut a script into panels
-5. The approval step
-6. After approval
+5. Short-drama beats (optional check)
+6. The approval step
+7. After approval
 
 ## 1. Why the storyboard comes first
 
@@ -54,10 +55,21 @@ Rules:
 5. Keep panels inside what the target model can hold. A crowded action sequence may need to be split into several panels.
 6. Do not add a cut, a camera move or a gesture because a panel has a slot for it.
 
-## 5. The approval step
+## 5. Short-drama beats (optional check)
+
+A short drama usually has four parts: the **hook**, the **context**, the **escalation** and the **cliffhanger**. When the source is a short drama or vertical series episode, check that the panels cover them before you ask for approval:
+
+1. **Hook:** the first panel creates a question in the first seconds, and starts inside the situation.
+2. **Context:** only as much as the viewer needs to understand the situation, and it should not stall the story.
+3. **Escalation:** the middle panels raise the stakes, pressure or reveal; each one changes something.
+4. **Cliffhanger:** the last panel ends on the inhale, just before the answer, as a clear visual state.
+
+Use this as a check, not a template. Do not add a panel for a part the script already covers, and do not force the structure on a source that is not a short drama.
+
+## 6. The approval step
 
 Present the panels, then stop. Say what you assumed. Offer the user a chance to change length, order, shot sizes or beats. Do not write video prompts until they approve, unless they asked for the whole thing in one pass. If the user changes a panel, update the neighbors' "carries in" and "carries out" lines.
 
-## 6. After approval
+## 7. After approval
 
 Write one shot block per panel as described in `SKILL.md` section 3. Do not renumber or reorder panels. If writing a prompt shows that a panel cannot work (too much action for its duration, an impossible contact moment), say so and propose a revised panel rather than silently changing it.
