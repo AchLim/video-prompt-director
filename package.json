@@ -1,0 +1,62 @@
+{
+  "name": "@akoru/video-prompt-director",
+  "version": "0.1.0",
+  "description": "Claude Code skill that turns scripts and approved storyboards into AI video generation prompts, with an installer CLI.",
+  "homepage": "https://github.com/AchLim/video-prompt-director#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AchLim/video-prompt-director.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AchLim/video-prompt-director/issues"
+  },
+  "author": "AchLim",
+  "type": "module",
+  "bin": {
+    "video-prompt-director": "dist/cli.js"
+  },
+  "files": [
+    "dist/",
+    "plugins/video-prompt-director/skills/video-prompt-director/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/clean.mjs dist && tsc -p tsconfig.json",
+    "build:single": "node scripts/build-single-file.mjs",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
+    "check": "node scripts/sync-version.mjs --check && node scripts/build-single-file.mjs --check",
+    "test": "npm run build && node --test --test-reporter=spec \"test/**/*.test.ts\"",
+    "zip": "npm run build && node dist/cli.js export-zip --out release",
+    "evals": "node evals/run-evals.mjs",
+    "version": "node scripts/sync-version.mjs && node scripts/build-single-file.mjs && git add plugins .claude-plugin video-prompt-director.md",
+    "prepublishOnly": "npm run check && npm run typecheck && npm test"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "agent-skills",
+    "skill",
+    "ai-video",
+    "video-prompts",
+    "prompt-engineering",
+    "storyboard",
+    "cinematography",
+    "seedance",
+    "veo",
+    "kling",
+    "runway"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.0"
+  }
+}

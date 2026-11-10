@@ -1,0 +1,241 @@
+[
+  {
+    "id": "01-storyboard-gate",
+    "title": "Storyboard first when none is supplied",
+    "prompt": "I have a scene and no storyboard yet. MIRA (30s, green wool coat, wet dark hair) comes home at night and finds a sealed envelope on the kitchen counter. She hesitates, then picks it up. DANIEL, her husband, appears in the doorway and says: \"You weren't supposed to be home yet.\" Mira says nothing and keeps looking at the envelope. I want to generate this with Seedance in 6-second clips. Please help me get started.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "Panel",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Negative prompt"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Proposes numbered storyboard panels with beats, shot sizes, durations that fit 6-second clips, who is in frame and how each panel ends. Keeps Daniel's line exact. Stops for approval or says it will wait, and does not write finished video prompts yet."
+  },
+  {
+    "id": "02-panel-to-prompt-seedance",
+    "title": "Approved storyboard to Seedance prompts",
+    "prompt": "These storyboard panels are approved. Write the Seedance prompts, one per panel.\n\nPanel 1 (6 s): Medium shot, locked off. MIRA (green wool coat, wet dark hair) steps into a dark kitchen and sets her keys on the counter. She notices a sealed envelope. Ends on her hand hovering over it.\nPanel 2 (6 s): Close-up on Mira's face. She decides not to open it yet. Ends on her lowering her eyes.\nPanel 3 (6 s): Two-shot. DANIEL appears in the doorway. Mira turns toward him. Ends with both still.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "models/seedance\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "(Panel|Shot) ?0?[123]",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "One self-contained prompt per panel with camera, timed or ordered action, performance as visible behavior, an ending state, and continuity notes between panels. Uses Seedance conventions from the model file, does not invent limits, keeps one camera movement per shot, and does not add dialogue."
+  },
+  {
+    "id": "03-dialogue-exact",
+    "title": "Exact dialogue and listener reaction (Indonesian lines)",
+    "prompt": "Tulis prompt video untuk satu klip 8 detik di dalam mobil. Penumpang bernama MIRA berkata persis: \"Kamu tahu soal surat itu.\" Pengemudi bernama DANIEL menjawab persis: \"Aku nggak tahu apa-apa.\" Gunakan model Veo. Jangan ubah dialognya.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "Kamu tahu soal surat itu\\.",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "Aku nggak tahu apa-apa\\.",
+        "min": 1
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Both lines appear word for word in the original language, attributed to the right speaker, with delivery and mouth movement for the speaker and a physical reaction for the listener. No invented lines. The prompt fits 8 seconds and keeps one camera setup."
+  },
+  {
+    "id": "04-multi-character-assignment",
+    "title": "Multi-character actions assigned by name",
+    "prompt": "Write a video prompt for a 7-second shot. In a narrow hallway, a woman in an ivory dress holds a folded letter against her chest. A man in a charcoal suit stands two meters away. A waiter in a white jacket passes in the background carrying a tray. She steps back and leaves through the front door while the man watches. No dialogue. Target model: Runway.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "ivory dress",
+        "flags": "i",
+        "min": 2
+      },
+      {
+        "type": "regex",
+        "pattern": "charcoal suit",
+        "flags": "i",
+        "min": 2
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\b[Hh]e looks at her\\b"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Every person is identified by their description every time, actions are assigned per person, the background waiter's movement is unobtrusive, and the ending state is stated. Respects the Runway prompt length documented in the model file and does not add audio."
+  },
+  {
+    "id": "05-prompt-repair",
+    "title": "Repair a prompt that produces frozen characters",
+    "prompt": "This prompt keeps giving me a stiff character who just stares at the camera. Fix it and tell me what was wrong: \"A beautiful woman sits at a table, sad, cinematic, 4k, ultra detailed, camera zooms in and pans left while she walks to the door.\"",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/(prompt-quality|performance|cinematography)\\.md"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Diagnoses the real faults: no action or progression, an emotion label instead of behavior, contradictory movement (sitting while walking), competing camera moves, filler words. Returns a corrected prompt with visible behavior, one camera move and an ending state, and explains the changes briefly."
+  },
+  {
+    "id": "06-kling-unverified",
+    "title": "Does not invent Kling limits",
+    "prompt": "What's Kling's maximum clip length and prompt limit? I want to write a 12-second Kling shot of a man opening a door.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "models/kling\\.md"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Kling (supports|allows) (up to )?\\d+",
+        "flags": "i"
+      },
+      {
+        "type": "regex",
+        "pattern": "unverified|not verified|confirm|current documentation|check",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Says the limits are not verified in the skill, asks the user to confirm them from current Kling documentation, and still helps with a model-neutral prompt labeled as unverified. States no Kling duration, resolution or prompt-limit numbers as facts."
+  },
+  {
+    "id": "07-veo-sourced",
+    "title": "Veo prompt with sourced, dated limits",
+    "prompt": "Write a 6-second Veo prompt for a woman reading a letter at a kitchen table. Tell me which limits or features you're relying on and how current that information is.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "models/veo\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "2026|verified|documentation",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Uses the Veo file, mentions that Gemini Omni Flash and Flow lineups changed and asks or states which model and surface it assumed, gives the verification date, and writes a prompt of about 6 seconds with a continuous shot, camera, action, performance and ending state."
+  },
+  {
+    "id": "08-sequence-continuity",
+    "title": "Continuity across three shots",
+    "prompt": "Write prompts for these three shots as one sequence for Seedance. 1: Mira, in a green wool coat holding keys in her right hand, enters the kitchen. 2: She puts the keys on the counter and notices an envelope. 3: She picks up the envelope with her left hand and turns toward the doorway where Daniel is standing. Keep everything consistent.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/continuity\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "continuity",
+        "flags": "i",
+        "min": 2
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "Each prompt restates identity, wardrobe and prop state, shot 1 ends in the state shot 2 starts from, hands and props stay consistent (keys right hand, then counter, then envelope in left hand), light and positions are stable, and a short ledger or continuity notes are included."
+  },
+  {
+    "id": "09-no-activation",
+    "title": "Does not activate for unrelated requests",
+    "prompt": "Write a four-line poem about autumn rain.",
+    "checks": [
+      {
+        "type": "skill_not_activated"
+      }
+    ],
+    "rubric": "Writes the poem and does not load the video prompt skill."
+  },
+  {
+    "id": "10-reference-roles",
+    "title": "Reference images and their roles",
+    "prompt": "I have three reference images. Image A: Mira's face and hair. Image B: her green wool coat. Image C: a small kitchen with a window on the left. Write a 6-second Veo prompt where Mira walks in and sets down her keys. She must wear exactly the coat from image B.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "(?:image|reference)",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "regex",
+        "pattern": "exactly|same",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\\u2014"
+      }
+    ],
+    "rubric": "States what each reference controls, reinforces exact wardrobe once, keeps the kitchen layout and window position, and does not claim reference limits or syntax beyond what the Veo file documents."
+  }
+]

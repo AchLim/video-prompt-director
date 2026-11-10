@@ -1,0 +1,34 @@
+name: Bug
+description: The CLI, the plugin, or an install route does not work as documented.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: route
+    attributes:
+      label: Install route
+      options:
+        - Claude Code plugin
+        - npx skills add
+        - npm CLI (video-prompt-director)
+        - Single file
+        - Claude.ai ZIP
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you ran and what happened
+      description: Commands and their full output. For the npm CLI, add the output of `video-prompt-director doctor`.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node.js version, Claude Code version, video-prompt-director version.

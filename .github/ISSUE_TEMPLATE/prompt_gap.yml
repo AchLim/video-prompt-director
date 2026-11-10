@@ -1,0 +1,44 @@
+name: Prompt gap
+description: The skill wrote a weak, wrong, or hard-to-generate video prompt or storyboard.
+labels: ["prompting"]
+body:
+  - type: textarea
+    id: prompt
+    attributes:
+      label: What you asked for
+      description: The request, or a summary. Include the target model, clip length and whether you supplied a storyboard or reference images.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: What went wrong
+      multiple: true
+      options:
+        - Characters look frozen or robotic in the result
+        - Emotion or acting is generic
+        - Camera direction is unclear or contradictory
+        - Dialogue was changed, misattributed or invented
+        - Continuity (identity, wardrobe, props, positions)
+        - Action does not fit the clip length
+        - Wrong or invented model capability, limit or syntax
+        - Skipped the storyboard step, or ignored my storyboard
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: The prompt or panel that is wrong
+      description: Paste only the relevant part, and say what a better version would do.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: video-prompt-director version
+      description: The number in the installed skill's VERSION file.
+  - type: input
+    id: model
+    attributes:
+      label: Claude model and Claude Code version
