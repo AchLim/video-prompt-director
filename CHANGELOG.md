@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Added
+- Episode beats reference (`references/episode-beats.md`): a beat map for short dramas, the hook panel, the cold-viewer test, escalation, readable story-critical evidence, the cliffhanger panel, and checks before approval.
+- Camera sections on where movement belongs across an episode, smooth moves, and smooth cuts and joins between clips (`references/camera-language.md` sections 12 to 14), and a continuity section on joining one clip to the next.
+- Episode-flow checks 30 to 35 in the prompt quality checklist, and a hook-and-join example.
+
+### Changed
+- Locked-off is now the default for held dialogue only, not for the whole episode, and the cut counts observed in the pipeline are no longer presented as a target.
+
 ## [0.1.0] - 2026-11-11
 
 ### Added

@@ -18,7 +18,7 @@ describe("bundled skill", () => {
     const files = listFiles(SKILL_SRC);
     const required = [
       "SKILL.md", "README.md",
-      ...["storyboard", "cinematography", "performance", "physical-realism", "continuity", "prompt-quality", "constraints", "camera-language", "prompt-anatomy", "pacing"].map((f) => `references/${f}.md`),
+      ...["storyboard", "cinematography", "performance", "physical-realism", "continuity", "prompt-quality", "constraints", "camera-language", "prompt-anatomy", "pacing", "episode-beats"].map((f) => `references/${f}.md`),
       ...["seedance", "veo", "kling", "runway", "other"].map((f) => `references/models/${f}.md`),
       "examples/weak-vs-strong-prompts.md", "examples/production-prompt.md",
     ];

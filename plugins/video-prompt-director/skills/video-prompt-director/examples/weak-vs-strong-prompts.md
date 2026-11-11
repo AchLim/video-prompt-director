@@ -113,6 +113,21 @@ Contents:
 
 A close-up conversation shot, by contrast, would be locked off and stable with an 85 mm shallow look. Match the camera to the moment.
 
+## 7. Hook panel and the join to the next clip
+
+**Weak** (clip 1 of an episode)
+
+> Wide shot of a luxurious dining room at night. A man is humiliated by an older man in front of the family. Static camera. Cinematic lighting.
+
+**Strong** (clip 1, 8 s, hook)
+
+> Close-up, 85 mm telephoto look, shallow depth of field, on a driver's cap and car key lying beside a place setting where a man in a plain dark chauffeur jacket sits with his hands flat on the table; the other guests are dressed for dinner. The camera pushes in slowly and slightly toward his hands over 4 seconds, smooth and stable. An older man in a suit stands beside him and begins to tip a glass of red wine over his head; the wine runs through his hair, and the seated man does not move or look up. On the far side of the table a woman in a navy dress looks at the tablecloth, not at him, and turns a wedding ring on her finger. In frame: the seated man, the older man, the woman; no one else. Ends on the wine dripping from his jaw onto the car key.
+
+**Why it works**
+- Frame one holds a person and something wrong, with the cap, key, jacket and ring answering who, what relation and who holds power without a word.
+- The camera starts to move on the first beat, so the hook feels alive, and it eases on one move.
+- The ending state (wine on the key) is a concrete frame the next clip can start from. The next prompt opens on a close-up of the same key, same light, wine still dripping, and carries the rain on the window and the clink of the glass across the join.
+
 ## Using these examples
 
 When repairing a prompt, name what is missing (no action, no ending, an unassigned pronoun, two camera moves, a label instead of behavior) and show the corrected prompt. Do not copy example wording into a new project.
