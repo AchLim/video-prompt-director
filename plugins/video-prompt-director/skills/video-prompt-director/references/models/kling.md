@@ -1,21 +1,48 @@
 # Kling (Kuaishou)
 
-**Status: no capability was verified.** On 2026-11-11 the official developer documentation (`kling.ai/document-api`) loaded as an empty page for the fetch tool, because it renders in the browser, and no other official page was read. So nothing below is a documented fact. Do not state Kling's duration, resolution, reference limits, prompt length, negative-prompt limit or audio support from memory.
+How to use this file: documented facts below were read from Kling's official developer documentation on **2026-11-11**, in a real browser. Only Kling 4.0, Kling 4.0 Flash and the Kling 3.0 text-to-video page were read. Kling O1, 2.6 and 2.5 Turbo appear in the docs navigation and were **not** read, and neither were the Kling 3.0 image-to-video, omni and motion-control pages. "Not documented" means it was not found on the pages read. Pricing is not recorded here; check the provider.
 
-## What to do instead
+Sources (official):
+- Kling 4.0 user manual: https://kling.ai/document-api/api/usage-guide/kling-4-0
+- Kling 4.0 prompt guide: https://kling.ai/document-api/api/usage-guide/kling-4-0-prompt-guide
+- Kling 3.0 text-to-video: https://kling.ai/document-api/api/video/3-0-omni/text-to-video
 
-1. Ask the user which Kling version and which surface they use (web app or API), and ask them to paste the relevant limits from the current Kling documentation, or confirm them.
-2. Until confirmed, write a model-neutral prompt that follows the craft rules in this skill, keep it concise, and label the model-specific fields as unverified in a short note.
-3. Keep the likely-useful general practices that do not depend on a limit: stable subject description, one main action per clip, one camera movement, simple physical action, and reference-image fidelity stated plainly.
+The docs site shows a banner that Kling 4.0 Flash is available, so ask the user which Kling version they use before applying limits.
 
-## Leads to verify (not facts)
+## Documented capabilities (verified 2026-11-11)
 
-These came from search-result snippets of official-looking pages and were **not** opened. Treat each as a pointer to check, not as guidance.
+| Item | Kling 4.0 | Kling 4.0 Flash | Kling 3.0 (text to video page) |
+|---|---|---|---|
+| Endpoints | `/omni-video/kling-4.0`, `/image-to-video/kling-4.0`, `/text-to-video/kling-4.0` | Same family; Omni Reference and Keyframes entry points | `/text-to-video/kling-3.0` |
+| Duration | Integer 3 to 30 seconds. If omitted on omni: from a prompt hint, else the base video, else 10 seconds | 3 to 20 seconds | Integer, default 5; allowed range not captured |
+| Resolution | The task sections say 720p and 1080p (default 1080p); the specification table also lists 4K, with 4K HDR "coming soon" | 720p | 720p and 1080p listed, default 720p; the description also mentions 4K |
+| Aspect ratio | Omni: 21:9, 16:9, 9:16, 1:1, `adaptive` (default). The image-to-video endpoint takes no `aspect_ratio` | Not read | 16:9, 9:16, 1:1, default 16:9 |
+| Reference inputs | Omni Reference: up to 15 assets in all, made up of up to 10 images, up to 5 videos (combined 30 seconds at most), and up to 7 elements (up to 3 video elements); voice profiles also count toward the 15 | Not read in detail | Not read |
+| Keyframes | Up to 10 images: first, last and middle frames, through the image-to-video endpoint | Not supported (first and last frame, multi-keyframes) | Not read |
+| Video editing | Up to 5 clips including 1 primary video; each clip 3 to 30 seconds; combined at most 30 seconds | Combined at most 20 seconds | Not read |
+| Audio | Native audio and stereo; voices and dialogue kept in sync; voice profile references; uploading background music or sound effects as references is not supported | Voice cloning not supported | `settings.audio`: `native` or `off`, default `off` |
+| Prompt length | Text-to-video prompt must be fewer than 8,000 tokens | Not read | Maximum 3072 characters, recommended at most 2500 |
+| Negative prompt | No separate field found | Not read | The prompt "can include positive and negative descriptions" |
+| Multi-shot | Smart shot-splitting on by default for long generations | Not read | `multi_shot` default true; format "shot n, m, words;", 1 to 6 shots, each at least 1 second, shot durations sum to the total, each shot prompt at most 512 characters |
+| Languages | Chinese, English, Japanese, Korean, Spanish, Portuguese, German, French, Hindi and others | Not read | Not read |
 
-- A snippet for the text-to-video API reference shows a prompt maximum of 3072 characters (recommended up to 2500) and says the prompt field can contain both positive and negative descriptions.
-- A snippet for the API update notice shows a 2024 change setting prompt and negative-prompt limits to 2500 characters. It is old and may be superseded.
-- Page titles suggest official API pages exist for Omni video, Omni image, avatar and motion control.
+Video extension (up to 2 minutes) is listed as "coming soon" for Kling 4.0; do not plan around it.
 
-## Verification to complete
+## Prompting guidance from the official docs
 
-Open https://kling.ai/document-api in a real browser, read the text-to-video, image-to-video and reference or element pages, and record for each: model versions, duration, resolutions and aspect ratios, reference and element limits, start and end frame support, audio or lip-sync support, prompt and negative-prompt limits, and official prompting guidance. Add the source URL and the verification date to every fact.
+- **Say what each asset supplies.** In omni tasks every asset gets an `id` and is referenced as `@id` in the prompt (for example `@Image1`, `@Video1`). State the role: identity and outfit, composition, camera path and pacing, action, or the subject and the background.
+- **Asset types in the API:** `refer_image`, `feature_video` (borrow action or camera work), `base_video` (the video to edit), `element`, `voice`; keyframes use `first_frame`, `last_frame`, `middle_frame`.
+- **Editing prompts** state which video to edit, what to change and what to keep unchanged ("Edit @Video1 ... Keep the original actions, composition and camera movements unchanged").
+- **Style edits:** the guide says a combination of positive description and negative exclusion tends to give more stable results.
+- **Simple prompts are expanded.** The manual says a one-line idea gets storyline, blocking and camera filled in, and a clear, detailed description is followed faithfully.
+- **Long prompts:** the guide's examples use shot blocks with durations ("Shot 1 (5s)") and time ranges (for example 0.0 to 4.0 s), plus location maps, per-shot camera and lens notes, and an explicit list of what must stay consistent.
+- **Wording consistency:** the 4.0 manual says to keep wardrobe, face and design consistency by describing it for each referenced character.
+
+## How the skill applies this
+
+- Ask which Kling version and endpoint the user has, and take limits from the version's column above.
+- For references, number the assets, say what each one controls, and keep the roles separate (`references/continuity.md`).
+- Use shot blocks with durations for clips longer than one beat; for the Kling 3.0 `multi_shot` format keep each shot prompt within 512 characters.
+- Keep the whole prompt inside the version's documented length (8,000 tokens for 4.0 text-to-video; 3072 characters for 3.0).
+- Do not add audio direction unless the user asks; check the `audio` setting for 3.0, which defaults to off.
+- When editing a video, always state what to preserve.

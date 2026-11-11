@@ -24,7 +24,9 @@ Ask Claude for video prompts and video-prompt-director works the way a director 
 - **Exact dialogue.** Your lines stay word for word, attributed to the right speaker, with the listener reacting.
 - **Continuity across shots.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot, with a ledger when you want to check it.
 - **A check before you see anything.** Every prompt is validated for action, progression, plausibility, contradictions and fit with the target model, then fixed.
-- **Model files with sources and dates.** Seedance, Veo and Flow, and Runway each have a file that states what is documented, where, and when it was checked. Kling is listed but unverified. The skill does not invent model limits.
+- **A quantified camera.** Lens and depth of field, angle, composition, one slow move chosen for a story reason, and stated stability, so the model does not guess.
+- **Rules out what models add on their own.** No generated text, subtitles, logos or music unless you ask, no extra people, no cloned faces, no wardrobe drift.
+- **Model files with sources and dates.** Seedance, Veo and Flow, and Runway each have a file that states what is documented, where, and when it was checked. Kling 4.0 and 3.0 are covered the same way. The skill does not invent model limits.
 
 It does not generate video, and it does not change the code of the project you have open.
 
@@ -98,7 +100,7 @@ Give it your reference images and say what each one controls (face, wardrobe, lo
 | Seedance (BytePlus ModelArk) | Documented facts, sourced and dated | [`seedance.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/seedance.md) |
 | Google Veo, Gemini Omni Flash, Flow | Documented facts, sourced and dated | [`veo.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/veo.md) |
 | Runway | Documented API facts, sourced and dated | [`runway.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/runway.md) |
-| Kling | Not verified yet | [`kling.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/kling.md) |
+| Kling (4.0, 4.0 Flash, 3.0 text to video) | Documented facts, sourced and dated | [`kling.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/kling.md) |
 | Anything else | Ask for current limits, write a model-neutral prompt | [`other.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/other.md) |
 
 Video models change often. Each file carries the date its facts were checked, and the skill tells you when something is missing or old. Pricing is not recorded.
