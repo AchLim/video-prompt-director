@@ -265,5 +265,101 @@
       }
     ],
     "rubric": "Specifies shot size, lens look and depth of field, angle, composition, one camera move (tracking) with stated stability (slight natural sway, otherwise steady), eyeline and focus, who is in frame, and excludes zoom, whip and orbit. Does not stack camera moves. Respects the Seedance file (order rather than seconds, no invented limits)."
+  },
+  {
+    "id": "13-dialogue-fit",
+    "title": "Dialogue that does not fit the clip is flagged",
+    "prompt": "Write a 4-second Veo shot. A woman in a green coat says exactly: \"I found the letter in his coat, I read every page, and I know exactly who he has been meeting every Thursday night.\" Medium shot, kitchen.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/pacing\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "every Thursday night",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "split|longer clip|longer than|does(n't| not) fit|too long|won't fit",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Estimates the speech time (about 28 words, roughly 11 seconds at 2.5 words per second) against 4 seconds, says it does not fit, and proposes a longer clip or a split across clips with the line kept word for word. Does not compress or cut the line silently."
+  },
+  {
+    "id": "14-series-clip-anatomy",
+    "title": "Full series-clip prompt with states, blocking and recorded dialogue",
+    "prompt": "This is clip 2 of 6 in episode 3, 10 seconds, 9:16, for Seedance. I have a finished dialogue recording for one line, exactly 10 seconds long. Previous clip ended with Iwan (34, navy shirt, steel watch on his left wrist) leaving through the front door; Noor (31, sage-green linen shirt, silver ring on her right index finger) stands at the kitchen island facing north holding a cup of tea, a sealed cream envelope on the counter. In this clip Noor picks up the envelope, then Iwan comes back in and says: \"That isn't yours to open.\" Write the full production prompt for this clip.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/prompt-anatomy\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "opening state|starts from|continues from|previous clip",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "ending state|ends (on|with)",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "in frame",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "recording|recorded",
+        "flags": "i",
+        "min": 2
+      },
+      {
+        "type": "regex",
+        "pattern": "That isn't yours to open\\.",
+        "min": 1
+      }
+    ],
+    "rubric": "Follows the anatomy: references, recorded-dialogue rules (model does not voice or alter the line, lips only, picture changes not the recording), clip task, scene and light, appearance block with the identity anchors, opening state from the previous clip, blocking with a fixed landmark or compass, cuts with camera line, who is in frame, eyeline and focus, the exact line in a lip-sync window with delivery, ending state, ambient sound, numbered constraints including no readable text and no music, and a voice profile. Does not replay the previous action. Fits a sensible length."
+  },
+  {
+    "id": "15-reference-not-in-clip",
+    "title": "Attach only what is in the clip",
+    "prompt": "Clip 4 shows only Mira at the counter reading a letter. I have reference images for Mira, Daniel and the letter. Daniel appears in clip 5. Which images do I attach to clip 4, and write the prompt for Seedance, 6 seconds.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/continuity\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "Daniel",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "not (attach|tag|include|needed)|don't attach|do not attach|leave[^.\\n]{0,40}(out|off)|omit|exclude|skip",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Says to attach Mira and the letter only, and leave Daniel's image out of clip 4 because a reference makes the model show that person; states that no one else is in frame; the prompt mentions neither Daniel's look nor an off-screen Daniel."
   }
 ]

@@ -13,6 +13,7 @@ Contents:
 10. Coverage: which shot for which beat
 11. Several cuts inside one clip
 12. Camera mistakes to avoid
+13. Describing the camera position in words
 
 ## 1. Evidence behind this file
 
@@ -95,6 +96,7 @@ Write them as a pair ("85 mm telephoto look, shallow depth of field, soft backgr
 Say who the camera faces and from what angle. Examples: "the young woman, eye level, frontal"; "the two of them, eye level, profile"; "the older man, slightly high angle"; "over her shoulder, looking at the bedroom door".
 
 - **Eye level** is the default: frontal for emotion, profile or three-quarter for conversation geometry.
+- **From behind or rear three-quarter** for following someone into a space, or a reveal over their back.
 - **High angle** for a character who is small, cornered or being judged; **low angle** for power. Use rarely and for a reason.
 - **Over the shoulder** for dialogue that needs the relationship in frame; keep the foreground free of furniture that hides the faces.
 - Keep the camera on one side of the line between two people unless the cut is deliberate (`references/continuity.md`).
@@ -153,6 +155,7 @@ In frame: the young woman and the older man. No one else.
 - Use the time ranges to show order. Some models document timing as unstable; check the target model's file, and if so write the order in words and let the model set the pace.
 
 ## 12. Camera mistakes to avoid
+13. Describing the camera position in words
 
 - A shot size with no lens, angle or composition, so the model decides.
 - Two or more moves in one cut.
@@ -162,3 +165,16 @@ In frame: the young woman and the older man. No one else.
 - A wide shot for a line the story depends on the viewer reading in the face.
 - Naming the camera move and leaving out its amount and speed.
 - Asking for a move that the clip is too short to complete.
+
+## 13. Describing the camera position in words
+
+Beyond the header fields, add a short sentence on where the camera is:
+
+- **Height and side:** "at waist height on the south side of the table, looking across the tabletop".
+- **Depth layering in a vertical frame:** put people front to back so the main subject is clear: one in the right foreground chest-up, one in the left middle ground, one in the background slightly soft.
+- **Keep the foreground free:** no furniture, plant or prop that hides the faces.
+- **Camera at a person's position:** "the camera is at her place; she is not in frame, and the other person walks toward the lens".
+- **Hold the frame during the key event:** "the spoon drops in; hold, no push, no reframing".
+- **Follow once, do not speed up:** "follow her across the room, once, at her pace".
+- **Say a hard cut is a hard cut:** "hard cut to her frontal medium, at eye level slightly to the right, background a soft chandelier glow".
+- **Silence as a beat:** "lock the camera and give her one second before she speaks".

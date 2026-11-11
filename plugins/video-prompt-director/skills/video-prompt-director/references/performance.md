@@ -9,6 +9,8 @@ Contents:
 6. Dialogue
 7. Listeners and conversation
 8. What models render reliably
+9. Per-line delivery, voice and lip-sync
+10. Every person gets a direction
 
 ## 1. Prevent frozen characters
 
@@ -80,6 +82,8 @@ Example: "The woman speaks in a restrained, trembling voice: 'You knew.' Her lip
 
 ## 7. Listeners and conversation
 8. What models render reliably
+9. Per-line delivery, voice and lip-sync
+10. Every person gets a direction
 
 - The speaker gestures when it fits the line. The listener reacts at meaningful moments, not constantly.
 - Do not give both people the same gesture, the same head movement, or synchronized blinks.
@@ -88,6 +92,8 @@ Example: "The woman speaks in a restrained, trembling voice: 'You knew.' Her lip
 - In shot-reverse-shot coverage, keep each person's eyeline and screen direction consistent across panels (`references/continuity.md`).
 
 ## 8. What models render reliably
+9. Per-line delivery, voice and lip-sync
+10. Every person gets a direction
 
 Production notes from a working short-drama pipeline: models draw some direction well and some not at all. Write for what they draw.
 
@@ -98,3 +104,19 @@ Production notes from a working short-drama pipeline: models draw some direction
 - **Be careful with very fine detail.** Precise physical interactions, micro-expressions and finger-level movement are often not drawn correctly and can crowd out the one beat that matters. Direct them only when the shot is a close-up that depends on them, and treat the result as something to check. For most shots, use cues the camera can clearly see: a head turn, a gaze shift, a held breath, a shoulder drop, a jaw set.
 - **Externalize the emotion as body detail,** never as a label: sadness as a lowered head and a trembling shoulder, tension as glancing at a watch or tapping a table, anger as clenched fists and a tight jaw.
 - **Keep sound and action in agreement.** A sound described in the prompt can make the model act it out (`references/constraints.md` section 11).
+
+## 9. Per-line delivery, voice and lip-sync
+
+For each spoken line that carries the scene:
+- **Delivery:** tone, pace, which word is stretched or stressed ("slow and unhurried, 'cucian' stretched as if tasting it").
+- **Gesture tied to words:** what the body does on a specific word ("on 'Tante!' she rises on her toes and tilts her head toward the room").
+- **Subtext through gaze:** where the eyes go says what the words do not ("her contempt shows by not looking at her; she looks at the soup").
+- **Voice profile per character,** kept identical across clips: accent, pitch, age, pace, temperament. Reuse it word for word.
+- **Lip-sync in the language spoken:** mouths open and close on that language's syllables, and stay closed in pauses of the recording. State the language when it is not English.
+- **A pause is a performance:** say what the person does in it (`references/pacing.md`).
+
+## 10. Every person gets a direction
+
+Each person in a clip needs a performance line (what they do, where they look, how they react), even when they say nothing. A person with no direction is a frozen person. A person who is not in the clip gets none, and is not mentioned, so the model does not bring them in.
+
+Avoid blanket stillness phrases such as "no extra movement" or "remains completely still". They make people look frozen. Describe restrained acting instead: a held breath, eyes that stay on one thing, a small shift of weight.

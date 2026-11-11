@@ -28,7 +28,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | Request looks like | Workflow | Deliver | Load |
 |---|---|---|---|
 | A script or scene and no storyboard | A. Storyboard | Numbered panels, each with its story purpose, for the user to approve | `references/storyboard.md`, `references/cinematography.md`, `references/camera-language.md` |
-| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/cinematography.md`, `references/camera-language.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` for the level expected |
+| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/prompt-anatomy.md`, `references/pacing.md`, `references/cinematography.md`, `references/camera-language.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` and `examples/production-prompt.md` for the level expected |
 | An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
@@ -49,7 +49,7 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Keep physical action simple.** Describe hand and object interactions step by step, one main action per short clip, and avoid contact choreography a model will likely break. See `references/physical-realism.md`.
 
-**Dialogue is exact.** Preserve supplied lines word for word, assign each to its speaker, and never invent lines. See `references/performance.md` section 6.
+**Dialogue is exact and has to fit.** Preserve supplied lines word for word, assign each to its speaker, never invent lines, and check that the speech fits the clip with room for the action (`references/pacing.md`). For a supplied recording, follow `references/constraints.md` section 14. See `references/performance.md` section 6.
 
 **Continuity is part of the prompt.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot. State them in every prompt that needs them; a video model sees only the prompt in front of it. See `references/continuity.md`.
 
@@ -89,6 +89,8 @@ Run the check in `references/prompt-quality.md` on every prompt, silently, and f
 Load only what the current task needs.
 
 - `references/storyboard.md`: turning a script into panels, panel format, the approval step, supplied storyboards.
+- `references/prompt-anatomy.md`: the sections a production prompt for a series clip contains, in order, with how to build each; compact and full forms.
+- `references/pacing.md`: speech time against clip length, entry beat, reaction pauses, closing hold, ambience, actions and cuts per clip.
 - `references/camera-language.md`: quantifying the camera (lens and depth of field, angle, composition, eyeline and focus, blocking), which move for which beat, smoothness and stability, coverage, several cuts in one clip, with observed numbers from a production pipeline.
 - `references/cinematography.md`: shot sizes, angle, height, movement, focus, composition, camera versus subject movement, shot structure and timed beats.
 - `references/performance.md`: human movement, natural acting, emotional direction, multiple characters, background activity, dialogue and listeners.
@@ -101,4 +103,5 @@ Load only what the current task needs.
 - `references/models/runway.md`: Runway API models, durations, aspect ratios, prompt limit, with sources and verification date.
 - `references/models/kling.md`: Kling 4.0, 4.0 Flash and 3.0 text-to-video limits, reference syntax and prompting guidance, with sources and verification date.
 - `references/models/other.md`: any other model, and how to add a model file.
+- `examples/production-prompt.md`: one complete series-clip prompt built with the anatomy, with recorded dialogue.
 - `examples/weak-vs-strong-prompts.md`: weak and strong prompts for natural movement, emotional acting, dialogue and multi-character scenes.

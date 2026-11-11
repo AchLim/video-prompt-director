@@ -29,7 +29,7 @@ Read everything supplied before writing. Do not invent earlier events, relations
 
 ```
 Panel 04 | 5 s | INT. KITCHEN, NIGHT
-Beat: Mira finds the envelope; she decides not to open it yet.
+Task: the turn. Mira finds the envelope and decides not to open it yet. Emotion: held-back dread.
 Shot: Medium shot, eye level, locked off.
 Who: Mira (green coat, wet hair), alone.
 Action: Mira sets her keys down, notices the envelope, stops.
@@ -39,9 +39,11 @@ Carries in: coat on, keys in right hand. Carries out: hand above envelope.
 ```
 
 Rules:
-- One panel is one continuous clip with one main purpose.
+- One panel is one clip: one generation, with one main purpose, and as many cuts as the clip length allows (`references/pacing.md` section 7).
 - Give each panel a duration the user can adjust. If the model's limit matters, check `references/models/`.
 - State who is in frame and where, with a stable name or description.
+- For a series, add the episode and the clip's position (clip 3 of 8) and the episode's emotional line in one sentence, so each clip knows its job.
+- Check that the dialogue fits the clip (`references/pacing.md` section 2) before approval.
 - Include dialogue exactly as supplied, with the speaker.
 - Write "ends on" as a visual state, because the next panel starts from it.
 - Keep panels brief. Detail belongs in the prompt stage.

@@ -14,6 +14,9 @@ Contents:
 11. Sound in layers
 12. Look and style wording
 13. Do not add story content
+14. Recorded dialogue: the full rules
+15. Silent lip-sync mode
+16. Other defaults
 
 ## 1. Why constraints get their own file
 
@@ -94,6 +97,9 @@ Performance notes, delivery notes and constraints can leak: a model may speak th
 11. Sound in layers
 12. Look and style wording
 13. Do not add story content
+14. Recorded dialogue: the full rules
+15. Silent lip-sync mode
+16. Other defaults
 
 | Kind | Put it |
 |---|---|
@@ -122,5 +128,33 @@ A sound line is also a direction. If the sound line says "the bell explodes on i
 - **Realistic references still need a style line.** A vendor FAQ notes that realistic reference images with no style words can drift to a different look.
 
 ## 13. Do not add story content
+14. Recorded dialogue: the full rules
+15. Silent lip-sync mode
+16. Other defaults
 
 Do not add people, props, actions, dialogue or visible text that the script and storyboard do not contain. A storyboard assembles assets; it does not invent. Do not use era words ("ancient", "period costume") as pictures; describe garments, objects and architecture instead.
+
+## 14. Recorded dialogue: the full rules
+
+When the user supplies the dialogue as a finished audio file (for example a text-to-speech or actor recording), put these rules in the prompt. They exist because models otherwise voice the lines again, with a different voice.
+
+1. **The recording is final and exactly as long as the clip.** The voices in the finished video are this recording, used as is, word for word and second for second.
+2. **The model must not generate, re-voice, re-read, change or imitate the dialogue.** No added, removed or altered words. No stretched or shortened syllables.
+3. **No change to voice, pitch, volume, speed, rhythm, pauses or emotion.** No reverb, echo, voice effects or any other voice outside the recording.
+4. **People only move their lips to the recording.** The model makes no human sound of its own. Each line starts at its labeled second; mouths follow the language's syllables and close in the recording's pauses. Off-screen speakers do not move their mouths on screen.
+5. **If picture and recording disagree, change the picture, not the recording.**
+6. **Outside the recording, only very light ambient sound and action sound,** far below the dialogue. No music, no subtitles.
+7. **Repeat rule 2 once more at the end** of the constraints. Models drift on this one.
+
+Check the model's file for how many audio inputs it takes and their total length.
+
+## 15. Silent lip-sync mode
+
+If the audio is mixed in afterwards, ask the model for a silent clip: "only mouth movement to the line, no sound of its own; expression follows the line's emotion". Still give the line, its language, its start second and its delivery, so the mouth matches. State "no one speaks" and "mouths closed" for clips with no dialogue.
+
+## 16. Other defaults
+
+- **Do not cut to black.** It wastes frames. Hold on the last reaction; the edit adds the black.
+- **No orbits, whip pans or crash zooms** in a grounded drama, unless the user asks (`references/camera-language.md`).
+- **Every person, place and prop needs a reference or a full description** in a series (`references/continuity.md` section 10).
+- **Face light is a project choice:** soft flattering light, or natural shadows with no beauty lighting. State which, once, as the project look.

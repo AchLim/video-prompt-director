@@ -51,10 +51,17 @@ Each item is pass or fail. A fail in a blocking item means the prompt is revised
 20. Each shot states who is in frame and that no one else appears; wardrobe is stated as exactly the reference, with no added items.
 21. The shot continues from the previous shot's finished state and does not replay it; non-spoken guidance is marked as direction, not content.
 
+**Pacing, states and references (blocking)**
+22. The dialogue fits the clip: speech time plus entry beat, pauses and closing hold leave room for the action (`references/pacing.md`); the lines are word for word.
+23. The action count fits the length: one major action up to 4 s, two up to 6 s, up to three beyond.
+24. Any state that changes between shots (door, wardrobe, prop, position) has a visible cause, and changes made off-screen are revealed.
+25. References are attached only for people, props and places in the clip, in the state the image shows; each person has a screen side and a performance direction.
+26. The prompt does not rely on blanket stillness, a cut to black, or a pause with no ambient sound.
+
 **Hygiene**
-22. No contradictions (see section 4).
-23. The prompt stands alone: nothing in it depends on notes the video model cannot see.
-24. No filler: every sentence changes what the model will make.
+27. No contradictions (see section 4).
+28. The prompt stands alone: nothing in it depends on notes the video model cannot see.
+29. No filler: every sentence changes what the model will make.
 
 ## 3. Negative constraints
 
