@@ -12,7 +12,7 @@ All notable changes to this project are documented here. The project follows [Se
 ### Changed
 - Locked-off is now the default for held dialogue only, not for the whole episode, and the cut counts observed in the pipeline are no longer presented as a target.
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-11-11
 
 ### Added
 - The `video-prompt-director` skill: workflows for storyboards, panel-to-prompt, prompt repair, model adaptation and multi-shot sequences, with a storyboard-first approval step.
