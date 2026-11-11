@@ -8,6 +8,10 @@ Contents:
 5. Light and time
 6. The shot-to-shot check
 7. The continuity ledger
+8. Identity anchors, costume variants, and reference sets
+9. State changes need a cause
+10. Attach only what is in the clip
+11. Room map and screen sides
 
 ## 1. Why each prompt must carry continuity
 
@@ -27,7 +31,7 @@ Reference 3: the kitchen environment and light direction.
 
 If the user needs exact wardrobe or exact face fidelity, say so in the prompt as a plain instruction, once, near the start ("Mira wears exactly the green wool coat from the wardrobe reference"). How a given model addresses references (numbering, tags, limits) is in its file in `references/models/`. Use that model's own syntax, and do not use one model's syntax for another.
 
-Give each person a stable short description and reuse it word for word across shots: "Mira, in her green wool coat, wet dark hair tied back." A description that drifts from shot to shot causes the person to drift on screen.
+Give each person a stable short description and reuse it word for word across shots: "the young woman in the green wool coat, wet dark hair tied back." A description that drifts from shot to shot causes the person to drift on screen.
 
 ## 3. Wardrobe and props
 
@@ -63,6 +67,10 @@ For each adjacent pair of prompts:
 Fix what fails by editing the prompts. Do not return a list of continuity problems you could have resolved.
 
 ## 7. The continuity ledger
+8. Identity anchors, costume variants, and reference sets
+9. State changes need a cause
+10. Attach only what is in the clip
+11. Room map and screen sides
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
 
@@ -72,3 +80,41 @@ For more than two shots, keep a short ledger and update it per shot. Show it to 
 | 01 | Kitchen, night | Mira at door, facing in | green coat, wet hair | keys in right hand | warm lamp, left | she steps inside |
 | 02 | Kitchen, night | Mira at counter, facing camera | same | keys on counter | same | hand above envelope |
 ```
+
+## 8. Identity anchors, costume variants, and reference sets
+9. State changes need a cause
+10. Attach only what is in the clip
+11. Room map and screen sides
+
+Practices from a working series pipeline, useful when a series runs over many clips.
+
+- **Give every main character an identity anchor:** one asymmetric, easy-to-see mark kept in every prompt, such as a bracelet on the left wrist, a mole under the right eye, a steel watch on the left wrist, or a pin in a bun. Name the side. These are the first details a model drops.
+- **List costume variants by name** (for example "wedding gown", "gala dress", "at home") and say which episode or scene uses which. Do not let one variant bleed into another.
+- **Build reference sets from a headshot and a full-body shot.** Do not use turnaround or multi-view sheets as the character reference: a vendor guide says they can be read as several subjects, which increases identity drift and "twin" faces (see `references/models/seedance.md`).
+- **Do not use up the reference limit.** A recommended four to five assets works better than the maximum, because too many leave the model unsure which matters most. Put the most important reference first.
+- **References lock identity, not composition.** A reference sets face, build, costume, room layout and prop design. It does not set the camera angle or the moment; the prompt does.
+- **Persistent marks:** stains, scratches, wet hair and dents carry across shots until the story removes them.
+
+## 9. State changes need a cause
+
+Track doors, wardrobe, props and positions as states: open or closed, worn or removed, in the left hand or on the table, by the window or by the door.
+
+- A state carries from clip to clip until something changes it. If the next shot needs a different state (the door is now open, the jacket is off), add the action that causes the change, in between, or fix one of the two shots.
+- **Never assume a starting state.** If the script does not say whether a door is open or a coat is on, ask or state a flagged assumption.
+- **A change that happens out of sight must be revealed.** If a person leaves, hands something over or closes a door off-frame, the next shot's action must show the result (the object now in the other person's hand, the empty chair) and say who did it, or "someone off-frame".
+- **The person who does it must be the person the script says.** Check the actor of each handoff.
+
+## 10. Attach only what is in the clip
+
+A reference image makes the model show that person or object. Attach references only for the people, props and places that appear in this clip in the state the image shows.
+- A person who must not be seen in this clip gets no reference image, and is not tagged in the prompt.
+- A prop that has changed state (a letter now opened, a glass now broken) needs a reference that matches the new state, or a description of the change.
+- A named person, place or prop with no reference image is a blocker for a series: ask the user for it or describe it fully.
+
+## 11. Room map and screen sides
+
+- **Draw a fixed map of each room** with named landmarks (the island, the front door, the window, the south side of the table). Place people at landmarks, not at invented positions.
+- **Give every person in the clip a screen side** (left, center or right of frame) and keep it across the cuts.
+- **Say how a side swap or a crossing of the line is shown** (a walk across frame, a cut with a reason). A camera that moves to the other side of the line flips left and right; either stay on the established side or show the crossing.
+- **Check position jumps:** if a person ends one shot by the window and starts the next by the door, show or explain the move.
+- **Night and day** follow the room: a night room does not mention daylight, and a daytime room does not mention moonlight.

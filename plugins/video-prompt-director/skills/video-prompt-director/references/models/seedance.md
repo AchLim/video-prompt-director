@@ -35,6 +35,19 @@ The tutorial does not mention 2.5. Check which version the user is running befor
 - Exclusions are written as phrases inside the prompt ("do not generate a watermark", "keep it subtitle-free"), since there is no negative-prompt parameter.
 - Timeline style ("Shot 1 / Shot 2") is shown for complex videos. The guide says support for precise timing such as 0 to 3 seconds is unstable, so treat timed beats as a guide and keep the action ordered in sentences.
 
+## Production practice (not from the official pages read)
+
+These come from one working short-drama pipeline that sends Seedance prompts, and from its notes on a vendor prompt guide. They are practice to try and check, not documented facts about the model.
+
+- **Language:** the pipeline writes the whole prompt body in one language, Chinese, with dialogue in a single language. Ask the user which language to use; the official guide checked above only says the dialogue language must be consistent.
+- **Order, not seconds:** inside the prompt body it describes what happens in order (camera, then action and expression, then position change) and does not write second ranges, because the official guide calls precise timing unstable.
+- **Generic identity:** it refers to people by a visual description and the reference id, not by name, and keeps names for dialogue. The pipeline's notes cite the vendor's guide for this; confirm it for the version in use.
+- **One camera move per cut.**
+- **References:** four to five assets, most important first; headshot plus full-body, not multi-view sheets.
+- **Subtitles:** use "keep it subtitle-free" and check; the vendor FAQ says it cannot be fully prevented.
+- **Chinese dialogue pronunciation:** rare or polyphonic characters are sometimes misread; a common homophone can be substituted.
+- **Narrated clips:** a noise at the very end is possible, so fade out in post.
+
 ## How the skill applies this
 
 - Use the model's reference syntax and state each reference's role (`references/continuity.md`).

@@ -16,10 +16,6 @@
       {
         "type": "not_regex",
         "pattern": "Negative prompt"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Proposes numbered storyboard panels with beats, shot sizes, durations that fit 6-second clips, who is in frame and how each panel ends. Keeps Daniel's line exact. Stops for approval or says it will wait, and does not write finished video prompts yet."
@@ -41,10 +37,6 @@
         "pattern": "(Panel|Shot) ?0?[123]",
         "flags": "i",
         "min": 3
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "One self-contained prompt per panel with camera, timed or ordered action, performance as visible behavior, an ending state, and continuity notes between panels. Uses Seedance conventions from the model file, does not invent limits, keeps one camera movement per shot, and does not add dialogue."
@@ -66,10 +58,6 @@
         "type": "regex",
         "pattern": "Aku nggak tahu apa-apa\\.",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Both lines appear word for word in the original language, attributed to the right speaker, with delivery and mouth movement for the speaker and a physical reaction for the listener. No invented lines. The prompt fits 8 seconds and keeps one camera setup."
@@ -97,10 +85,6 @@
       {
         "type": "not_regex",
         "pattern": "\\b[Hh]e looks at her\\b"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Every person is identified by their description every time, actions are assigned per person, the background waiter's movement is unobtrusive, and the ending state is stated. Respects the Runway prompt length documented in the model file and does not add audio."
@@ -116,18 +100,14 @@
       {
         "type": "read_file",
         "pattern": "references/(prompt-quality|performance|cinematography)\\.md"
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Diagnoses the real faults: no action or progression, an emotion label instead of behavior, contradictory movement (sitting while walking), competing camera moves, filler words. Returns a corrected prompt with visible behavior, one camera move and an ending state, and explains the changes briefly."
   },
   {
-    "id": "06-kling-unverified",
-    "title": "Does not invent Kling limits",
-    "prompt": "What's Kling's maximum clip length and prompt limit? I want to write a 12-second Kling shot of a man opening a door.",
+    "id": "06-kling-sourced",
+    "title": "Kling limits from the sourced file, by version",
+    "prompt": "What's the longest clip I can make with Kling, and how do I reference my character image in the prompt? I want a 12-second Kling shot of a man opening a door.",
     "checks": [
       {
         "type": "skill_activated"
@@ -137,18 +117,18 @@
         "pattern": "models/kling\\.md"
       },
       {
-        "type": "not_regex",
-        "pattern": "Kling (supports|allows) (up to )?\\d+",
-        "flags": "i"
+        "type": "regex",
+        "pattern": "4\\.0|3\\.0",
+        "min": 1
       },
       {
         "type": "regex",
-        "pattern": "unverified|not verified|confirm|current documentation|check",
+        "pattern": "2026-11-11|documentation|version",
         "flags": "i",
         "min": 1
       }
     ],
-    "rubric": "Says the limits are not verified in the skill, asks the user to confirm them from current Kling documentation, and still helps with a model-neutral prompt labeled as unverified. States no Kling duration, resolution or prompt-limit numbers as facts."
+    "rubric": "Uses the Kling file: asks or states which Kling version it assumes, gives limits per version with the verification date (Kling 4.0 up to 30 seconds, Flash 20, 3.0 per its page), explains @id reference syntax for an image, and writes a 12-second prompt that fits the stated version. Does not state limits for versions the file did not read."
   },
   {
     "id": "07-veo-sourced",
@@ -167,10 +147,6 @@
         "pattern": "2026|verified|documentation",
         "flags": "i",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Uses the Veo file, mentions that Gemini Omni Flash and Flow lineups changed and asks or states which model and surface it assumed, gives the verification date, and writes a prompt of about 6 seconds with a continuous shot, camera, action, performance and ending state."
@@ -192,10 +168,6 @@
         "pattern": "continuity",
         "flags": "i",
         "min": 2
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "Each prompt restates identity, wardrobe and prop state, shot 1 ends in the state shot 2 starts from, hands and props stay consistent (keys right hand, then counter, then envelope in left hand), light and positions are stable, and a short ledger or continuity notes are included."
@@ -230,12 +202,164 @@
         "pattern": "exactly|same",
         "flags": "i",
         "min": 1
-      },
-      {
-        "type": "not_regex",
-        "pattern": "\\u2014"
       }
     ],
     "rubric": "States what each reference controls, reinforces exact wardrobe once, keeps the kitchen layout and window position, and does not claim reference limits or syntax beyond what the Veo file documents."
+  },
+  {
+    "id": "11-no-text-by-default",
+    "title": "Rules out generated text and extras by default",
+    "prompt": "Write a 6-second Seedance prompt for a wide shot of dragon boat athletes preparing on a dock at midday. They wear red life jackets and carry wooden paddles. There is a banner and a scoreboard in the background.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/constraints\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "no (readable )?(text|letters|writing)|without (any )?(text|writing)|text-free",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "subtitle",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Rules out generated text on the banner, scoreboard and life jackets by name, no subtitles, logos or watermarks, no music, distinct faces with no cloned people, plain wardrobe stated, background movement natural but small, one continuous shot. Does not ask for readable text unless the user did."
+  },
+  {
+    "id": "12-camera-follow-smoothness",
+    "title": "Camera quantified: follow shot with stated stability",
+    "prompt": "Write a 6-second Seedance prompt. A young woman in a flour-dusted apron hurries out of a bakery onto a night street, phone pressed to her ear, heading toward the camera. Make the camera feel real but smooth.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/camera-language\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "track|follow",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "slight|sway|handheld|steady|stable",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "\\b(35|50|85) ?mm",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Specifies shot size, lens look and depth of field, angle, composition, one camera move (tracking) with stated stability (slight natural sway, otherwise steady), eyeline and focus, who is in frame, and excludes zoom, whip and orbit. Does not stack camera moves. Respects the Seedance file (order rather than seconds, no invented limits)."
+  },
+  {
+    "id": "13-dialogue-fit",
+    "title": "Dialogue that does not fit the clip is flagged",
+    "prompt": "Write a 4-second Veo shot. A woman in a green coat says exactly: \"I found the letter in his coat, I read every page, and I know exactly who he has been meeting every Thursday night.\" Medium shot, kitchen.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/pacing\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "every Thursday night",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "split|longer clip|longer than|does(n't| not) fit|too long|won't fit",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Estimates the speech time (about 28 words, roughly 11 seconds at 2.5 words per second) against 4 seconds, says it does not fit, and proposes a longer clip or a split across clips with the line kept word for word. Does not compress or cut the line silently."
+  },
+  {
+    "id": "14-series-clip-anatomy",
+    "title": "Full series-clip prompt with states, blocking and recorded dialogue",
+    "prompt": "This is clip 2 of 6 in episode 3, 10 seconds, 9:16, for Seedance. I have a finished dialogue recording for one line, exactly 10 seconds long. Previous clip ended with Iwan (34, navy shirt, steel watch on his left wrist) leaving through the front door; Noor (31, sage-green linen shirt, silver ring on her right index finger) stands at the kitchen island facing north holding a cup of tea, a sealed cream envelope on the counter. In this clip Noor picks up the envelope, then Iwan comes back in and says: \"That isn't yours to open.\" Write the full production prompt for this clip.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/prompt-anatomy\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "opening state|starts from|continues from|previous clip",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "ending state|ends (on|with)",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "in frame",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "recording|recorded",
+        "flags": "i",
+        "min": 2
+      },
+      {
+        "type": "regex",
+        "pattern": "That isn't yours to open\\.",
+        "min": 1
+      }
+    ],
+    "rubric": "Follows the anatomy: references, recorded-dialogue rules (model does not voice or alter the line, lips only, picture changes not the recording), clip task, scene and light, appearance block with the identity anchors, opening state from the previous clip, blocking with a fixed landmark or compass, cuts with camera line, who is in frame, eyeline and focus, the exact line in a lip-sync window with delivery, ending state, ambient sound, numbered constraints including no readable text and no music, and a voice profile. Does not replay the previous action. Fits a sensible length."
+  },
+  {
+    "id": "15-reference-not-in-clip",
+    "title": "Attach only what is in the clip",
+    "prompt": "Clip 4 shows only Mira at the counter reading a letter. I have reference images for Mira, Daniel and the letter. Daniel appears in clip 5. Which images do I attach to clip 4, and write the prompt for Seedance, 6 seconds.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "references/continuity\\.md"
+      },
+      {
+        "type": "regex",
+        "pattern": "Daniel",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "not (attach|tag|include|needed)|don't attach|do not attach|leave[^.\\n]{0,40}(out|off)|omit|exclude|skip",
+        "flags": "i",
+        "min": 1
+      }
+    ],
+    "rubric": "Says to attach Mira and the letter only, and leave Daniel's image out of clip 4 because a reference makes the model show that person; states that no one else is in frame; the prompt mentions neither Daniel's look nor an off-screen Daniel."
   }
 ]

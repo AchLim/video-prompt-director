@@ -1,12 +1,14 @@
 # Weak vs strong video prompts
 
-Four moments, each written weak and strong. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
+Six moments, each written weak and strong. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
 
 Contents:
 1. Natural human movement
 2. Emotional acting
 3. A dialogue scene
 4. A multi-character interaction
+5. Ruling out what the model adds
+6. Camera: sized, moved and steadied
 
 ## 1. Natural human movement
 
@@ -49,16 +51,18 @@ Contents:
 
 **Strong** (8 s, two-shot, locked off; dialogue supplied by the user and kept exact)
 
-> Two-shot from the back seat, camera locked, eye level between the front seats, evening light through the windshield. Mira, in the passenger seat wearing a green wool coat, keeps her eyes on the road ahead. Daniel, in the driver's seat wearing a grey jacket, has both hands on the steering wheel. Mira speaks in a low, controlled voice: "You knew about the letter." Her lips move naturally with the line. She turns her head toward Daniel on the last word. Daniel says nothing. His eyes flick to her, then back to the road. His jaw tightens and his grip on the wheel shifts. He does not speak.
+> Two-shot from the back seat, camera locked, eye level between the front seats, evening light through the windshield. The woman in the green wool coat, in the passenger seat, keeps her eyes on the road ahead. The man in the grey jacket, in the driver's seat, has both hands on the steering wheel. The woman speaks in a low, controlled voice: "You knew about the letter." Her lips move naturally with the line. She turns her head toward the man on the last word. He says nothing. His eyes flick to her, then back to the road. His jaw tightens and his grip on the wheel shifts. He does not speak.
 
 **Why it works**
 - The line is exact, attributed, in quotation marks, and its delivery is described.
 - The listener reacts physically while staying silent.
 - Only the speaker's mouth moves.
-- Each person has a stable visual description for reuse in the next shot.
+- Each person has a stable visual description for reuse in the next shot. Names are kept for dialogue, not for the prompt body.
 - A model that takes spoken lines in a special notation (for example braces in Seedance) needs that notation; see its model file.
 
 ## 4. A multi-character interaction
+5. Ruling out what the model adds
+6. Camera: sized, moved and steadied
 
 **Weak**
 
@@ -74,6 +78,40 @@ Contents:
 - The two characters do different things: she acts, he restrains.
 - The ending state is stated: she is gone, he is still looking at the door.
 - Only simple contact (a hand on a handle); no complicated physical interaction between bodies.
+
+## 5. Ruling out what the model adds
+6. Camera: sized, moved and steadied
+
+**Weak** (a group scene with the defaults left open)
+
+> Hundreds of athletes prepare dragon boats on a sunny dock, wearing red life jackets. Cinematic, lively.
+
+**Strong** (6 s, wide shot, locked off)
+
+> Wide shot, eye level, locked-off camera, midday sun, a wooden dock lined with dragon boats. About thirty athletes prepare for a race: some carry plain wooden paddles to the boats, some adjust their life jackets, a few talk in pairs. Every athlete has a distinct face, build and age; no two people look alike. All wear plain solid-red life jackets with no letters, numbers, logos or patterns on the front or back. Nobody stands frozen: movement is small and natural, and none of it pulls attention from the center of the dock. One continuous shot with no cuts. No readable text anywhere in the frame, no subtitles, no logos or watermarks, and no music.
+
+**Why it works**
+- The defaults are named for the surfaces in the shot: life jackets, signs, the frame as a whole.
+- A crowd gets "distinct faces" and "no two people look alike", which counters cloned faces.
+- The wardrobe is plain by statement, not by omission.
+- Background movement is allowed but kept small, so the crowd is neither frozen nor distracting.
+
+## 6. Camera: sized, moved and steadied
+
+**Weak**
+
+> Cinematic shot of a woman running out of a bakery, dynamic camera, handheld, zooms in and whips around her as she answers her phone.
+
+**Strong** (6 s, follow shot)
+
+> Wide shot, 35 mm look, medium-deep depth of field, tracking shot following a young woman in a flour-dusted apron as she hurries out of a warmly lit bakery onto the street, pressing a phone to her ear and heading toward the camera. The camera follows at her pace with a slight natural handheld sway, one move only: no zoom, no whip, no orbit. Eye level, frontal, subject on the left third, space ahead of her to the right. Her gaze goes to the road ahead; the focus holds on her whole figure. In frame: the young woman only; no one else.
+
+**Why it works**
+- Size, lens, depth of field, angle, composition, eyeline and focus are all stated, so the model does not guess.
+- One camera move, slow and motivated by a person moving; the slight shake suits a follow shot and is stated.
+- The effects in the weak version (zoom, whip, orbit) are named and excluded.
+
+A close-up conversation shot, by contrast, would be locked off and stable with an 85 mm shallow look. Match the camera to the moment.
 
 ## Using these examples
 
