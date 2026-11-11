@@ -63,6 +63,14 @@ Each item is pass or fail. A fail in a blocking item means the prompt is revised
 28. The prompt stands alone: nothing in it depends on notes the video model cannot see.
 29. No filler: every sentence changes what the model will make.
 
+**Episode flow (blocking for short dramas and series clips)**
+30. The hook clip starts on a person and a problem in the first 2 to 3 seconds, readable with the sound off (`references/episode-beats.md`).
+31. The cold-viewer test passes: who, relation, power, stake are visible by second 5 to 8, not only spoken.
+32. This clip raises the pressure relative to the previous one, and any story-critical evidence is a readable insert with its overlay planned.
+33. The last clip of the episode ends on a visible change and one specific question, not on a held reaction.
+34. Joins are smooth: the opening state matches the previous clip's end, cuts are on action or eyeline with gradual size and lens steps, and sound or motion carries across (`references/camera-language.md` section 14, `references/continuity.md` section 12).
+35. The camera plan across the episode is not all locked off: the hook, the turn and the ending each have a motivated move or a deliberate size change.
+
 ## 3. Negative constraints
 
 Use them only where the target model supports a negative prompt or documents a way to exclude things. Choose the few that apply to this shot:
