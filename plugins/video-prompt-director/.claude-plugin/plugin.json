@@ -1,7 +1,7 @@
 {
   "name": "video-prompt-director",
   "displayName": "Video Prompt Director",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code skill: turns scripts and approved storyboards into model-ready AI video prompts with camera direction, timed action, natural acting, dialogue, continuity and a quality check.",
   "icon": "./.claude-plugin/icon.png",
   "author": {
