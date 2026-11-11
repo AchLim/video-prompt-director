@@ -45,9 +45,12 @@ Sources (official):
 - Audio: say whether you want it, and write sound effects, ambient noise and dialogue in separate sentences. Dialogue is written inline, for example: the man in the red hat says: Where is the rabbit?
 - Exclusions: the two Google pages disagree. The Vertex guide advises describing what you do not want rather than using "no" or "don't". The Omni page suggests direct exclusions such as "No dialogue". If one phrasing fails, try the other.
 
+## Production note (one team's log, not from the official pages)
+
+A prompt that compared a character's look to real stars or popular dramas was rejected by Flow as depicting a prominent person (2026-10-31). Describe faces, skin, hair and light directly instead (`references/constraints.md` section 12).
+
 ## How the skill applies this
 
-- If the user generates in Flow by hand and uploads the clips elsewhere, use `references/manual-flow-handoff.md`.
 
 - Name the model and surface before writing limits into a prompt.
 - Ask for one continuous shot unless the storyboard wants cuts.

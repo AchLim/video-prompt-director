@@ -234,30 +234,36 @@
     "rubric": "Rules out generated text on the banner, scoreboard and life jackets by name, no subtitles, logos or watermarks, no music, distinct faces with no cloned people, plain wardrobe stated, background movement natural but small, one continuous shot. Does not ask for readable text unless the user did."
   },
   {
-    "id": "12-flow-manual-handoff",
-    "title": "Manual Flow handoff cards",
-    "prompt": "I make clips by hand in Google Flow, download them, and upload them to my own editing system. Here are two approved panels. Panel 1 (6 s): MIRA, green wool coat, steps into a dark kitchen and sets her keys on the counter. Panel 2 (6 s): close-up, she notices a sealed envelope and stops. I have three reference images: A = Mira's face, B = the coat, C = the kitchen. Give me what I need.",
+    "id": "12-camera-follow-smoothness",
+    "title": "Camera quantified: follow shot with stated stability",
+    "prompt": "Write a 6-second Seedance prompt. A young woman in a flour-dusted apron hurries out of a bakery onto a night street, phone pressed to her ear, heading toward the camera. Make the camera feel real but smooth.",
     "checks": [
       {
         "type": "skill_activated"
       },
       {
         "type": "read_file",
-        "pattern": "references/manual-flow-handoff\\.md"
+        "pattern": "references/camera-language\\.md"
       },
       {
         "type": "regex",
-        "pattern": "take ?1|take1|_take",
+        "pattern": "track|follow",
         "flags": "i",
         "min": 1
       },
       {
         "type": "regex",
-        "pattern": "image|reference|attach",
+        "pattern": "slight|sway|handheld|steady|stable",
         "flags": "i",
-        "min": 3
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "\\b(35|50|85) ?mm",
+        "flags": "i",
+        "min": 1
       }
     ],
-    "rubric": "Produces one handoff card per panel with a file name, the Flow mode and length as the user's account shows (asks or states which model it assumed, citing the checked date), attachments numbered with roles, a paste-ready prompt with exclusions, check-after-download items, and starts-from and ends-on states that chain the two shots. Does not claim Flow features beyond the Veo file."
+    "rubric": "Specifies shot size, lens look and depth of field, angle, composition, one camera move (tracking) with stated stability (slight natural sway, otherwise steady), eyeline and focus, who is in frame, and excludes zoom, whip and orbit. Does not stack camera moves. Respects the Seedance file (order rather than seconds, no invented limits)."
   }
 ]

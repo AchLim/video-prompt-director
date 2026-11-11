@@ -8,6 +8,7 @@ Contents:
 5. Background activity
 6. Dialogue
 7. Listeners and conversation
+8. What models render reliably
 
 ## 1. Prevent frozen characters
 
@@ -78,9 +79,22 @@ Do not add audio, music or sound-effect instructions to a visual prompt unless t
 Example: "The woman speaks in a restrained, trembling voice: 'You knew.' Her lips move naturally with the line. She glances away before the last word. The man says nothing and watches her, his jaw tight."
 
 ## 7. Listeners and conversation
+8. What models render reliably
 
 - The speaker gestures when it fits the line. The listener reacts at meaningful moments, not constantly.
 - Do not give both people the same gesture, the same head movement, or synchronized blinks.
 - The listener must never look frozen while the other speaks.
 - Reactions follow the content: a listener who hears bad news changes expression before replying.
 - In shot-reverse-shot coverage, keep each person's eyeline and screen direction consistent across panels (`references/continuity.md`).
+
+## 8. What models render reliably
+
+Production notes from a working short-drama pipeline: models draw some direction well and some not at all. Write for what they draw.
+
+- **Prefer low, slow, continuous movement:** walking slowly, lifting a hand gently, sitting down along with the turn. Avoid high-burst action (sprinting, big jumps, rolls) in short clips.
+- **Quantify the amount and the speed:** "slowly raises her hand", "turns her head quickly", "lowers her head slightly".
+- **Write the link between actions:** "uses the turn's momentum to raise her hand", "moves from the pause into lifting the cup". Actions with a visible connection read as one motion.
+- **Fit the action to the seconds.** Pick actions that models have seen many times (walking, turning, looking up, sitting, reaching for a cup).
+- **Be careful with very fine detail.** Precise physical interactions, micro-expressions and finger-level movement are often not drawn correctly and can crowd out the one beat that matters. Direct them only when the shot is a close-up that depends on them, and treat the result as something to check. For most shots, use cues the camera can clearly see: a head turn, a gaze shift, a held breath, a shoulder drop, a jaw set.
+- **Externalize the emotion as body detail,** never as a label: sadness as a lowered head and a trembling shoulder, tension as glancing at a watch or tapping a table, anger as clenched fists and a tight jaw.
+- **Keep sound and action in agreement.** A sound described in the prompt can make the model act it out (`references/constraints.md` section 11).

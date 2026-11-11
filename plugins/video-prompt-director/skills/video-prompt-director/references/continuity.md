@@ -8,6 +8,7 @@ Contents:
 5. Light and time
 6. The shot-to-shot check
 7. The continuity ledger
+8. Identity anchors, costume variants, and reference sets
 
 ## 1. Why each prompt must carry continuity
 
@@ -27,7 +28,7 @@ Reference 3: the kitchen environment and light direction.
 
 If the user needs exact wardrobe or exact face fidelity, say so in the prompt as a plain instruction, once, near the start ("Mira wears exactly the green wool coat from the wardrobe reference"). How a given model addresses references (numbering, tags, limits) is in its file in `references/models/`. Use that model's own syntax, and do not use one model's syntax for another.
 
-Give each person a stable short description and reuse it word for word across shots: "Mira, in her green wool coat, wet dark hair tied back." A description that drifts from shot to shot causes the person to drift on screen.
+Give each person a stable short description and reuse it word for word across shots: "the young woman in the green wool coat, wet dark hair tied back." A description that drifts from shot to shot causes the person to drift on screen.
 
 ## 3. Wardrobe and props
 
@@ -63,6 +64,7 @@ For each adjacent pair of prompts:
 Fix what fails by editing the prompts. Do not return a list of continuity problems you could have resolved.
 
 ## 7. The continuity ledger
+8. Identity anchors, costume variants, and reference sets
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
 
@@ -72,3 +74,14 @@ For more than two shots, keep a short ledger and update it per shot. Show it to 
 | 01 | Kitchen, night | Mira at door, facing in | green coat, wet hair | keys in right hand | warm lamp, left | she steps inside |
 | 02 | Kitchen, night | Mira at counter, facing camera | same | keys on counter | same | hand above envelope |
 ```
+
+## 8. Identity anchors, costume variants, and reference sets
+
+Practices from a working series pipeline, useful when a series runs over many clips.
+
+- **Give every main character an identity anchor:** one asymmetric, easy-to-see mark kept in every prompt, such as a bracelet on the left wrist, a mole under the right eye, a steel watch on the left wrist, or a pin in a bun. Name the side. These are the first details a model drops.
+- **List costume variants by name** (for example "wedding gown", "gala dress", "at home") and say which episode or scene uses which. Do not let one variant bleed into another.
+- **Build reference sets from a headshot and a full-body shot.** Do not use turnaround or multi-view sheets as the character reference: a vendor guide says they can be read as several subjects, which increases identity drift and "twin" faces (see `references/models/seedance.md`).
+- **Do not use up the reference limit.** A recommended four to five assets works better than the maximum, because too many leave the model unsure which matters most. Put the most important reference first.
+- **References lock identity, not composition.** A reference sets face, build, costume, room layout and prop design. It does not set the camera angle or the moment; the prompt does.
+- **Persistent marks:** stains, scratches, wet hair and dents carry across shots until the story removes them.

@@ -1,6 +1,6 @@
 # Weak vs strong video prompts
 
-Six moments, each written weak and strong, plus a handoff card. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
+Six moments, each written weak and strong. All material is original. The strong versions are model-neutral; apply the target model's syntax and limits from `references/models/` before use.
 
 Contents:
 1. Natural human movement
@@ -8,7 +8,7 @@ Contents:
 3. A dialogue scene
 4. A multi-character interaction
 5. Ruling out what the model adds
-6. A manual Flow handoff card
+6. Camera: sized, moved and steadied
 
 ## 1. Natural human movement
 
@@ -51,18 +51,18 @@ Contents:
 
 **Strong** (8 s, two-shot, locked off; dialogue supplied by the user and kept exact)
 
-> Two-shot from the back seat, camera locked, eye level between the front seats, evening light through the windshield. Mira, in the passenger seat wearing a green wool coat, keeps her eyes on the road ahead. Daniel, in the driver's seat wearing a grey jacket, has both hands on the steering wheel. Mira speaks in a low, controlled voice: "You knew about the letter." Her lips move naturally with the line. She turns her head toward Daniel on the last word. Daniel says nothing. His eyes flick to her, then back to the road. His jaw tightens and his grip on the wheel shifts. He does not speak.
+> Two-shot from the back seat, camera locked, eye level between the front seats, evening light through the windshield. The woman in the green wool coat, in the passenger seat, keeps her eyes on the road ahead. The man in the grey jacket, in the driver's seat, has both hands on the steering wheel. The woman speaks in a low, controlled voice: "You knew about the letter." Her lips move naturally with the line. She turns her head toward the man on the last word. He says nothing. His eyes flick to her, then back to the road. His jaw tightens and his grip on the wheel shifts. He does not speak.
 
 **Why it works**
 - The line is exact, attributed, in quotation marks, and its delivery is described.
 - The listener reacts physically while staying silent.
 - Only the speaker's mouth moves.
-- Each person has a stable visual description for reuse in the next shot.
+- Each person has a stable visual description for reuse in the next shot. Names are kept for dialogue, not for the prompt body.
 - A model that takes spoken lines in a special notation (for example braces in Seedance) needs that notation; see its model file.
 
 ## 4. A multi-character interaction
 5. Ruling out what the model adds
-6. A manual Flow handoff card
+6. Camera: sized, moved and steadied
 
 **Weak**
 
@@ -80,6 +80,7 @@ Contents:
 - Only simple contact (a hand on a handle); no complicated physical interaction between bodies.
 
 ## 5. Ruling out what the model adds
+6. Camera: sized, moved and steadied
 
 **Weak** (a group scene with the defaults left open)
 
@@ -95,25 +96,22 @@ Contents:
 - The wardrobe is plain by statement, not by omission.
 - Background movement is allowed but kept small, so the crowd is neither frozen nor distracting.
 
-## 6. A manual Flow handoff card
+## 6. Camera: sized, moved and steadied
 
-For a user who generates in Flow by hand and uploads the clips to their own system. Only the Prompt line is pasted into Flow.
+**Weak**
 
-```
-Shot E04_S03   download as: E04_S03_take1.mp4
-Flow model and mode: as shown in your Flow account (for example ingredients to video)
-Length: 6 s    Aspect ratio: 9:16
-Attach: image A = Mira's face and hair; image B = her green coat; image C = the kitchen
-Prompt:
-  Medium shot, eye level, locked-off camera, soft window light from the left. Mira, with the face and hair from
-  image A, wears exactly the green wool coat from image B, with no added items. The kitchen matches image C, window on
-  the left. She steps in from the right, sets her keys on the counter with her right hand, and stops, eyes on the
-  counter. In frame: Mira only; no one else appears. One continuous shot, no cuts. No readable text, no subtitles,
-  no logos or watermarks, no music.
-Check after download: coat unchanged; keys in the right hand; no text or watermark; no cut; ends with Mira still at the counter
-Starts from: Mira in the doorway, keys in her right hand
-Ends on: Mira at the counter, keys down, looking at the envelope
-```
+> Cinematic shot of a woman running out of a bakery, dynamic camera, handheld, zooms in and whips around her as she answers her phone.
+
+**Strong** (6 s, follow shot)
+
+> Wide shot, 35 mm look, medium-deep depth of field, tracking shot following a young woman in a flour-dusted apron as she hurries out of a warmly lit bakery onto the street, pressing a phone to her ear and heading toward the camera. The camera follows at her pace with a slight natural handheld sway, one move only: no zoom, no whip, no orbit. Eye level, frontal, subject on the left third, space ahead of her to the right. Her gaze goes to the road ahead; the focus holds on her whole figure. In frame: the young woman only; no one else.
+
+**Why it works**
+- Size, lens, depth of field, angle, composition, eyeline and focus are all stated, so the model does not guess.
+- One camera move, slow and motivated by a person moving; the slight shake suits a follow shot and is stated.
+- The effects in the weak version (zoom, whip, orbit) are named and excluded.
+
+A close-up conversation shot, by contrast, would be locked off and stable with an 85 mm shallow look. Match the camera to the moment.
 
 ## Using these examples
 

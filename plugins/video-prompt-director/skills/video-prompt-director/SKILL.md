@@ -27,12 +27,11 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 
 | Request looks like | Workflow | Deliver | Load |
 |---|---|---|---|
-| A script or scene and no storyboard | A. Storyboard | Numbered panels, each with its story purpose, for the user to approve | `references/storyboard.md`, `references/cinematography.md` |
-| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/cinematography.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` for the level expected |
+| A script or scene and no storyboard | A. Storyboard | Numbered panels, each with its story purpose, for the user to approve | `references/storyboard.md`, `references/cinematography.md`, `references/camera-language.md` |
+| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/cinematography.md`, `references/camera-language.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` for the level expected |
 | An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
-| The user generates by hand in Google Flow (or another web tool) and uploads the clips elsewhere | F. Manual handoff | One handoff card per shot, file names, and a check for each downloaded clip | `references/manual-flow-handoff.md`, `references/models/veo.md` |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
@@ -42,11 +41,11 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Every shot is a sequence of visual events.** State the starting picture, what changes, and the ending picture. "A woman stands in a living room looking sad" gives the model nothing to animate. Give it an action and a reaction. See `references/cinematography.md` and `examples/weak-vs-strong-prompts.md`.
 
-**Camera and subject move independently.** A locked camera can film a character walking and talking. Specify each one. One camera move per continuous shot; do not stack competing moves.
+**Camera and subject move independently.** A locked camera can film a character walking and talking. Specify each one. State size, lens and depth of field, angle, composition and stability, not just a shot size. One camera move per cut, small and slow, and only when the story moves; most shots are locked off. See `references/camera-language.md`.
 
 **Direct behavior, not labels.** Replace "she looks angry" with what a viewer would see: brows drawing together, jaw tightening, lips pressed before she answers. Use only movement the person and moment would produce. Stillness with breath, eyes and posture is often the strongest acting. See `references/performance.md`.
 
-**Name every person every time.** When two or more people appear, identify each by a stable visual description or name and assign actions per person. Never "he looks at her". Listeners react while others speak; non-speaking people do not move their mouths.
+**Identify every person every time.** When two or more people appear, identify each by a stable visual description (plus the reference id when images are used) and assign actions per person. Prefer a generic visual identity in the prompt body and keep personal names for dialogue; check the model file for what the model's own guide asks. Never "he looks at her". Listeners react while others speak; non-speaking people do not move their mouths.
 
 **Keep physical action simple.** Describe hand and object interactions step by step, one main action per short clip, and avoid contact choreography a model will likely break. See `references/physical-realism.md`.
 
@@ -65,7 +64,7 @@ For each shot:
 ```
 ### Shot 03 (Panel 03)
 Duration: 6 s
-Shot type and camera: Medium close-up, eye level, locked off, shallow depth of field.
+Shot type and camera: Medium close-up, 85 mm look, shallow depth of field, eye level frontal, thirds, locked off, stable.
 Action (timed): 0.0-2.0 s ... / 2.0-4.5 s ... / 4.5-6.0 s ...
 Performance: faces and bodies, who reacts to whom.
 Environment: light, background activity, anything that must stay fixed.
@@ -76,7 +75,7 @@ Continuity: what carries in from the previous shot and out to the next.
 
 Rules:
 - The prompt must stand alone. The video model cannot see the notes around it.
-- Write the prompt in English unless the user asks otherwise. Keep dialogue in its original language, exactly as supplied.
+- Write the prompt in the language the model or project calls for (some pipelines write Seedance prompts in Chinese; see its model file). Ask if unsure, and default to English. Keep dialogue in its original language, exactly as supplied.
 - Timed beats describe progression, not cuts. Keep one continuous shot unless the storyboard says cut.
 - Fit the action to the duration. A 4-second clip holds one main action and at most one reaction.
 - Keep each shot block short. Skip a field that adds nothing.
@@ -90,12 +89,12 @@ Run the check in `references/prompt-quality.md` on every prompt, silently, and f
 Load only what the current task needs.
 
 - `references/storyboard.md`: turning a script into panels, panel format, the approval step, supplied storyboards.
+- `references/camera-language.md`: quantifying the camera (lens and depth of field, angle, composition, eyeline and focus, blocking), which move for which beat, smoothness and stability, coverage, several cuts in one clip, with observed numbers from a production pipeline.
 - `references/cinematography.md`: shot sizes, angle, height, movement, focus, composition, camera versus subject movement, shot structure and timed beats.
 - `references/performance.md`: human movement, natural acting, emotional direction, multiple characters, background activity, dialogue and listeners.
 - `references/physical-realism.md`: object and hand interactions, anatomy and motion failures, simple choreography.
 - `references/continuity.md`: character identity, wardrobe, props, spatial relationships, screen direction, shot-to-shot checks, reference-image roles, the continuity ledger.
 - `references/constraints.md`: defaults that every production prompt rules out (text and subtitles, music, extra people, identity and wardrobe drift, cuts, replayed actions, leaked instructions) and how to word them.
-- `references/manual-flow-handoff.md`: generating by hand in Google Flow, handoff cards, file names, checking downloads, chaining shots, what to record when uploading to the user's system.
 - `references/prompt-quality.md`: the validation checklist, scoring, contradiction and length checks, and how to revise.
 - `references/models/seedance.md`: Seedance (BytePlus ModelArk) limits, reference syntax, audio notation and prompting guidance, with sources and verification date.
 - `references/models/veo.md`: Google Veo, Gemini Omni Flash and Flow, with sources and verification date.

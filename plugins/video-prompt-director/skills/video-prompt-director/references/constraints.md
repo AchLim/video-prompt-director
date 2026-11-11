@@ -11,6 +11,9 @@ Contents:
 8. Instructions that must not be read or shown
 9. How to word a constraint
 10. Where a constraint goes
+11. Sound in layers
+12. Look and style wording
+13. Do not add story content
 
 ## 1. Why constraints get their own file
 
@@ -38,6 +41,7 @@ Ask once at the start when a default would change the result a lot and the proje
 - Rule out the surfaces that appear in the shot, by name: "no readable text on the phone screen, the letter or the sign" works better than a general "no text".
 - **Clothing and props:** when a wardrobe must stay plain, say it is plain: "plain, unprinted solid-red life jackets, with no letters, numbers, logos or patterns on the front or back".
 - **If the story needs readable text,** such as a letter, a name card or a date, choose one of two routes and say which: (a) the text is added in post, so the generated shot shows only blank paper or a blank screen; or (b) the model renders the exact text, which you state in quotation marks with its language and where it appears. Route (a) is safer for long or non-Latin text. Check the target model's file for what it documents about on-screen text.
+- **Wording lowers the chance; it does not guarantee it.** A model vendor's FAQ says subtitles cannot be fully prevented, only made less likely. Use phrases such as "keep it subtitle-free" and "do not generate any text or subtitles", and check every clip. In one pipeline's experience subtitles appeared more often in vertical output than horizontal.
 - **Subtitles:** never ask for subtitles unless the user does. If the pipeline adds captions later, say "no subtitles, captions or lower-third text" in the prompt so they do not appear twice.
 
 ## 4. People: identity, wardrobe, extras, clones, who is in frame
@@ -87,6 +91,9 @@ Performance notes, delivery notes and constraints can leak: a model may speak th
 - **Do not contradict yourself.** Do not exclude "movement" in a shot that has a walk.
 
 ## 10. Where a constraint goes
+11. Sound in layers
+12. Look and style wording
+13. Do not add story content
 
 | Kind | Put it |
 |---|---|
@@ -96,3 +103,24 @@ Performance notes, delivery notes and constraints can leak: a model may speak th
 | Cut and camera rules | In the shot's camera line |
 | Persistent marks (stains, scratches) | In each person's description |
 | Tool settings (reference weight, negative field) | In a note to the user, outside the prompt |
+
+## 11. Sound in layers
+
+Keep three layers apart:
+
+1. **What the characters hear:** dialogue, singing, music inside the story. It goes in the shot body.
+2. **Ambient and action sound:** footsteps, a door, breath, room tone. Short, in its own line, and never repeat the dialogue there.
+3. **Score:** music only the audience hears. Default is none; say so.
+
+A sound line is also a direction. If the sound line says "the bell explodes on impact", the model may act out an impact. When the action changes, change the sound line with it.
+
+## 12. Look and style wording
+
+- **Say the look once, as the project's look,** and reuse the same wording in every prompt. Do not invent a different style sentence per shot. Light direction and mood belong to the shot; style names, grades and film looks belong to the project look.
+- **Do not name other styles, even to exclude them.** "No anime, no 3D, no cartoon" can pull a model toward them. Describe the look you want, and list only concrete faults to avoid (waxy skin, distorted faces, harsh shadows across faces).
+- **Describe faces, skin, hair and light directly. Never compare people to real people** (stars, idols, named actors, "the lead of a popular drama"). One team's log records a Google Flow prompt rejected for depicting a prominent person after such a comparison (2026-10-31). Characters should be original.
+- **Realistic references still need a style line.** A vendor FAQ notes that realistic reference images with no style words can drift to a different look.
+
+## 13. Do not add story content
+
+Do not add people, props, actions, dialogue or visible text that the script and storyboard do not contain. A storyboard assembles assets; it does not invent. Do not use era words ("ancient", "period costume") as pictures; describe garments, objects and architecture instead.

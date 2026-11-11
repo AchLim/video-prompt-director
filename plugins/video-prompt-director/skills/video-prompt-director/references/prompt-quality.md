@@ -24,8 +24,8 @@ Each item is pass or fail. A fail in a blocking item means the prompt is revised
 5. The action fits the duration. A 4-second clip does not hold five actions.
 
 **Camera and look (blocking)**
-6. Shot size and angle are specified.
-7. Camera movement is appropriate and singular; no competing moves.
+6. Shot size, lens and depth of field, angle and composition are specified, and the stability (stable, slight shake, handheld) is stated.
+7. Camera movement is one move per cut, small, slow and motivated by the story; locked off when nothing needs to move.
 8. Camera movement and subject movement are described separately.
 
 **People (blocking)**

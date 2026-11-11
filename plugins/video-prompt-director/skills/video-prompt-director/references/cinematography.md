@@ -1,5 +1,7 @@
 # Cinematography: composition, camera, and shot structure
 
+For lens and depth of field, angle, composition, camera movement choices, smoothness, eyeline, focus and blocking, read `references/camera-language.md` as well.
+
 Contents:
 1. A shot is a sequence of events
 2. Shot size
