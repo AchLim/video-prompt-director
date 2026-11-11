@@ -12,6 +12,7 @@ Contents:
 9. State changes need a cause
 10. Attach only what is in the clip
 11. Room map and screen sides
+12. Joining one clip to the next
 
 ## 1. Why each prompt must carry continuity
 
@@ -118,3 +119,21 @@ A reference image makes the model show that person or object. Attach references 
 - **Say how a side swap or a crossing of the line is shown** (a walk across frame, a cut with a reason). A camera that moves to the other side of the line flips left and right; either stay on the established side or show the crossing.
 - **Check position jumps:** if a person ends one shot by the window and starts the next by the door, show or explain the move.
 - **Night and day** follow the room: a night room does not mention daylight, and a daytime room does not mention moonlight.
+
+## 12. Joining one clip to the next
+
+Clips are generated one at a time, so each join is a place where the picture can jump. A join is smooth when the last frame of clip N and the first frame of clip N+1 agree.
+
+For each join, check and state in the later prompt:
+
+1. **Frame:** the same camera position, size and lens look as the end of N, or a stated gradual change (`references/camera-language.md` section 14).
+2. **People and props:** positions, posture, facing, expression, hands, and the object in each hand.
+3. **Marks and states:** a stain, a wet shirt, a door, a signed page (section 9).
+4. **Light and background:** the same light direction and the same background elements.
+5. **Motion:** a person or the camera that was moving at the end of N is still moving in the same direction at the start of N+1.
+6. **Sound:** the ambience, the last word or an action sound carries over. Name it in both prompts.
+7. **Time:** a jump in time or place is shown by a bridge, not left to the viewer.
+
+In image-to-video, use the last frame of N as the first frame of N+1 where the tool allows it. In text-to-video, write the opening state of N+1 as a copy of the ending state of N.
+
+When two adjacent clips cannot match (a new room, a time jump), start the second with one short establishing or detail beat, and let a sound or an object carry across. Do not hide the jump with a transition effect.

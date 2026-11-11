@@ -57,16 +57,16 @@ Rules:
 5. Keep panels inside what the target model can hold. A crowded action sequence may need to be split into several panels.
 6. Do not add a cut, a camera move or a gesture because a panel has a slot for it.
 
-## 5. Short-drama beats (optional check)
+## 5. Short-drama beats
 
-A short drama usually has four parts: the **hook**, the **context**, the **escalation** and the **cliffhanger**. When the source is a short drama or vertical series episode, check that the panels cover them before you ask for approval:
+A short drama has four parts: the **hook**, the **context**, the **escalation** and the **cliffhanger**. When the source is a short drama or a vertical series episode, load `references/episode-beats.md`, fill the beat map before you list panels, and check the panels against it before you ask for approval:
 
-1. **Hook:** the first panel creates a question in the first seconds, and starts inside the situation.
-2. **Context:** only as much as the viewer needs to understand the situation, and it should not stall the story.
-3. **Escalation:** the middle panels raise the stakes, pressure or reveal; each one changes something.
-4. **Cliffhanger:** the last panel ends on the inhale, just before the answer, as a clear visual state.
+1. **Hook:** panel 1 puts a person and a problem in frame in the first 2 to 3 seconds, readable with the sound off.
+2. **Context:** by second 5 to 8 a stranger can say who, what relation, who holds power and what is at stake, from what the camera shows.
+3. **Escalation:** each panel makes things worse, tighter or costlier than the one before; no run of panels repeats one emotion.
+4. **Cliffhanger:** the last panel shows a change and ends on the inhale, as a clear visual state, with one specific question left.
 
-Use this as a check, not a template. Do not add a panel for a part the script already covers, and do not force the structure on a source that is not a short drama.
+Story-critical evidence (a signature, message or document) gets its own readable insert panel. Do not add a panel for a part the script already covers, and do not force the structure on a source that is not a short drama.
 
 ## 6. The approval step
 

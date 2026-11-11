@@ -12,8 +12,11 @@ Contents:
 9. Blocking: where everyone is
 10. Coverage: which shot for which beat
 11. Several cuts inside one clip
-12. Camera mistakes to avoid
-13. Describing the camera position in words
+12. Movement across an episode: where it belongs
+13. Smooth moves
+14. Smooth cuts and joins between clips
+15. Camera mistakes to avoid
+16. Describing the camera position in words
 
 ## 1. Evidence behind this file
 
@@ -27,6 +30,8 @@ The numbers below are observed in one working vertical short-drama pipeline: two
 | Shot size | Close-up 54%, medium 31%, extreme close-up 8%, wide 7% |
 
 The pattern: most of the drama is carried by the actors and a still camera. Movement is saved for moments where the story moves.
+
+A caution from the same pipeline: one episode came out with every clip locked off and a hard cut every 3 to 4 seconds, and it felt stiff and disconnected. Read the numbers as a ceiling on movement for held dialogue, not as a reason to lock every shot. Sections 11 to 14 say where motion and smooth joins belong.
 
 ## 2. Quantify the camera, do not just name a shot size
 
@@ -50,7 +55,7 @@ Vocabulary that models and pipelines commonly accept: static or locked-off, push
 
 | Choose | When the story needs | Observed use |
 |---|---|---|
-| **Locked-off** | Dialogue, reactions, a held moment, anything the actors carry | The default; nearly nine shots in ten |
+| **Locked-off** | Held dialogue, reactions, a held moment, anything the actors carry | The default for those beats; not for the hook, the turn or the ending (section 12) |
 | **Slow push-in** | The viewer to lean in on a thought, a hesitation or a realization, usually while someone speaks, listens or holds still | Small and slow, on emotional beats such as reading a note, a silent reaction, a slow reply |
 | **Tracking or follow** | A person in motion: walking, running out of a door, crossing a room, a chase | Always paired with slight shake, always on a wide or medium shot of the walking person |
 | **Tilt, pan, pedestal** | Revealing something above, to the side or below, or following a prop | Rare; use only when the reveal is the point |
@@ -154,7 +159,53 @@ In frame: the young woman and the older man. No one else.
 - Give each cut one move, one composition, and one list of who is in frame.
 - Use the time ranges to show order. Some models document timing as unstable; check the target model's file, and if so write the order in words and let the model set the pace.
 
-## 12. Camera mistakes to avoid
+## 12. Movement across an episode: where it belongs
+
+Plan the camera for the episode, not clip by clip. A still camera that never moves tells the viewer nothing has changed.
+
+| Beat | Camera |
+|---|---|
+| Hook shot | A small motivated move that starts on the problem: a slow push toward the evidence, a slow drift to reveal what is wrong. The viewer should feel the picture begin, not sit |
+| Held dialogue and reactions | Locked off, stable |
+| The turn (the new fact, the arrival, the shift in power) | A slow push-in or a pull-back that matches the change; or a cut to a tighter size on the person who understands first |
+| A person crossing a room or leaving | Follow with a slow track, one move, the subject's pace |
+| Ending shot | A slow push toward the face or the object, or a pull-out that isolates the lead, then hold on the inhale |
+
+Rules:
+- Two adjacent clips do not both end and begin on the same move direction unless the move continues (a push that ends on a held close-up then a locked close-up reads smoothly).
+- No more than one clip in three has a visible move; the move must still have a story reason.
+- State the speed and amount ("a slow push of about a half step over four seconds"), not just the name.
+
+## 13. Smooth moves
+
+- Start and end a move on a held frame: "hold for half a second, then push in slowly, ease to a stop".
+- One move per cut, at one speed, in one direction. Do not combine push, pan and tilt.
+- Keep the subject steady in frame during the move: the push must not slide the face off its third.
+- Pair a move with stable footing: "smooth, stable, no shake" unless the shot is a follow shot (section 4).
+- Describe the camera and the subject in separate sentences so the model does not blend them.
+- Ask for a move only if the clip has time to complete it; a 3 s cut holds a slight push, not a reveal.
+
+## 14. Smooth cuts and joins between clips
+
+Roughness comes from what changes at the cut. Change one thing at a time.
+
+**Within a clip**
+- **Step the size gradually.** Wide to medium to close-up, or close back out. Do not jump from a medium straight to a macro insert and back to a medium, and do not cut between two shots of nearly the same size and angle (it reads as a jump).
+- **Keep the lens family stable.** Avoid 50, 100, 50, 85 across four cuts. Choose two lens looks for a scene and alternate them (section 5).
+- **Cut on action or eyeline.** Cut as a hand starts to move, as a head turns, as someone looks off-frame; the next shot shows what they look at or finishes the movement.
+- **Match the screen side and the eyeline.** The person who looked right is answered by a shot facing left (`references/continuity.md` section 11).
+- **Keep the light and background logic the same** across cuts of one scene.
+- **Every cut has a reason** (reaction, reveal, new information, change of power). Two cuts that show the same thing at slightly different sizes get merged into one.
+
+**Between clips and scenes** (see also `references/continuity.md` section 12)
+- Start clip N+1 from the exact last frame state of clip N: position, posture, hands, props, light and lens.
+- In image-to-video, use the last frame of clip N as the first frame of clip N+1, or a still that matches it.
+- Carry a sound across the join: the rain, the room tone, the last word or a door thud runs into the next clip.
+- Carry a movement across the join: if she is turning at the end of N, she is mid-turn at the start of N+1.
+- A scene change needs a bridge: a shared object, a matching shape, a sound that continues, or one wide establishing beat of about 1.5 to 2 s (`references/pacing.md` section 3).
+- Do not fix a rough join with a dissolve or a zoom. Fix the frames, the sound or the motion that connects them.
+
+## 15. Camera mistakes to avoid
 13. Describing the camera position in words
 
 - A shot size with no lens, angle or composition, so the model decides.
@@ -166,7 +217,7 @@ In frame: the young woman and the older man. No one else.
 - Naming the camera move and leaving out its amount and speed.
 - Asking for a move that the clip is too short to complete.
 
-## 13. Describing the camera position in words
+## 16. Describing the camera position in words
 
 Beyond the header fields, add a short sentence on where the camera is:
 

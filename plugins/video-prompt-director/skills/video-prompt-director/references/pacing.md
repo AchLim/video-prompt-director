@@ -90,6 +90,8 @@ If the story needs more, split the clip rather than cutting story.
 
 Individual cuts ran about 2 to 5 seconds, most often 3 to 5. A cut under 2 seconds is rarely worth it.
 
+These counts describe what the pipeline did, not a target. A 10 s clip with three cuts, each at a different lens and angle, comes out choppy. Prefer one or two cuts in a 10 s clip, give each cut a reason (a reaction, a reveal, new information, a change of power), and see `references/camera-language.md` section 14 for making the cuts smooth.
+
 ## 8. Rules of thumb
 
 - Give the audience time to see, understand and react before the next line.
