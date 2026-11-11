@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-11-11
 
 ### Added
 - The `video-prompt-director` skill: workflows for storyboards, panel-to-prompt, prompt repair, model adaptation and multi-shot sequences, with a storyboard-first approval step.
