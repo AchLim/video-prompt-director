@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-11
+
 ### Added
 - Episode beats reference (`references/episode-beats.md`): a beat map for short dramas, the hook panel, the cold-viewer test, escalation, readable story-critical evidence, the cliffhanger panel, and checks before approval.
 - Camera sections on where movement belongs across an episode, smooth moves, and smooth cuts and joins between clips (`references/camera-language.md` sections 12 to 14), and a continuity section on joining one clip to the next.

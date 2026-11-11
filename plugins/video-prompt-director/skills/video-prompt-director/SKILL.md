@@ -4,7 +4,7 @@ description: "Turns scripts and approved storyboards into model-ready AI video p
 when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images: storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage."
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Video Prompt Director
