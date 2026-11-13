@@ -101,14 +101,19 @@ def main():
     ap.add_argument("--redundancy", action="store_true", help="list repeated sentences and phrases")
     ap.add_argument("--json", action="store_true", help="print JSON")
     args = ap.parse_args()
+    # Print UTF-8 whatever the console code page is, so --json output with Chinese text does not fail on Windows.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
 
     try:
         if args.file:
             with open(args.file, encoding="utf-8") as handle:
                 text = handle.read()
         else:
-            text = sys.stdin.read()
-    except OSError as err:
+            # Decode stdin as UTF-8 explicitly. The default follows the system code page on Windows,
+            # which turns Chinese text into mojibake and makes the counts wrong.
+            text = sys.stdin.buffer.read().decode("utf-8").replace("\r\n", "\n")
+    except (OSError, UnicodeDecodeError) as err:
         print(f"error: cannot read the prompt: {err}", file=sys.stderr)
         return 2
     if not text.strip():
