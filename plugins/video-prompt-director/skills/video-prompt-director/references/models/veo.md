@@ -53,6 +53,7 @@ A prompt that compared a character's look to real stars or popular dramas was re
 
 
 - Name the model and surface before writing limits into a prompt.
+- For low-motion drama on Omni Flash 1.2, load `references/models/omni-flash-drama.md`: it applies these limits (15 s, 10 s with two keyframes, 6 reference images) as guardrails.
 - Ask for one continuous shot unless the storyboard wants cuts.
 - Use `[0-5s]` or "After 3 seconds" beats; this model family documents them.
 - Put dialogue inline with the speaker named, and ask first whether audio should be generated. Audio is on by default for Omni Flash, so if the user gave no audio direction, add no sound-effect or music lines and say in a note that audio will be generated unless they want it described or excluded.

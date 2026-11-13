@@ -68,10 +68,6 @@ For each adjacent pair of prompts:
 Fix what fails by editing the prompts. Do not return a list of continuity problems you could have resolved.
 
 ## 7. The continuity ledger
-8. Identity anchors, costume variants, and reference sets
-9. State changes need a cause
-10. Attach only what is in the clip
-11. Room map and screen sides
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
 
@@ -83,15 +79,12 @@ For more than two shots, keep a short ledger and update it per shot. Show it to 
 ```
 
 ## 8. Identity anchors, costume variants, and reference sets
-9. State changes need a cause
-10. Attach only what is in the clip
-11. Room map and screen sides
 
 Practices from a working series pipeline, useful when a series runs over many clips.
 
 - **Give every main character an identity anchor:** one asymmetric, easy-to-see mark kept in every prompt, such as a bracelet on the left wrist, a mole under the right eye, a steel watch on the left wrist, or a pin in a bun. Name the side. These are the first details a model drops.
 - **List costume variants by name** (for example "wedding gown", "gala dress", "at home") and say which episode or scene uses which. Do not let one variant bleed into another.
-- **Build reference sets from a headshot and a full-body shot.** Do not use turnaround or multi-view sheets as the character reference: a vendor guide says they can be read as several subjects, which increases identity drift and "twin" faces (see `references/models/seedance.md`).
+- **Build reference sets from a headshot and a full-body shot.** For Seedance 2.0, a vendor warning says turnaround sheets can be read as multiple subjects. Seedance 2.5 documents multi-view references; check the version profile and test the chosen interface. Flash support is UNVERIFIED (`references/models/seedance/profile-legacy-2-0.md`, `profile-2-5.md`, `profile-2-5-flash.md`).
 - **Do not use up the reference limit.** A recommended four to five assets works better than the maximum, because too many leave the model unsure which matters most. Put the most important reference first.
 - **References lock identity, not composition.** A reference sets face, build, costume, room layout and prop design. It does not set the camera angle or the moment; the prompt does.
 - **Persistent marks:** stains, scratches, wet hair and dents carry across shots until the story removes them.

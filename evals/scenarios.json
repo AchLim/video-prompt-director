@@ -164,13 +164,38 @@
         "pattern": "references/continuity\\.md"
       },
       {
-        "type": "regex",
-        "pattern": "continuity",
-        "flags": "i",
-        "min": 2
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "a ledger or continuity notes",
+            "pattern": "continuity (ledger|notes)|^\\s*\\**Continuity"
+          },
+          {
+            "label": "keys in the right hand",
+            "pattern": "keys.{0,80}right hand|right hand.{0,80}keys"
+          },
+          {
+            "label": "envelope in the left hand",
+            "pattern": "envelope.{0,80}left hand|left hand.{0,80}envelope"
+          },
+          {
+            "label": "each shot ends in the state the next starts from",
+            "pattern": "ends? (on|with)|starts? (from|with|on)|opening state|ending state|picks up from|continues from"
+          },
+          {
+            "label": "wardrobe restated in at least three prompts",
+            "pattern": "green wool coat[\\s\\S]*green wool coat[\\s\\S]*green wool coat",
+            "flags": "i"
+          }
+        ]
       }
     ],
-    "rubric": "Each prompt restates identity, wardrobe and prop state, shot 1 ends in the state shot 2 starts from, hands and props stay consistent (keys right hand, then counter, then envelope in left hand), light and positions are stable, and a short ledger or continuity notes are included."
+    "rubric": "Each prompt restates identity, wardrobe and prop state, shot 1 ends in the state shot 2 starts from, hands and props stay consistent (keys right hand, then counter, then envelope in left hand), light and positions are stable, and a short ledger or continuity notes are included.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The check that counted the word 'continuity' at least twice was a proxy: the baseline answer wrote a 'Continuity:' line per shot, later answers wrote one continuity ledger, and both satisfy the rubric. Replaced by a knowledge check on the facts the rubric asks for."
+    }
   },
   {
     "id": "09-no-activation",
@@ -215,23 +240,41 @@
         "type": "skill_activated"
       },
       {
-        "type": "read_file",
-        "pattern": "references/constraints\\.md"
-      },
-      {
-        "type": "regex",
-        "pattern": "no (readable )?(text|letters|writing)|without (any )?(text|writing)|text-free",
-        "flags": "i",
-        "min": 1
-      },
-      {
-        "type": "regex",
-        "pattern": "subtitle",
-        "flags": "i",
-        "min": 1
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "banner, scoreboard or life jackets kept free of readable text",
+            "pattern": "(banner|scoreboard|life jackets?)[^.\\n]{0,120}(no (readable |legible )?(text|letters|writing|lettering)|blank|free of (any )?(legible |readable )?text|without (any )?(text|writing|letters)|plain|unprinted|text-free|garbl)|no (readable |legible )?(text|letters|writing)|text-free"
+          },
+          {
+            "label": "no subtitles",
+            "pattern": "subtitle"
+          },
+          {
+            "label": "no logos or watermarks",
+            "pattern": "logo|watermark"
+          },
+          {
+            "label": "no background music",
+            "pattern": "no (background )?music|without (background )?music|music[^.\\n]{0,40}(off|excluded|none)|background music"
+          },
+          {
+            "label": "no extra people or distinct faces",
+            "pattern": "extra people|no one else|no cloned|distinct faces|every person looks distinct|no duplicated"
+          },
+          {
+            "label": "one continuous shot",
+            "pattern": "one continuous shot|no (internal )?cuts|continuous shot|single continuous|locked[- ]off"
+          }
+        ]
       }
     ],
-    "rubric": "Rules out generated text on the banner, scoreboard and life jackets by name, no subtitles, logos or watermarks, no music, distinct faces with no cloned people, plain wardrobe stated, background movement natural but small, one continuous shot. Does not ask for readable text unless the user did."
+    "rubric": "Rules out generated text on the banner, scoreboard and life jackets by name, no subtitles, logos or watermarks, no music, distinct faces with no cloned people, plain wardrobe stated, background movement natural but small, one continuous shot. Does not ask for readable text unless the user did.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The read_file check for constraints.md was a proxy for 'the default exclusions were applied'. Replaced by a knowledge check on the exclusions themselves, because whether the model opens a reference file varies between runs while the exclusions in the answer are what matter."
+    }
   },
   {
     "id": "12-camera-follow-smoothness",
@@ -247,7 +290,7 @@
       },
       {
         "type": "regex",
-        "pattern": "track|follow",
+        "pattern": "track|follow|dolly|backs? (away|off)|back(s|ing) away|(moves?|moving|travels?) (back|backward)|pull(s|ing)? back|retreat",
         "flags": "i",
         "min": 1
       },
@@ -264,7 +307,11 @@
         "min": 1
       }
     ],
-    "rubric": "Specifies shot size, lens look and depth of field, angle, composition, one camera move (tracking) with stated stability (slight natural sway, otherwise steady), eyeline and focus, who is in frame, and excludes zoom, whip and orbit. Does not stack camera moves. Respects the Seedance file (order rather than seconds, no invented limits)."
+    "rubric": "Specifies shot size, lens look and depth of field, angle, composition, one camera move (tracking, including a camera that backs away in front of a walking subject) with stated stability (slight natural sway, otherwise steady), eyeline and focus, who is in frame, and excludes zoom, whip and orbit. Does not stack camera moves. Names the Seedance version, or asks for it, and writes the timing to that version: for the Seedance 2.0 series, ordered beats or shot-numbered blocks with no second ranges; for Seedance 2.5, integer-second timestamps with no gaps are allowed (and for 2.5 Flash they are flagged UNVERIFIED). Does not apply the 2.0 shot-based rule to 2.5 or 2.5 timestamps to 2.0, and invents no limits.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Rubric now distinguishes 2.0 shot-based timing from 2.5 integer-second timestamps. The camera-travel pattern accepts a camera that backs away; the baseline run failed only because the answer said 'backs away' and not 'track' or 'follow'."
+    }
   },
   {
     "id": "13-dialogue-fit",
@@ -275,22 +322,42 @@
         "type": "skill_activated"
       },
       {
-        "type": "read_file",
-        "pattern": "references/pacing\\.md"
-      },
-      {
         "type": "regex",
         "pattern": "every Thursday night",
         "min": 1
       },
       {
-        "type": "regex",
-        "pattern": "split|longer clip|longer than|does(n't| not) fit|too long|won't fit",
-        "flags": "i",
-        "min": 1
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "estimates speech time from a words-per-second rate",
+            "pattern": "words? per second|2\\.5|2\\u20133 words|\\b[0-9]{1,2}(\\u2013|-| to )?[0-9]{0,2} ?seconds? (to (say|speak|deliver)|of speech)|needs (roughly |about |around )?[0-9]+|(?:about|approximately|roughly)\\s+\\d+(?:\\.\\d+)?\\s*(?:s|seconds?)"
+          },
+          {
+            "label": "says the line does not fit 4 seconds",
+            "pattern": "(does(n't| not)|won't|will not|can't|cannot) (fit|hold|work)|too long|doesn't fit|not enough (room|time)|doesn't have room"
+          },
+          {
+            "label": "proposes a longer clip or a split",
+            "pattern": "longer clip|split|8[- ]second|8 s\\b|two clips|across (two|2) clips|(?:use|choose|workable|duration)[^\\n]{0,80}\\b(?:9|10|11|12|13|14|15)\\s*(?:s|seconds?)"
+          },
+          {
+            "label": "keeps every word of the line, in order, even when it is split across clips",
+            "pattern": "I found the letter in his coat, I read every page[\\s\\S]*and I know exactly who he has been meeting every Thursday night"
+          },
+          {
+            "label": "warns against silently rushing or cutting the line",
+            "pattern": "rush|speed(ed)? up|cut (it )?off|garbl|compress|squeez|truncat|accelerat"
+          }
+        ]
       }
     ],
-    "rubric": "Estimates the speech time (about 28 words, roughly 11 seconds at 2.5 words per second) against 4 seconds, says it does not fit, and proposes a longer clip or a split across clips with the line kept word for word. Does not compress or cut the line silently."
+    "rubric": "Estimates the speech time (about 23 words, roughly 9 seconds at 2.5 words per second) against 4 seconds, says it does not fit, and proposes a longer clip or a split across clips with the line kept word for word. Does not compress or cut the line silently.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The read_file check on pacing.md was a proxy for 'speech time was estimated against the clip'; replaced by a knowledge check on the estimate, the verdict, the proposed fix, the exact line and the no-silent-compression warning. The rubric's word count is corrected from 28 to 23 (the supplied line has 23 words). The skill_activated check is unchanged: one run in about a dozen answered without invoking the skill, and that is recorded as variance, not hidden. The verdict pattern also accepts 'can't hold', and the exact-line fact accepts a correct split across two clips (both halves present, in order). Expanded equivalent wording for a numeric speech estimate, a longer proposed duration and an accelerated delivery warning after reviewing Codex responses; still inspect model-specific duration support."
+    }
   },
   {
     "id": "14-series-clip-anatomy",
@@ -334,7 +401,11 @@
         "min": 1
       }
     ],
-    "rubric": "Follows the anatomy: references, recorded-dialogue rules (model does not voice or alter the line, lips only, picture changes not the recording), clip task, scene and light, appearance block with the identity anchors, opening state from the previous clip, blocking with a fixed landmark or compass, cuts with camera line, who is in frame, eyeline and focus, the exact line in a lip-sync window with delivery, ending state, ambient sound, numbered constraints including no readable text and no music, and a voice profile. Does not replay the previous action. Fits a sensible length."
+    "rubric": "Follows the anatomy: references, recorded-dialogue intentions labeled OBSERVED rather than guaranteed; identify the selected model and interface, warn exact playback and lip-sync are not established for Seedance 2.5 or Flash, and offer original audio mixed in post, clip task, scene and light, appearance block with the identity anchors, opening state from the previous clip, blocking with a fixed landmark or compass, cuts with camera line, who is in frame, eyeline and focus, the exact line in a lip-sync window with delivery, ending state, ambient sound, numbered constraints including no readable text and no music, and a voice profile. Does not replay the previous action. Fits a sensible length.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Rubric corrects the historical baseline assumption of guaranteed recording preservation. Objective checks and prompt retained; compare rubric judgments separately from the original baseline."
+    }
   },
   {
     "id": "15-reference-not-in-clip",
@@ -345,21 +416,1721 @@
         "type": "skill_activated"
       },
       {
-        "type": "read_file",
-        "pattern": "references/continuity\\.md"
-      },
-      {
         "type": "regex",
         "pattern": "Daniel",
         "min": 1
       },
       {
-        "type": "regex",
-        "pattern": "not (attach|tag|include|needed)|don't attach|do not attach|leave[^.\\n]{0,40}(out|off)|omit|exclude|skip",
-        "flags": "i",
-        "min": 1
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "Daniel's reference is left out",
+            "pattern": "Daniel[^.\\n]{0,80}(\\bno\\b|\\bnot\\b|leave|omit|exclude|skip|out of)|(leave|omit|exclude|skip|don't attach|do not attach|not attach)[^.\\n]{0,80}Daniel"
+          },
+          {
+            "label": "a reference makes the model show that person",
+            "pattern": "makes? (the model|Seedance) (show|put|bring|draw)|model show that person|show that person|put that person|make(s)? (him|that person) appear|would (appear|show)|risks? him appearing|bring(s)? him in|tends to pull him|pull(s)? him into|shows? up as|extra person|second person|blend|appear in the (frame|clip|shot|background)"
+          },
+          {
+            "label": "his reference is saved for clip 5",
+            "pattern": "clip 5|where he (first )?appears|when he (first )?appears"
+          },
+          {
+            "label": "Mira and the letter are the attached references",
+            "pattern": "Mira[^.\\n]{0,60}(yes|attach|Image 1)|attach[^.\\n]{0,80}Mira|Mira and the letter"
+          }
+        ]
       }
     ],
-    "rubric": "Says to attach Mira and the letter only, and leave Daniel's image out of clip 4 because a reference makes the model show that person; states that no one else is in frame; the prompt mentions neither Daniel's look nor an off-screen Daniel."
+    "rubric": "Says to attach Mira and the letter only, and leave Daniel's image out of clip 4 because a reference makes the model show that person; states that no one else is in frame; the prompt mentions neither Daniel's look nor an off-screen Daniel.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The original single regex listed a few phrasings for 'leave Daniel out'; a correct answer did not match. Replaced by a knowledge check on what an answer carries: Daniel left out, why, where his reference goes, and what is attached. The read_file check on continuity.md was replaced by the same behavioral check. Whether the prompt itself mentions Daniel stays a human-judged rubric item, because it is a property of the prompt text and not something an answer states."
+    }
+  },
+  {
+    "id": "16-seedance-flash-no-inheritance",
+    "title": "Flash limits are its own, not the flagship's",
+    "prompt": "I'm using Seedance 2.5 Flash. I want to give it 12 reference images, 2 motion videos and 3 audio clips, and render a 25-second clip at 1080p. What can I do?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "10 images",
+            "pattern": "images?[^\\n]{0,70}\\b10\\b|\\b10\\b[^\\n]{0,40}images?|up to 10\\b|cut (it |them )?(down )?to 10"
+          },
+          {
+            "label": "5 videos",
+            "pattern": "videos?[^\\n]{0,70}\\b5\\b|\\b5\\b[^\\n]{0,40}videos?"
+          },
+          {
+            "label": "5 audio clips",
+            "pattern": "audio[^\\n]{0,70}\\b5\\b|\\b5\\b[^\\n]{0,40}audio"
+          },
+          {
+            "label": "480p and 720p",
+            "pattern": "480p"
+          },
+          {
+            "label": "up to 30 s",
+            "pattern": "30 ?s\\b|30 seconds"
+          },
+          {
+            "label": "1080p not listed for Flash",
+            "pattern": "1080p.{0,70}(not listed|isn't listed|not offered|not available|only)|(not listed|only).{0,70}1080p"
+          },
+          {
+            "label": "unlisted features UNVERIFIED",
+            "pattern": "UNVERIFIED|not (documented|itemi[sz]ed|stated|confirmed)"
+          }
+        ]
+      }
+    ],
+    "rubric": "States Flash's documented limits (30 s, 480p and 720p, 10 images, 5 videos, 5 audio clips), says 12 images exceeds the Flash limit and that 1080p is not listed for Flash, does not apply the flagship's 30/10/10 or 1080p to Flash, marks unlisted capabilities UNVERIFIED instead of supported or unsupported, and offers a fallback (fewer images, a lower resolution) or a short test.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "File-read and single-regex checks replaced by a behavioral knowledge check: the answer must carry facts that only the skill's references supply, however the model reached them. Fact patterns for videos and audio widened after a correct answer (a table row 'up to 5' under '2 motion videos') failed on wording. Image, video and audio facts now use proximity patterns, so a table row ('12 reference images | 10') counts as well as prose."
+    }
+  },
+  {
+    "id": "17-seedance-role-exclusivity",
+    "title": "First frame cannot be mixed with reference videos",
+    "prompt": "On Seedance 2.5 I want my keyframe image as the first frame, plus a motion reference video and a camera-movement video in the same generation. Can I set the image as first_frame and add both videos?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "roles cannot be mixed",
+            "pattern": "mutually exclusive|cannot be (mixed|combined)|can't be (mixed|combined)|not be (mixed|combined)"
+          },
+          {
+            "label": "reference_image alternative",
+            "pattern": "reference_image"
+          },
+          {
+            "label": "'Image 1 is the first frame' wording",
+            "pattern": "Image 1 is the first frame"
+          },
+          {
+            "label": "ratio not locked",
+            "pattern": "ratio.{0,60}(not locked|isn't locked|not fixed)|not lock|doesn't lock"
+          },
+          {
+            "label": "match may be inexact",
+            "pattern": "may not match|not match exactly|drift|inexact|not exact"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says first_frame and last_frame roles cannot be mixed with omni reference videos in one request, offers the documented alternative (reference_image plus 'Image 1 is the first frame', noting the ratio is not locked and the match may be inexact) or a two-pass plan, and does not claim Flash behaves the same without marking it UNVERIFIED.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "File-read and single-regex checks replaced by a behavioral knowledge check: the answer must carry facts that only the skill's references supply, however the model reached them."
+    }
+  },
+  {
+    "id": "18-seedance-edit-duration-drift",
+    "title": "Edit output shorter than the source",
+    "prompt": "I edited a 6-second clip on Seedance 2.5 and the result came out about 0.3 seconds shorter than the source. How do I fix it?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "frame count 8n+1",
+            "pattern": "8n ?\\+ ?1"
+          },
+          {
+            "label": "Reference mode with a set duration",
+            "pattern": "reference mode|reference task"
+          },
+          {
+            "label": "documented drift 0.3 or 0.4 s",
+            "pattern": "0\\.3|0\\.4"
+          },
+          {
+            "label": "161-frame example",
+            "pattern": "161"
+          },
+          {
+            "label": "edit needs duration -1 and adaptive ratio",
+            "pattern": "duration.{0,25}-1|adaptive"
+          }
+        ]
+      }
+    ],
+    "rubric": "Gives both documented fixes (switch to Reference mode with a set duration, or make the input frame count 8n+1), notes the documented drift is about 0.3 s or 0.4 s depending on the page, and says these are vendor workarounds, not guarantees.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "File-read and single-regex checks replaced by a behavioral knowledge check: the answer must carry facts that only the skill's references supply, however the model reached them."
+    }
+  },
+  {
+    "id": "19-seedance-unwanted-bgm",
+    "title": "Music appears despite 'no background music'",
+    "prompt": "I wrote 'no background music' in my Seedance 2.5 prompt but music still plays under the dialogue. What do I change?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "banned-term list (doc-specific terms)",
+            "pattern": "ambient pad|synth effects?|instrumental"
+          },
+          {
+            "label": "constraint at start and end",
+            "pattern": "start and (the )?end|beginning and (the )?end|first and last|top and bottom"
+          },
+          {
+            "label": "vocal isolation in post",
+            "pattern": "isolat\\w+ (the )?vocals?|vocal isolation|stem separation|strip"
+          },
+          {
+            "label": "recheck dialogue after the fix",
+            "pattern": "dropped|re-?check|every line|dialogue line|still spoken"
+          },
+          {
+            "label": "water, wave or echo wording",
+            "pattern": "water|wave|echo"
+          }
+        ]
+      }
+    ],
+    "rubric": "Recommends an audio policy that lists the banned music terms and repeats it at the start and the end of the prompt, mentions the post-production option (isolating vocals, which also removes sound effects), and warns to recheck the dialogue afterwards.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "File-read and single-regex checks replaced by a behavioral knowledge check: the answer must carry facts that only the skill's references supply, however the model reached them."
+    }
+  },
+  {
+    "id": "20-seedance-character-swap",
+    "title": "Characters swapped with the wrong reference or voice",
+    "prompt": "Seedance 2.5 keeps giving character A's lines to character B's voice. I uploaded the images in this order: location, character B, character A, then two audio files. Why does it happen?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "upload in order of first appearance",
+            "pattern": "first appear|order .{0,30}appear|appearance order"
+          },
+          {
+            "label": "renumber the prompt",
+            "pattern": "renumber|re-number|manifest (to|that) match|numbering .{0,40}match|match the (upload )?order|update the (image|numbering)|explicitly (write|map|bind)|numbering.{0,40}align"
+          },
+          {
+            "label": "one-to-one mapping",
+            "pattern": "one-to-one|one to one|one image and one voice per character|one image .{0,25}one voice|each character .{0,40}(its|one) (own )?(image|voice)"
+          },
+          {
+            "label": "fix lowers the chance, not removes it",
+            "pattern": "lower(s|ing)? the chance|not remov|can't be fully|cannot be fully|not guarantee|rather than guarante|reduces?.{0,20}rather than"
+          },
+          {
+            "label": "5 to 10 s audio per subject",
+            "pattern": "5 to 10 s|5-10 s|5\\u201310 s"
+          }
+        ]
+      }
+    ],
+    "rubric": "Explains that references should be uploaded in the order the subjects first appear, with the prompt renumbered to match and a one-to-one mapping from each character to its images and audio.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Fact patterns widened after a correct answer ('write the manifest to match, one image and one voice per character') failed on wording. Earlier note kept: the file-read check was replaced by a behavioral knowledge check. On the Codex run the renumbering check was expanded to accept an explicit image/audio mapping, and the uncertainty check accepts a warning that reduces rather than guarantees."
+    }
+  },
+  {
+    "id": "21-seedance-aspect-conversion",
+    "title": "16:9 to 9:16 conversion uses Reference mode",
+    "prompt": "I have a finished 16:9 clip and I want a 9:16 version on Seedance 2.5 that keeps the action but extends the scene to fill the vertical frame. Which task type should I use?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "Reference mode, not Edit",
+            "pattern": "reference mode|reference task|omni_reference_task_type.{0,40}reference|\\(omni\\) mode"
+          },
+          {
+            "label": "Edit locks the ratio",
+            "pattern": "(edit|editing).{0,90}(lock|adaptive|follows? the source|stays 16:9)|locked"
+          },
+          {
+            "label": "fidelity, canvas and timeline prompt parts",
+            "pattern": "added[- ]canvas|additional canvas|visual timeline|timed (visual )?timeline|fidelity"
+          },
+          {
+            "label": "size and duration set in settings",
+            "pattern": "generation settings|settings, not the prompt|not in the prompt"
+          },
+          {
+            "label": "edit gives invented or unstable content",
+            "pattern": "invent|unstable|drift"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says Edit mode locks the aspect ratio and was unstable for ratio changes, so the documented fix is Reference mode with a detailed timeline and an added-canvas description, with output size and duration set in the generation settings. Marks Flash as UNVERIFIED and does not present the recipe as tested.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "File-read and single-regex checks replaced by a behavioral knowledge check: the answer must carry facts that only the skill's references supply, however the model reached them."
+    }
+  },
+  {
+    "id": "22-seedance-audio-reference-honesty",
+    "title": "Supplied dialogue as an audio reference",
+    "prompt": "I have a recorded line from my voice actor. On Seedance 2.5 Flash can I give it as an audio reference so the character says it word for word with exact lip-sync?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "documented as voice, tone or timbre",
+            "pattern": "timbre|voice reference|voice, tone|tone"
+          },
+          {
+            "label": "word-for-word playback not documented",
+            "pattern": "not documented|nothing .{0,60}document|isn't documented|no page|not (?:as )?.{0,25}guarantee|not as a locked soundtrack|does not promise.{0,100}(?:playback|recording|lip.sync)"
+          },
+          {
+            "label": "Flash audio reference unverified",
+            "pattern": "UNVERIFIED|unverified|flash.{0,100}(?:undocumented|not documented|not verified)|audio.reference.{0,80}undocumented"
+          },
+          {
+            "label": "proposes a short test",
+            "pattern": "short test|cheap test|test first|one short clip|run a .{0,20}test|short.{0,40}test"
+          },
+          {
+            "label": "fallback: silent clip, mix audio afterwards",
+            "pattern": "silent|replace the audio|lay (your|the) .{0,30}recording|mix(ed)? (it )?in|(?:attach|add|mix).{0,50}(?:recording|original).{0,100}(?:post|after)|(?:post|dubbing).{0,50}(?:recording|audio)|use.{0,40}original.{0,60}in post"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says the documented use of an audio reference is voice, tone or timbre, that word-for-word playback with exact lip-sync of a supplied recording is not documented, that Flash audio-reference support is UNVERIFIED, and proposes a short test or a fallback (a silent lip-sync clip with the audio mixed in afterwards). Does not promise the result.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Behavioral patterns expanded after the Codex run to recognize documented uncertainty, an inexpensive short test, and adding the original recording in post; rubric unchanged. Also accepts an explicit no-promise statement and using the original recording in post."
+    }
+  },
+  {
+    "id": "23-seedance-listed-only-honesty",
+    "title": "A listed capability with no worked example",
+    "prompt": "Does Seedance 2.5 officially support changing the clothing and the lighting colour of an existing video through editing? Give me an example prompt.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "listed in the capability table",
+            "pattern": "capability table|listed|named"
+          },
+          {
+            "label": "no worked example",
+            "pattern": "(neither|no|nor|without)[^.\\n]{0,50}(worked |official )?example|not (a )?(worked|official) example"
+          },
+          {
+            "label": "prompt is untested",
+            "pattern": "untested|not tested|hasn't been tested|haven't been tested|test it|my (own )?construction|not an official sample|not official"
+          },
+          {
+            "label": "Flash unverified",
+            "pattern": "UNVERIFIED|unverified|not itemi[sz]e|(can't|couldn't|cannot) confirm|not confirmed|not covered"
+          },
+          {
+            "label": "edit settings",
+            "pattern": "omni_reference_task_type|adaptive|duration.{0,10}-1"
+          },
+          {
+            "label": "preserve clause",
+            "pattern": "keep everything else|unchanged|preserve"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says clothing and lighting or colour edits are named in the editing capability list but have no worked example, so the prompt it gives is skill-authored and untested; includes a preserve clause; and marks Flash as UNVERIFIED.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Fact patterns widened after a correct answer ('Neither has a worked example ... so test it ... Flash is not covered') failed on wording. Earlier note kept: file-read checks were replaced by a behavioral knowledge check."
+    }
+  },
+  {
+    "id": "24-panel-to-prompt-seedance-flash",
+    "title": "Approved storyboard to Seedance 2.5 Flash prompts (updated variant of 02)",
+    "variant_of": "02-panel-to-prompt-seedance",
+    "comparable_with_baseline": false,
+    "revision_note": "Scenario 02 is kept exactly as in the baseline. This variant names the model version and checks Flash behavior, so its results must not be compared with the baseline's 02.",
+    "prompt": "These storyboard panels are approved. Write the Seedance 2.5 Flash prompts, one per panel.\n\nPanel 1 (6 s): Medium shot, locked off. MIRA (green wool coat, wet dark hair) steps into a dark kitchen and sets her keys on the counter. She notices a sealed envelope. Ends on her hand hovering over it.\nPanel 2 (6 s): Close-up on Mira's face. She decides not to open it yet. Ends on her lowering her eyes.\nPanel 3 (6 s): Two-shot. DANIEL appears in the doorway. Mira turns toward him. Ends with both still.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "(Panel|Shot) ?0?[123]",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "names Flash",
+            "pattern": "Flash"
+          },
+          {
+            "label": "flags unlisted features as unverified",
+            "pattern": "UNVERIFIED|not (documented|confirmed|verified|itemi[sz]ed)"
+          },
+          {
+            "label": "ordered beats or timestamps kept to notes",
+            "pattern": "notes only|in order|ordered|beats"
+          },
+          {
+            "label": "one camera movement or locked off",
+            "pattern": "locked[- ]off|one camera|single camera|no camera movement"
+          },
+          {
+            "label": "no dialogue added",
+            "pattern": "no dialogue|nobody speaks|no one speaks|mouths (stay|remain) closed"
+          }
+        ]
+      }
+    ],
+    "rubric": "One self-contained prompt per panel with camera, ordered or timed action, performance as visible behavior, an ending state, and continuity notes between panels. Uses the Flash profile: plans inside Flash's documented limits, does not apply flagship-only limits to Flash, marks timestamps or other unlisted features UNVERIFIED for Flash or writes ordered beats, keeps one camera movement per shot, and does not add dialogue."
+  },
+  {
+    "id": "25-storyboard-production-mapping",
+    "title": "Production storyboard with full panel specs and a generation mapping",
+    "prompt": "I want a storyboard for this scene, and later video prompts for Seedance 2.5. Night, a narrow apartment hallway. LINA (30s, sage-green coat, packed bag) is leaving. MARCO (30s, navy sweater) blocks the front door and says: \"You do not get to leave like this.\" Lina says nothing. He grips her wrist; she twists free and her keys fall. She says: \"Watch me.\" and leaves. A phone on the console table lights up. Vertical 9:16. Start with the storyboard.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "\\b(Panel|P) ?0?[6-9]\\b|\\b(Panel|P) ?1[0-5]\\b",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "You do not get to leave like this",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "Watch me",
+        "min": 1
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Negative prompt"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "names a storyboard mode and why",
+            "pattern": "(Production|Cinematic) (mode|storyboard)|mode:?\\**:? ?\\**(Production|Cinematic)|recommend[^\\n]{0,40}(Production|Cinematic)|Mode[^\\n]{0,12}(Production|Cinematic)"
+          },
+          {
+            "label": "panels carry the full specification (composition, positions, orientation)",
+            "pattern": "composition[\\s\\S]*(orientation|facing)|(orientation|facing)[\\s\\S]*composition"
+          },
+          {
+            "label": "a panel to generation mapping is shown",
+            "pattern": "mapping[\\s\\S]*generation|generation[\\s\\S]*mapping"
+          },
+          {
+            "label": "says a panel is not automatically one clip",
+            "pattern": "not (automatically|always|necessarily)[^\\n]{0,30}(one|a|the same as a) (clip|generation|video)|(does|do)n't (automatically )?(equal|map)|does not (automatically )?(equal|map)|not every panel"
+          },
+          {
+            "label": "the grab is split into steps",
+            "pattern": "(approach|reach)[\\s\\S]{0,1500}(notice|eyes)[\\s\\S]{0,1500}(grab|grip)"
+          },
+          {
+            "label": "uses mapping types or equivalent (clip, shots in one generation, keyframe, post)",
+            "pattern": "keyframe[\\s\\S]*(post|overlay|edit)|(post|overlay|edit)[\\s\\S]*keyframe"
+          },
+          {
+            "label": "stops for approval before prompts",
+            "pattern": "approv|before I write (the )?prompts|wait for|once you (confirm|approve)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Recommends Production (detailed) or Cinematic mode with a reason, in the 9 to 12 panel range; each panel carries shot size, angle, composition, positions, orientation, expression, action, props, camera movement, purpose, continuity and ending state; the grab is decomposed into approach, notice, grab, reaction and pull away; coverage uses an establishing shot, over-the-shoulder, a reaction and an insert by purpose; the dialogue is exact; the panel-to-generation mapping distinguishes independent clips, shots inside one generation, keyframes and post-production, and says a panel is not automatically a clip; it stops for approval and does not write finished video prompts.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Panel labels such as 'P06' and 'Mode:** Production' failed the first patterns on wording; both are accepted. The full-specification fact is unchanged: a first run showed the model shortening Production panels, which was a real gap and was fixed in storyboard.md."
+    }
+  },
+  {
+    "id": "26-storyboard-quick-scene",
+    "title": "A simple scene gets a Quick storyboard, not a padded one",
+    "prompt": "Storyboard this for a vertical clip, nothing fancy: MIRA comes home, puts her keys on the counter and sees a note. She reads it and her face falls. No dialogue. Then wait for my approval.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "Panel",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Panel 0?[7-9]|Panel 1[0-9]",
+        "flags": "i"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "names Quick mode",
+            "pattern": "Quick"
+          },
+          {
+            "label": "states how each panel ends",
+            "pattern": "Ends on|ending state|carries out"
+          },
+          {
+            "label": "waits for approval",
+            "pattern": "approv|wait for|before I write"
+          },
+          {
+            "label": "says there is no dialogue",
+            "pattern": "no dialogue|nobody speaks|no one speaks|silent|no spoken"
+          },
+          {
+            "label": "three to five panels",
+            "pattern": "Panel 0?[345]\\b"
+          }
+        ]
+      }
+    ],
+    "rubric": "Recommends Quick mode and gives about three to five panels, each a meaningful beat (arrival, the keys and the note, the face falling), not two panels and not a padded set; states who is in frame and how each panel ends; keeps to no dialogue; stops for approval."
+  },
+  {
+    "id": "27-action-decomposition-wrist",
+    "title": "A grab is decomposed into the steps that matter",
+    "prompt": "In my scene a man grabs a woman's wrist as she tries to leave. She notices it coming, he grabs, she jerks free and pulls away. How should the storyboard show that? Don't write video prompts yet.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "separate panels for the steps",
+            "pattern": "separate panels?|own panel|a panel (for|per) (each|every) step|one panel per step|split (it|the action)"
+          },
+          {
+            "label": "the approaching hand",
+            "pattern": "approach|hand (rises|moves|reaches)|reaching"
+          },
+          {
+            "label": "the woman noticing",
+            "pattern": "notice|noticing|eyes (drop|go|move)|her eyes"
+          },
+          {
+            "label": "the grab as its own contact moment",
+            "pattern": "grab|grip|contact"
+          },
+          {
+            "label": "the physical reaction",
+            "pattern": "reaction|twist|tense|jerk"
+          },
+          {
+            "label": "the pull away or release",
+            "pattern": "pull(s|ing)? (away|free)|release|let(s)? go"
+          },
+          {
+            "label": "keeps contact simple with an insert or a keyframe",
+            "pattern": "insert|keyframe|implied|simple"
+          },
+          {
+            "label": "names which hand or body part",
+            "pattern": "(left|right) (hand|wrist|arm)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Splits the action into panels for the approaching hand, the other person noticing, the grab, the physical reaction and the pull away or release, with a reason (the viewer needs the order); names the hand or body part; keeps the contact simple (an insert or an independent keyframe for the grab); does not write video prompts."
+  },
+  {
+    "id": "28-dialogue-coverage-selection",
+    "title": "Dialogue coverage chosen by purpose, not every angle",
+    "prompt": "Two people argue at a kitchen table: she accuses him of lying, he denies it, then she puts a receipt on the table and he goes quiet. Plan the shots for the storyboard. I don't want every possible angle, just what the scene needs.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "an establishing two-shot",
+            "pattern": "two-shot|establishing"
+          },
+          {
+            "label": "over-the-shoulder or shot and reverse shot",
+            "pattern": "over[- ]the[- ]shoulder|shot[- ]reverse|reverse[- ]shot"
+          },
+          {
+            "label": "an insert on the receipt",
+            "pattern": "insert[\\s\\S]{0,300}receipt|receipt[\\s\\S]{0,300}insert|close-up[^\\n]{0,40}receipt"
+          },
+          {
+            "label": "a listener reaction",
+            "pattern": "reaction|listener|the turn|realis[ez]|his eyes drop|eyes drop"
+          },
+          {
+            "label": "the silence or pause when he goes quiet",
+            "pattern": "silence|pause|goes quiet|held|doesn't speak|does not speak|wordless|no words"
+          },
+          {
+            "label": "chosen by purpose, not every angle",
+            "pattern": "purpose|not every|only what|skip|Task:|only needs|the shots below|just what"
+          },
+          {
+            "label": "screen sides or eyelines kept",
+            "pattern": "screen side|screen (left|right)|eyeline|180|line between|neither side swaps"
+          }
+        ]
+      }
+    ],
+    "rubric": "Chooses an establishing two-shot, over-the-shoulder or shot and reverse shot, a close-up on the line or turn that matters, an insert on the receipt, a listener reaction and a held silence, each with a reason; does not list every possible angle; keeps screen sides and eyelines consistent.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Fact patterns widened after a correct Quick-mode answer (establishing two-shot, over-the-shoulder, a receipt insert, the turn on his face, his silence, fixed screen sides) failed on wording: 'reaction', 'silence' and 'screen side' were required literally, and 'insert' and 'receipt' had to share a line."
+    }
+  },
+  {
+    "id": "29-panel-generation-mapping-types",
+    "title": "Panels are not automatically clips: the four mapping types",
+    "prompt": "I have an approved 8-panel storyboard. Explain how the panels turn into Seedance generations. Are they all separate clips? I want to see what is a clip, what is several shots in one generation, what is a keyframe, and what I do in post-production.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 6,
+        "facts": [
+          {
+            "label": "independent clip",
+            "pattern": "independent(ly)? generated clip|separate (clip|generation)|one clip|its own (clip|generation)"
+          },
+          {
+            "label": "several shots inside one generation",
+            "pattern": "several (panels|shots)[^\\n]{0,60}one generation|multi-shot|shots (inside|in) one generation|two or three[^\\n]{0,40}shots"
+          },
+          {
+            "label": "keyframe",
+            "pattern": "keyframe"
+          },
+          {
+            "label": "post-production",
+            "pattern": "post-production|in post|in the edit|overlay"
+          },
+          {
+            "label": "a panel is not automatically a clip",
+            "pattern": "not (automatically|always|necessarily)[^\\n]{0,30}(one|a|the same as a) (clip|generation|video)|(does|do)n't (automatically )?(equal|map)|does not (automatically )?(equal|map)|not every panel"
+          },
+          {
+            "label": "a mapping table",
+            "pattern": "mapping table|\\| ?Panel ?\\|"
+          },
+          {
+            "label": "dialogue and reactions separate, only closely related shots together",
+            "pattern": "closely related|two or three|2 to 3|dialogue[^\\n]{0,80}separate|separate[^\\n]{0,80}dialogue"
+          },
+          {
+            "label": "images count against the reference limit",
+            "pattern": "count(s)? (against|toward)|reference (limit|budget|count)|images count"
+          }
+        ]
+      }
+    ],
+    "rubric": "Explains the four mapping types (independent clip, several shots in one generation, keyframe, post-production), says a panel does not automatically equal a generation, shows the mapping as a table, puts important dialogue and reactions in separate generations and only closely related shots together, and notes that sheets and keyframes are images that count against the model's reference limits."
+  },
+  {
+    "id": "30-storyboard-sheet-split",
+    "title": "A long sequence is split into sheets; 15 is a recommendation, not an API limit",
+    "prompt": "My action sequence needs about 20 panels. Can I put them all on one storyboard image for Seedance?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "the guide recommends 15 panels or fewer",
+            "pattern": "\\b15 panels|15 or fewer|fifteen"
+          },
+          {
+            "label": "a recommendation, not an API limit",
+            "pattern": "recommend[^\\n]{0,80}(not|rather than)[^\\n]{0,40}limit|not (a|an) (hard |technical |API )?limit|isn't (a|an) (hard |API |technical )?limit|not an API limit|not a technical limit"
+          },
+          {
+            "label": "split into several sheets",
+            "pattern": "multiple sheets|several sheets|two sheets|more than one sheet|split"
+          },
+          {
+            "label": "each sheet carries a continuity header or starts from the previous ending",
+            "pattern": "continuity header|starts? from the previous|previous sheet"
+          },
+          {
+            "label": "cut per generation, not the whole sequence",
+            "pattern": "per generation|one generation|each generation|that generation"
+          },
+          {
+            "label": "too many panels give still frames or the wrong order",
+            "pattern": "still frames|wrong order|wrong sequence|frozen frames|incorrect order"
+          },
+          {
+            "label": "keyframes for strict alignment",
+            "pattern": "keyframe"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says no: about 20 panels should be split into several readable sheets, because Seedance's guide recommends about 15 panels or fewer per sheet (an 18-panel example gave still frames or wrong order); presents 15 as a recommendation and not an API limit; cuts each Seedance sheet from one generation; gives each sheet a continuity header; offers independent keyframes when strict alignment is needed.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The observed failure check also accepts frozen frames and incorrect ordering; the rubric is unchanged."
+    }
+  },
+  {
+    "id": "31-seedance-sheet-and-keyframe-prompts",
+    "title": "Tool-independent sheet and keyframe image prompts",
+    "prompt": "For generation 3 of my storyboard I need two image prompts. First, a Seedance reference sheet for panels 4, 5 and 6: Marco's hand moving toward Lina's left wrist, Lina's eyes dropping to the hand, then his fingers closing around her wrist. Second, an independent keyframe image prompt for panel 6. Vertical 9:16. I will use a different image generator than the video model.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "line art or stick figures",
+            "pattern": "line art|stick[- ]figure|outline"
+          },
+          {
+            "label": "no text inside the image",
+            "pattern": "no (text|numbers|captions|labels)|without (any )?text|no text, numbers|exclude (?:all )?text"
+          },
+          {
+            "label": "identity comes from separate references, not the sheet",
+            "pattern": "separate (reference|character)|identity[^\\n]{0,60}(reference|separate)|no faces|do not add[^\\n]{0,30}(faces|clothing|colour)|faces[^\\n]{0,40}(separate|reference)"
+          },
+          {
+            "label": "9:16 panels",
+            "pattern": "9:16"
+          },
+          {
+            "label": "the keyframe is one full-frame image",
+            "pattern": "keyframe[^\\n]{0,120}(single|one|full-frame|separate image)|(single|one|full-frame)[^\\n]{0,60}keyframe"
+          },
+          {
+            "label": "the sheet gives structure and rhythm only",
+            "pattern": "structure|rhythm|composition (and|only)|composition, positions"
+          },
+          {
+            "label": "names the hand and wrist in the contact",
+            "pattern": "(right|Marco's)[^\\n]{0,40}(hand|fingers)[^\\n]{0,60}(left )?wrist|left wrist"
+          },
+          {
+            "label": "tool independent wording",
+            "pattern": "any (image )?generator|tool[- ]independent|your (image )?(generator|tool)|not tied to|adjust[^\\n]{0,40}(generator|tool)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Gives a simple monochrome line-art reference sheet prompt for the three panels with no text in the image, no identity detail (characters come from separate reference assets), 9:16 panels and positions and actions only; and a separate single full-frame keyframe prompt for the grab that names the hand and the wrist, matches the character references and carries no text; keeps both tool independent; notes that the sheet supplies structure and rhythm and the video prompt describes the real style.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "The no-text check also accepts an explicit exclusion of all text; the rubric is unchanged."
+    }
+  },
+  {
+    "id": "32-recorded-dialogue-evidence",
+    "title": "Recorded dialogue preservation is not guaranteed",
+    "prompt": "This is clip 2 of 6 in episode 3, 10 seconds, 9:16, for Seedance. I have a finished dialogue recording for one line, exactly 10 seconds long. Previous clip ended with Iwan (34, navy shirt, steel watch on his left wrist) leaving through the front door; Noor (31, sage-green linen shirt, silver ring on her right index finger) stands at the kitchen island facing north holding a cup of tea, a sealed cream envelope on the counter. In this clip Noor picks up the envelope, then Iwan comes back in and says: \"That isn't yours to open.\" Write the full production prompt for this clip.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 2,
+        "facts": [
+          {
+            "label": "preservation or lip-sync is uncertain",
+            "pattern": "(not (?:guaranteed|documented|established|verified)|unverified|cannot guarantee|may not|might not|does not (?:guarantee|document))"
+          },
+          {
+            "label": "separate post-production audio",
+            "pattern": "(?:post[- ]production|post[- ]processing|in post|edit(?:ing|or)?|mix).{0,100}(?:recording|original|audio)|(?:recording|original|audio).{0,100}(?:post[- ]production|in post|mix|editor)"
+          }
+        ]
+      },
+      {
+        "type": "regex",
+        "pattern": "(?:model|version|interface|platform)",
+        "flags": "i"
+      },
+      {
+        "type": "regex",
+        "pattern": "That isn't yours to open\\."
+      }
+    ],
+    "rubric": "Follows the anatomy: references, recorded-dialogue intentions labeled OBSERVED rather than guaranteed; identify the selected model and interface, warn exact playback and lip-sync are not established for Seedance 2.5 or Flash, and offer original audio mixed in post, clip task, scene and light, appearance block with the identity anchors, opening state from the previous clip, blocking with a fixed landmark or compass, cuts with camera line, who is in frame, eyeline and focus, the exact line in a lip-sync window with delivery, ending state, ambient sound, numbered constraints including no readable text and no music, and a voice profile. Does not replay the previous action. Fits a sensible length.",
+    "variant_of": "14-series-clip-anatomy",
+    "comparable_with_baseline": false
+  },
+  {
+    "id": "33-approved-storyboard-needs-mapping",
+    "title": "Approved storyboard without a generation mapping",
+    "prompt": "I approved these storyboard panels for Seedance 2.5. Panel 1: a woman opens the gate. Panel 2: close-up of the latch releasing. Panel 3: she looks back. Make the final video prompts; I have not decided how the panels map to generations.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "mapping is proposed",
+            "pattern": "mapping|map(ped|ping)?[^\\n]{0,40}generat"
+          },
+          {
+            "label": "approval is requested before final prompts",
+            "pattern": "approv|confirm|agree|review"
+          },
+          {
+            "label": "no fixed one panel per clip",
+            "pattern": "not (necessarily|automatically|always)|separate[^\\n]{0,40}generation|multi.shot|one generation"
+          },
+          {
+            "label": "mapping includes the three panels",
+            "pattern": "(?:panel|shot) ?1[\\s\\S]*(?:panel|shot) ?2[\\s\\S]*(?:panel|shot) ?3|\\|\\s*0?1\\s*\\|[\\s\\S]*\\|\\s*0?2\\s*\\|[\\s\\S]*\\|\\s*0?3\\s*\\|"
+          }
+        ]
+      }
+    ],
+    "rubric": "Proposes a concrete mapping for all three approved panels, distinguishes a shot from a generation, and requests approval of that mapping before writing final video prompts. An approved storyboard alone is not approval of an unspecified mapping."
+  },
+  {
+    "id": "34-keyframe-not-generation",
+    "title": "Independent keyframes are assets, not video generations",
+    "prompt": "In my approved Seedance storyboard, panels 4 to 6 are an approaching hand, the other person noticing, and the grip. I want independent keyframe images for those three moments. Explain what I need to generate and how the video maps to them.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "three separate keyframe images",
+            "pattern": "three.{0,40}(?:image|keyframe)|(?:3|three) separate|(?:image|keyframe)[^\\n]{0,40}(?:each|per panel)"
+          },
+          {
+            "label": "explicit video generation consumes keyframes",
+            "pattern": "(?:generation|video|clip)[^\\n]{0,100}(?:keyframe|image)|(?:keyframe|image)[^\\n]{0,100}(?:generation|video|clip)"
+          },
+          {
+            "label": "keyframe is not itself a video clip",
+            "pattern": "(?:not|isn.t|does not)[^\\n]{0,60}(?:video|clip|generation)|(?:asset|still)[^\\n]{0,60}(?:not|rather than)"
+          },
+          {
+            "label": "alignment is not guaranteed",
+            "pattern": "not guaranteed|no guarantee|not exact|may (?:not|drift)|can drift|cannot guarantee|not guarantee"
+          }
+        ]
+      }
+    ],
+    "rubric": "Identifies three independent still images and at least one separate video generation that consumes them; identifies shots versus cuts and avoids promising frame-perfect keyframe alignment. Notes model/version compatibility and offers a fallback if the combination is not supported."
+  },
+  {
+    "id": "35-audio-plans",
+    "title": "Audio modes and supplied recording",
+    "prompt": "For Seedance 2.5 Flash, compare native audiovisual, dialogue-only, a supplied voice-actor recording and silent video. I need the recording unchanged with Indonesian dialogue. What is documented, what is uncertain and how should I proceed?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "native audiovisual",
+            "pattern": "native|audiovisual|generated audio"
+          },
+          {
+            "label": "dialogue-only",
+            "pattern": "dialogue.only|speech only|voice only|dialogue only"
+          },
+          {
+            "label": "silent video",
+            "pattern": "silent|silence|without audio"
+          },
+          {
+            "label": "original mixed in post",
+            "pattern": "(?:original|recording).{0,100}(?:post|mix)|(?:post|mix).{0,100}(?:original|recording)"
+          },
+          {
+            "label": "Flash support uncertain",
+            "pattern": "unverified|not (?:documented|verified|confirmed)|unknown"
+          },
+          {
+            "label": "original dialogue language retained",
+            "pattern": "indonesian"
+          }
+        ]
+      }
+    ],
+    "rubric": "Distinguishes the four audio plans and explicitly marks Flash per-mode support unverified; retains Indonesian dialogue, does not promise exact passthrough or lip-sync, and recommends original audio mixed in post with a feasible test."
+  },
+  {
+    "id": "36-reference-role-binding",
+    "title": "Subject, motion, camera and voice references stay separate",
+    "prompt": "For Seedance 2.5 Flash, I have a character image, a motion video, another camera movement video and a voice recording. Show an asset manifest and a prompt template, and explain what you cannot promise.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "subject image",
+            "pattern": "image\\s*1|character image"
+          },
+          {
+            "label": "motion video",
+            "pattern": "motion|action"
+          },
+          {
+            "label": "camera video",
+            "pattern": "camera"
+          },
+          {
+            "label": "audio role",
+            "pattern": "timbre|voice"
+          },
+          {
+            "label": "explicit uncertainty",
+            "pattern": "unverified|not (?:documented|verified|confirmed)|unknown"
+          },
+          {
+            "label": "fallback or short test",
+            "pattern": "test|fallback|separate pass|post.production"
+          },
+          {
+            "label": "assets not copied indiscriminately",
+            "pattern": "only|not (?:copy|use)|ignore|does not"
+          }
+        ]
+      }
+    ],
+    "rubric": "Provides a numbered per-asset manifest and a template that binds identity, action, camera and voice separately; marks the specific Flash combination unverified, avoids promising exact voice playback, and offers a test or fallback."
+  },
+  {
+    "id": "37-independent-visual-choices",
+    "title": "Polished short-drama aesthetic stays independent of genre and language",
+    "prompt": "I want a Western mystery with the polished visual look of Chinese and Korean short dramas. Write the look brief in English. My dialogue is Indonesian and I want it left exactly as written.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "mystery genre retained",
+            "pattern": "mystery|western"
+          },
+          {
+            "label": "cinematic lighting",
+            "pattern": "light"
+          },
+          {
+            "label": "makeup",
+            "pattern": "makeup|make.up"
+          },
+          {
+            "label": "luminous natural skin",
+            "pattern": "skin"
+          },
+          {
+            "label": "consistent identity",
+            "pattern": "consisten|same face|identity|continuity"
+          },
+          {
+            "label": "Indonesian dialogue retained",
+            "pattern": "indonesian"
+          }
+        ]
+      }
+    ],
+    "rubric": "Keeps the Western mystery genre, English prompt language and Indonesian dialogue independent; supplies cinematic lighting, refined makeup, natural luminous skin and consistent characters without celebrity likenesses."
+  },
+  {
+    "id": "38-clay-gap-honesty",
+    "title": "Clay with only a scene reference stays a documented gap",
+    "prompt": "Does Seedance 2.5 officially document a clay-model video combined only with a scene reference and no character references? What should I do?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "gap is unverified or not documented",
+            "pattern": "not documented|undocumented|unverified|not specifically"
+          },
+          {
+            "label": "scene-only distinction",
+            "pattern": "scene.only|scene (?:reference )?only|only.{0,40}scene|scene.{0,40}only"
+          },
+          {
+            "label": "combined documented workflow",
+            "pattern": "character|subject"
+          },
+          {
+            "label": "fallback",
+            "pattern": "test|alternative|fallback|separate"
+          }
+        ]
+      }
+    ],
+    "rubric": "Does not promote the standalone clay-plus-scene gap to official support; distinguishes the documented clay-plus-subject-plus-scene combination, offers a test or an alternative, and treats Flash as unverified."
+  },
+  {
+    "id": "39-seedance-native-audio",
+    "title": "Flagship native audio and silent output",
+    "prompt": "For Seedance 2.5 flagship, how do I generate a clip with Indonesian dialogue and how do I make a silent version? Is this automatically confirmed for Flash?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "native audio supported",
+            "pattern": "native|synchronized|generate_audio"
+          },
+          {
+            "label": "Indonesian",
+            "pattern": "indonesian"
+          },
+          {
+            "label": "silent setting",
+            "pattern": "false|silent|disable.{0,30}audio"
+          },
+          {
+            "label": "Flash not inherited",
+            "pattern": "flash.{0,100}(?:unverified|not confirmed|not documented)|(?:unverified|not confirmed)[^\\n]{0,80}flash"
+          },
+          {
+            "label": "default audio",
+            "pattern": "default|by default"
+          }
+        ]
+      }
+    ],
+    "rubric": "Explains native audiovisual generation and how to request a silent flagship output, preserves Indonesian dialogue, and does not assume identical Flash support or settings."
+  },
+  {
+    "id": "40-edit-existing-video",
+    "title": "Time-bounded edit preserves unrelated content",
+    "prompt": "On the Seedance 2.5 flagship API, replace a red bag with a blue bag only from 3 to 5 seconds of my existing 8-second clip. Keep the people, camera, lighting, other action and audio unchanged. Give the task settings and a prompt.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "edit task",
+            "pattern": "edit"
+          },
+          {
+            "label": "ratio adaptive",
+            "pattern": "adaptive"
+          },
+          {
+            "label": "duration minus one",
+            "pattern": "-1"
+          },
+          {
+            "label": "time window",
+            "pattern": "3.{0,20}5.{0,15}second|3\\s*(?:-|to)\\s*5"
+          },
+          {
+            "label": "preservation clause",
+            "pattern": "preserv|unchanged|keep"
+          },
+          {
+            "label": "no guarantee",
+            "pattern": "not guarantee|review|inspect|verify|check"
+          }
+        ]
+      },
+      {
+        "type": "not_regex",
+        "pattern": "\"video_url\"\\s*:\\s*\\{[^}]*\"role\"",
+        "flags": "i"
+      }
+    ],
+    "rubric": "Uses flagship Edit task, adaptive ratio, duration -1, names the time-bound bag change and preserves unrelated video and audio; warns preservation and boundary timing are not guaranteed. If it includes a JSON content item, role belongs beside the video_url object, not inside it; avoid assuming unprovided output resolution or audio settings.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Added an objective check for the video role nested inside video_url after the Codex run produced invalid JSON structure. API roles are at the content-item level."
+    }
+  },
+  {
+    "id": "41-audio-edit-translation",
+    "title": "Translate dialogue and preserve other audio",
+    "prompt": "I have a 10-second Seedance 2.5 flagship video. Translate the woman’s English line \"Leave the key\" into Indonesian, adjust her mouth to the new words, and preserve the other speaker, music, effects and picture. How would I plan the edit?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "target language",
+            "pattern": "indonesian"
+          },
+          {
+            "label": "translate dialogue",
+            "pattern": "translat|terjemah"
+          },
+          {
+            "label": "lip-sync",
+            "pattern": "lip.sync|mouth|lips"
+          },
+          {
+            "label": "preserve unrelated audio and visuals",
+            "pattern": "preserv|unchanged|keep"
+          },
+          {
+            "label": "review and uncertainty",
+            "pattern": "review|check|verify|not guarantee"
+          }
+        ]
+      }
+    ],
+    "rubric": "Plans the translated line, speaker and timing, mouth adjustment and preserve clauses for music, effects, other voice and visuals; does not guarantee perfect synchronization."
+  },
+  {
+    "id": "42-voice-replacement-gap",
+    "title": "Standalone voice replacement is not documented",
+    "prompt": "Can Seedance 2.5 Flash replace only the voice in my existing video with a supplied actor’s exact voice while preserving everything else? Give me the safest workflow.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "Flash uncertainty",
+            "pattern": "unverified|not documented|not confirmed|unknown"
+          },
+          {
+            "label": "voice replacement not established",
+            "pattern": "voice.{0,80}(?:not|unverified|uncertain|unknown)|(?:not|unverified).{0,80}voice"
+          },
+          {
+            "label": "post production or test",
+            "pattern": "post.production|in post|test|fallback|dubbing"
+          },
+          {
+            "label": "preservation",
+            "pattern": "preserv|unchanged|keep"
+          }
+        ]
+      }
+    ],
+    "rubric": "Does not promise exact standalone voice replacement on Flash, distinguishes documented translation/dubbing from arbitrary voice replacement and offers post-production or a scoped test."
+  },
+  {
+    "id": "43-forward-backward-extension",
+    "title": "Forward and backward extension boundaries",
+    "prompt": "For Seedance 2.5 flagship, I need to extend my clip forward and make a separate backward extension. How do I preserve continuity and avoid replaying the original action?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "forward extension",
+            "pattern": "forward"
+          },
+          {
+            "label": "backward extension",
+            "pattern": "backward|before|earlier"
+          },
+          {
+            "label": "boundary state",
+            "pattern": "opening|ending|first frame|last frame|boundary"
+          },
+          {
+            "label": "do not replay",
+            "pattern": "replay|repeat|duplicat"
+          },
+          {
+            "label": "continuity elements",
+            "pattern": "continuity|identity|wardrobe|lighting|camera"
+          },
+          {
+            "label": "check outputs",
+            "pattern": "review|inspect|check|verify|drift"
+          }
+        ]
+      }
+    ],
+    "rubric": "Distinguishes forward and backward extension, respects the correct source boundary and does not replay prior content, specifies continuity and review, and flags Flash status if discussed."
+  },
+  {
+    "id": "44-transition-and-one-click",
+    "title": "Transition and one-click assembly evidence",
+    "prompt": "On Seedance 2.5 flagship I have two finished clips and eight still images. Compare a seamless transition between the clips, one-click creation from images and one-click creation from videos. What is documented and what would need a test?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "transition",
+            "pattern": "transition|missing middle|bridge"
+          },
+          {
+            "label": "two source videos",
+            "pattern": "video\\s*1|clip\\s*1|two (?:clips|videos)"
+          },
+          {
+            "label": "images assembly",
+            "pattern": "images|stills"
+          },
+          {
+            "label": "videos lack worked example",
+            "pattern": "(?:video|clip).{0,120}(?:no (?:worked )?example|not documented|listed|untested|unverified)|(?:no (?:worked )?example|listed|untested).{0,120}(?:video|clip)"
+          },
+          {
+            "label": "check or fallback",
+            "pattern": "test|inspect|review|edit"
+          }
+        ]
+      }
+    ],
+    "rubric": "Separates a generated transition between two videos from the documented example using eight images and the video-based one-click operation that is listed without a worked example; does not promise preservation or exact output."
+  },
+  {
+    "id": "45-interface-vs-model-limits",
+    "title": "Interface character limit is not model recommendation",
+    "prompt": "My video interface reports a 15,000-character prompt limit. Seedance 2.5 recommends about 1,000 English words or 500 Chinese characters. Explain the difference and whether I should automatically fill the full limit.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "interface limit",
+            "pattern": "15[, ]?000"
+          },
+          {
+            "label": "English recommendation",
+            "pattern": "1[, ]?000.{0,30}(?:english|words)|(?:english|words).{0,30}1[, ]?000"
+          },
+          {
+            "label": "Chinese recommendation",
+            "pattern": "500.{0,30}(?:chinese|character)|(?:chinese|character).{0,30}500"
+          },
+          {
+            "label": "not a hard model limit",
+            "pattern": "recommend|not.{0,30}(?:model|hard).{0,20}(?:limit|cap)"
+          },
+          {
+            "label": "do not fill budget automatically",
+            "pattern": "do not fill|don.t fill|not.{0,30}fill|avoid.{0,20}fill|only.{0,30}(?:need|necessary)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Separates the user-reported character limit from the official English-word and Chinese-character recommendations, does not equate them and does not automatically select Maximum density."
+  },
+  {
+    "id": "46-unknown-api-parameters",
+    "title": "Uncertain parameters and task ID schema",
+    "prompt": "For Seedance 2.5, can I always use a seed, camera_fixed, frames, old inline --dur syntax and a sample task ID input? Give me the exact JSON if possible.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "uncertainty",
+            "pattern": "unverified|not documented|not confirmed|conflict|uncertain"
+          },
+          {
+            "label": "seed or fixed-camera uncertainty",
+            "pattern": "seed|camera_fixed"
+          },
+          {
+            "label": "sample task schema gap",
+            "pattern": "(?:task id|task_id|sample).{0,100}(?:schema|unverified|not documented|unknown)|(?:schema|unverified|not documented).{0,100}(?:task id|task_id|sample)"
+          },
+          {
+            "label": "does not invent request",
+            "pattern": "cannot|can.t|do not|don.t|avoid|not enough|no confirmed"
+          }
+        ]
+      }
+    ],
+    "rubric": "Retains documented ambiguity on seed, camera_fixed and frames, flags legacy inline syntax and sample-task schema as unverified, and does not fabricate exact JSON."
+  },
+  {
+    "id": "47-test-evidence",
+    "title": "Real generation required for TESTED status",
+    "prompt": "I read the vendor guide and a Codex evaluation answered correctly about Seedance 2.5 Flash keyframes. Can I mark Flash keyframe generation TESTED in the registry? What evidence is needed?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "not tested yet",
+            "pattern": "not tested|cannot.{0,30}tested|not.{0,30}tested|unverified"
+          },
+          {
+            "label": "real successful generation",
+            "pattern": "successful.{0,40}generation|actual.{0,30}generation|generation.{0,40}(?:success|pass)"
+          },
+          {
+            "label": "model and interface",
+            "pattern": "model.{0,60}(?:interface|platform)|(?:interface|platform).{0,60}model"
+          },
+          {
+            "label": "record settings and result",
+            "pattern": "test.log|settings.{0,60}(?:result|outcome)|(?:result|outcome).{0,60}settings"
+          }
+        ]
+      }
+    ],
+    "rubric": "Does not mark capability TESTED from a guide or skill evaluation; requires a recorded successful real generation for the exact model, interface and settings."
+  },
+  {
+    "id": "48-retention-rate-limits",
+    "title": "Retention and rate limits are platform facts",
+    "prompt": "A Seedance 2.5 flagship video just finished. How long is its download URL kept, and what should I do if I get an HTTP 429?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 3,
+        "facts": [
+          {
+            "label": "24 hour URL",
+            "pattern": "24.{0,10}hour|one day"
+          },
+          {
+            "label": "download limit",
+            "pattern": "100.{0,20}download|download.{0,20}100"
+          },
+          {
+            "label": "rate limit response",
+            "pattern": "retry|queue|wait|slow|rate"
+          },
+          {
+            "label": "check current limits",
+            "pattern": "account|quota|current|documentation"
+          }
+        ]
+      }
+    ],
+    "rubric": "Gives the reported 24-hour URL and 100-download limit as dated flagship information, recommends saving the output and handling 429 by respecting account/model limits and retrying appropriately."
+  },
+  {
+    "id": "49-draft-final-last-frame",
+    "title": "Draft finalization and last-frame chaining",
+    "prompt": "For Seedance 2.5 flagship, how do I create a draft, turn it into a final render, and get a last frame for the next clip? Can I assume these steps on Flash?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "draft resolution",
+            "pattern": "480p"
+          },
+          {
+            "label": "final resolution",
+            "pattern": "1080p"
+          },
+          {
+            "label": "draft ID",
+            "pattern": "draft.{0,50}(?:id|task)|(?:id|task).{0,50}draft"
+          },
+          {
+            "label": "last frame",
+            "pattern": "last.frame|return_last_frame"
+          },
+          {
+            "label": "Flash uncertainty",
+            "pattern": "flash.{0,100}(?:unverified|not confirmed|not documented)|(?:unverified|not confirmed).{0,100}flash"
+          },
+          {
+            "label": "separate cost",
+            "pattern": "bill|cost|charg"
+          }
+        ]
+      }
+    ],
+    "rubric": "Explains draft 480p, final 1080p using the draft task ID, separate billing and last-frame retrieval; avoids assuming Flash has Draft or last-frame support."
+  },
+  {
+    "id": "50-subject-and-multiview",
+    "title": "Subject references and multi-view version differences",
+    "prompt": "Compare one subject image, subject video and a multi-view character sheet for Seedance 2.5 flagship versus the 2.0 series and 2.5 Flash. How should I bind each to a character?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "subject image",
+            "pattern": "image|photo"
+          },
+          {
+            "label": "subject video",
+            "pattern": "video"
+          },
+          {
+            "label": "multi-view 2.5",
+            "pattern": "multi.view|multiple views|several views"
+          },
+          {
+            "label": "2.0 caution",
+            "pattern": "2\\.0.{0,120}(?:discourag|avoid|not recommend)|(?:discourag|avoid|not recommend).{0,120}2\\.0"
+          },
+          {
+            "label": "Flash uncertainty",
+            "pattern": "flash.{0,120}(?:unverified|not confirmed|unknown)|(?:unverified|not confirmed).{0,120}flash"
+          },
+          {
+            "label": "explicit binding",
+            "pattern": "bind|map|label|assign"
+          }
+        ]
+      }
+    ],
+    "rubric": "Distinguishes image and video identity references, flagship multi-view support and legacy caution, assigns assets to subjects explicitly, and marks Flash-specific support unverified."
+  },
+  {
+    "id": "51-clay-workflows",
+    "title": "Coarse and fine clay workflows",
+    "prompt": "For flagship Seedance 2.5, compare rendering a coarse clay video and a detailed clay video. I also have character images and a scene image. How should the references be bound, and what must I verify?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "coarse proxy",
+            "pattern": "coarse"
+          },
+          {
+            "label": "fine proxy",
+            "pattern": "fine|detailed"
+          },
+          {
+            "label": "camera and blocking",
+            "pattern": "camera|blocking"
+          },
+          {
+            "label": "character images",
+            "pattern": "character|subject"
+          },
+          {
+            "label": "scene reference",
+            "pattern": "scene|environment"
+          },
+          {
+            "label": "map roles",
+            "pattern": "bind|map|assign|role"
+          },
+          {
+            "label": "uncertainty",
+            "pattern": "unverified|test|review|not guarantee|verify"
+          }
+        ]
+      }
+    ],
+    "rubric": "Distinguishes coarse blocking/motion/camera from fine clay rendering, binds figure identities and scene references, avoids copying proxy appearance, and flags Flash and undocumented combinations."
+  },
+  {
+    "id": "52-audio-edit-types",
+    "title": "Vocal, music and effects editing",
+    "prompt": "For flagship Seedance 2.5, plan three alternative edits to an existing clip: remove one vocal, change the music, or replace a sound effect. Keep the other audio and all picture unchanged. Which examples are documented and what requires testing?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "vocal",
+            "pattern": "vocal|voice"
+          },
+          {
+            "label": "music",
+            "pattern": "music"
+          },
+          {
+            "label": "effects",
+            "pattern": "effects|sound effect"
+          },
+          {
+            "label": "preservation",
+            "pattern": "preserv|unchanged|keep"
+          },
+          {
+            "label": "uncertainty",
+            "pattern": "test|unverified|no.{0,20}example|not guarantee|listed"
+          }
+        ]
+      }
+    ],
+    "rubric": "Plans vocals, music and effects separately, notes which operations are listed rather than worked examples, retains preserve clauses and avoids promising unchanged content."
+  },
+  {
+    "id": "53-versioned-assembly",
+    "title": "Extension references and legacy track completion",
+    "prompt": "Compare extending a Seedance 2.5 video backward with a character reference, repeated extensions, and the older 2.0 track-completion feature. Which limits apply to which version?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "backward extension",
+            "pattern": "backward|earlier"
+          },
+          {
+            "label": "subject reference",
+            "pattern": "subject|character|image"
+          },
+          {
+            "label": "repeated extensions",
+            "pattern": "multiple|repeated|several|round"
+          },
+          {
+            "label": "legacy limit",
+            "pattern": "(?:three|3).{0,30}(?:clip|video)|(?:clip|video).{0,30}(?:three|3)"
+          },
+          {
+            "label": "15 seconds",
+            "pattern": "15.{0,12}(?:s|second)"
+          },
+          {
+            "label": "do not inherit",
+            "pattern": "2\\.0|legacy"
+          }
+        ]
+      }
+    ],
+    "rubric": "Names the versioned backward-extension and subject roles, checks joins and drift for repeated extension, and limits the 3-clip/15-second track-completion statement to the 2.0 guide."
+  },
+  {
+    "id": "54-platform-assets",
+    "title": "Asset IDs and uncertain platform controls",
+    "prompt": "For Seedance 2.5 flagship, explain real-face assets, asset IDs and media URLs or base64 input. Can I assume callbacks and the same face rules on Flash?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "face restriction",
+            "pattern": "real.{0,30}face|face.{0,30}(?:restriction|upload)"
+          },
+          {
+            "label": "asset identifiers",
+            "pattern": "asset.?id|asset://|asset library"
+          },
+          {
+            "label": "input forms",
+            "pattern": "base64|url"
+          },
+          {
+            "label": "callback uncertain",
+            "pattern": "callback"
+          },
+          {
+            "label": "Flash uncertainty",
+            "pattern": "flash.{0,120}(?:unverified|unknown|not confirmed)|(?:unverified|not confirmed).{0,120}flash"
+          }
+        ]
+      }
+    ],
+    "rubric": "Distinguishes asset IDs, URLs and base64 by media type; cites the documented real-face routes while retaining the fictional-face gap, and does not inherit callback or face rules to Flash."
+  },
+  {
+    "id": "55-omni-flash-microdrama",
+    "title": "OF 1.2 two-character 9:16 micro-drama with keyframe beat",
+    "prompt": "Gemini Omni 1.2 Flash, vertical 9:16, low-motion micro-drama. Two characters: MIRA (30s, grey cardigan, dark hair) and DANIEL (40s, navy shirt, stubble), seated at a kitchen table at night. I have 2 reference images of Mira, 2 of Daniel, 1 of the kitchen and 1 of a letter. Four beats: (1) Daniel says: \"You weren't supposed to be home yet.\" (2) Mira says nothing and looks at the letter. (3) Mira's warm smile fades into a single tear, I want this as a 10-second start and end frame pair, and I also want it at 15 seconds. (4) Mira says: \"Then you already know.\" Plan the storyboard and write the prompts for each beat.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "read_file",
+        "pattern": "omni-flash-drama\\.md"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "(?:Beat|Shot|Panel)\\s*3[^\\n]{0,200}\\b15\\s*(?:s|sec)[^\\n]{0,200}(?:start|end)\\s*(?:and|\\+|&)\\s*(?:end|last)\\s*frame"
+      },
+      {
+        "type": "knowledge",
+        "min": 7,
+        "facts": [
+          {
+            "label": "9:16",
+            "pattern": "9:16"
+          },
+          {
+            "label": "slot map",
+            "pattern": "slot"
+          },
+          {
+            "label": "six reference limit",
+            "pattern": "(?:6|six)\\s*(?:reference\\s*)?images?|slots?\\s*1\\s*[-–to]+\\s*6"
+          },
+          {
+            "label": "keyframe 10s cap",
+            "pattern": "10\\s*(?:s|sec)[^\\n]{0,200}(?:first|start)|(?:first|start)[^\\n]{0,200}10\\s*(?:s|sec)"
+          },
+          {
+            "label": "four-part output",
+            "pattern": "continuity note"
+          },
+          {
+            "label": "speaker tag and tone",
+            "pattern": "says"
+          },
+          {
+            "label": "eye-line",
+            "pattern": "off-camera"
+          },
+          {
+            "label": "draft pass",
+            "pattern": "720p"
+          }
+        ]
+      }
+    ],
+    "rubric": "Gives each of the four beats the four fields (anchor frame image prompt, optional end frame, OF 1.2 video and audio prompt, conversational continuity note). Allocates the six reference images in a clear slot map (Mira, Daniel, kitchen, letter). Beat 3 is a 10 s first-and-last-frame pair; the 15 s request is declined or resolved as one keyframe or an extension, never 15 s with two keyframes. Dialogue is exact with speaker tag and tone, eye-lines face each other (off-camera right and left), bodies stay still with one slow camera move, the subject sits in the upper-middle third with the bottom clear, three anchors repeat, and a 720p draft pass precedes upscale."
   }
 ]
