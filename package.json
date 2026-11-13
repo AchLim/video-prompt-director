@@ -1,7 +1,7 @@
 {
   "name": "@akoru/video-prompt-director",
-  "version": "0.2.0",
-  "description": "Claude Code skill that turns scripts and approved storyboards into AI video generation prompts, with an installer CLI.",
+  "version": "0.3.0",
+  "description": "Agent Skill for model-aware video production, storyboards and multimodal prompts, with an installer CLI.",
   "homepage": "https://github.com/AchLim/video-prompt-director#readme",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "build:single": "node scripts/build-single-file.mjs",
     "typecheck": "tsc -p tsconfig.test.json --noEmit",
     "check": "node scripts/sync-version.mjs --check && node scripts/build-single-file.mjs --check",
+    "check:registry": "python3 scripts/check_registry.py",
     "test": "npm run build && node --test --test-reporter=spec \"test/**/*.test.ts\"",
     "zip": "npm run build && node dist/cli.js export-zip --out release",
     "evals": "node evals/run-evals.mjs",

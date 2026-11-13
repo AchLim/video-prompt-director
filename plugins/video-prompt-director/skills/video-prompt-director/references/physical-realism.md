@@ -6,6 +6,7 @@ Contents:
 3. Anatomy and motion failures
 4. Objects and space
 5. Staging around known weak spots
+6. Action decomposition
 
 ## 1. Choreograph interactions step by step
 
@@ -50,3 +51,21 @@ If an object matters later, state it in every prompt where it is in frame (`refe
 ## 5. Staging around known weak spots
 
 Crowds, fast action, fine hand work, text on screen, mirrors and reflections, and complicated contact between two bodies often fail. When the story needs one of these, choose a staging that gets the same beat across with less risk: fewer people in frame, an insert shot, an implied action (the sound or the reaction instead of the impact), or a slower move. Do not cut the beat from the story; change how it is shown. Check the target model's file for any documented limits before deciding.
+
+## 6. Action decomposition
+
+Some actions have several physical steps, and the order of the steps is what the viewer reads: who moved first, who noticed, what the contact did, how the body answered. When a model would blend those steps into one smear, break the action into steps. The storyboard decides which steps get their own panel (`references/storyboard.md` section 10); this section says how to describe the steps.
+
+Describe each step as one observable event:
+- **Approach:** which hand or body part moves, from where, toward what, at what speed. "His right hand rises from his side and moves toward her left wrist, slowly."
+- **Notice:** where the other person's eyes go, and what the face does. "Her eyes drop to the hand. Her breath stops."
+- **Contact:** which part touches which part, and how firmly. "His fingers close around her left wrist." Keep contact simple (section 5); an insert on the hands or an implied contact often reads better than a full-body struggle.
+- **Reaction:** what the body does in answer. "Her arm tenses and twists; the keys in her other hand fall."
+- **Resolution:** the pull away, the release, or the freeze. "She pulls her wrist free; he lets his hand open."
+
+Rules:
+- One main action per short clip. Two or three of these steps can share one generation only if each is short and simple (`references/storyboard.md` section 12).
+- State the start and end of each step, so the next step starts where the last one stopped.
+- Name the hand or the body part every time, and keep screen sides fixed across steps (`references/continuity.md`).
+- Give every step a motive in the story. Do not add steps for variety.
+- For a contact moment that must be exact, use a stricter mapping: an independent keyframe image of the contact (`references/storyboard.md` section 12, type K).

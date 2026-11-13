@@ -79,7 +79,7 @@ Stability is a separate setting from movement. A locked camera can still carry a
 
 Smoothness comes from these habits:
 - State the stability for every cut, or the model chooses randomly.
-- Keep moves slow and small: "slow", "slight", "gentle". A fast move increases instability, and multiple moves make it worse (a model vendor's guide advises one move per shot, see `references/models/seedance.md`).
+- Keep moves slow and small: "slow", "slight", "gentle". A fast move increases instability, and multiple moves make it worse (a legacy Seedance 2.0 guide advises one move per shot; see `references/models/seedance/profile-legacy-2-0.md`).
 - Do not ask for shake on a static dialogue shot. Shake on a follow shot is fine; shake everywhere reads as amateur footage.
 - Describe the camera and the subject in separate sentences so the move is not blended with the action.
 
@@ -131,7 +131,7 @@ For each clip, state once at the start where people stand at the opening moment:
 
 ## 10. Coverage: which shot for which beat
 
-TV-drama coverage the observed pipeline uses as a baseline:
+Shot purposes and the building blocks of dialogue coverage are defined in `references/cinematography.md` sections 10 and 11. This section keeps the baseline the observed vertical-drama pipeline used:
 
 - **Close-ups** for emotional lines and reactions.
 - **Medium shots** for conversations.
@@ -206,7 +206,6 @@ Roughness comes from what changes at the cut. Change one thing at a time.
 - Do not fix a rough join with a dissolve or a zoom. Fix the frames, the sound or the motion that connects them.
 
 ## 15. Camera mistakes to avoid
-13. Describing the camera position in words
 
 - A shot size with no lens, angle or composition, so the model decides.
 - Two or more moves in one cut.

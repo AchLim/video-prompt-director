@@ -32,7 +32,7 @@ During release QA, a maintainer may ask for a fix to target an active `release/<
 | `src/` | The installer CLI (TypeScript) |
 | `test/` | Automated tests (`node:test`) |
 | `evals/` | Prompt scenarios run through headless Claude Code |
-| `scripts/` | Version sync and the single-file build |
+| `scripts/` | Version sync, the single-file build, and `check_registry.py` (optional, needs Python 3) |
 | `video-prompt-director.md` | Generated single-file edition. Don't edit it by hand. |
 
 ## Before you open a pull request
@@ -46,6 +46,8 @@ npm test
 ```
 
 All three run in CI on Linux, macOS and Windows.
+
+If you changed the Seedance registry, also run `npm run check:registry`. It needs Python 3 and nothing else. Without Python, follow the manual check at the top of `references/models/seedance/capability-registry.md`; the test for it is skipped when Python is missing.
 
 ### Rebuild generated files
 
