@@ -84,6 +84,8 @@ Rules:
 - Write "ends on" as a visual state, because the next panel starts from it.
 - Quick panels stay brief. Full specifications stay about the picture and the action; the wording of the video prompt still belongs to the prompt stage.
 
+For Gemini Omni Flash 1.2 drama, each beat is output as four fields (Anchor/Start Frame Image Prompt, optional End Frame Image Prompt, OF 1.2 Video + Audio Prompt, Conversational Continuity Note) and maps to one take: a 15 s continuous take, or a 10 s first-and-last-frame pair. See `references/models/omni-flash-drama.md` section 8.
+
 ## 4. How to cut a script into panels
 
 1. Find the beats: each place where something is learned, decided, or changes (section 9).

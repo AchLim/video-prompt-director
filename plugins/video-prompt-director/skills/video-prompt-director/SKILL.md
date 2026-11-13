@@ -1,7 +1,7 @@
 ---
 name: video-prompt-director
 description: "Plans storyboards and model-aware video prompts, references, audio, editing and continuity for Seedance, Veo, Kling and Runway. Also diagnoses failed generations."
-when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images, or wants a storyboard planned for AI video (panel counts, shot coverage, dialogue coverage, action broken into steps, storyboard sheets, keyframes, or mapping panels to video generations): storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage. Also use for questions about what Seedance (2.5, 2.5 Flash, 2.0, Mini) can do or its limits, reference, keyframe, storyboard, editing, extension and audio operations, and for fixing a failed Seedance generation (swapped characters, unwanted music or subtitles, edit length, glowing eyes, image upload errors)."
+when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images, or wants a storyboard planned for AI video (panel counts, shot coverage, dialogue coverage, action broken into steps, storyboard sheets, keyframes, or mapping panels to video generations): storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, Gemini Omni Flash 1.2 (OF 1.2) low-motion drama storyboards and its duration, reference and interpolation limits, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage. Also use for questions about what Seedance (2.5, 2.5 Flash, 2.0, Mini) can do or its limits, reference, keyframe, storyboard, editing, extension and audio operations, and for fixing a failed Seedance generation (swapped characters, unwanted music or subtitles, edit length, glowing eyes, image upload errors)."
 license: MIT
 metadata:
   version: "0.2.0"
@@ -33,6 +33,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
 | A question about Seedance: what it or Flash can do, a limit, a reference or editing operation, or a generation that came out wrong | F. Seedance knowledge | An answer that states each fact's status (official, user-reported, observed, tested or unverified) and the fix or fallback | `references/models/seedance.md` first, which names the version file; never answer Seedance limits from memory |
+| Gemini Omni Flash 1.2 (OF 1.2) drama: storyboard or prompts, low-motion, Flow or Gemini API | G. OF 1.2 drama | Per beat: Anchor/Start Frame Image Prompt, optional End Frame Image Prompt, OF 1.2 Video + Audio Prompt, Conversational Continuity Note, with the duration, reference and draft-pass guardrails checked | `references/models/omni-flash-drama.md`, `references/models/veo.md`, `references/visual-direction.md`, `references/audio-direction.md` |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
@@ -134,6 +135,7 @@ Load only what the current task needs.
 - `references/models/seedance/troubleshooting.md`: documented Seedance failure patterns with causes, official fixes and prompt patterns.
 - `references/models/seedance/test-log.md`: the record of real generations; the only source of the TESTED tag.
 - `references/models/platforms.md`: the user's interface limits and controls (platform facts, separate from model facts).
+- `references/models/omni-flash-drama.md`: Gemini Omni Flash 1.2 low-motion drama profile: stillness and camera rules, visual wrappers, API guardrails (3 to 15 s, 3 to 10 s with two keyframes, extension, 6-image slot map, reference-video limits, sketch sentence, 720p draft then upscale ladder), 9:16 safe zone, lens lock, three-anchor environment lock and eye-lines, audio inside the prompt, conversational edits and the four-part beat output.
 - `references/models/veo.md`: Google Veo, Gemini Omni Flash and Flow, with sources and verification date.
 - `references/models/runway.md`: Runway API models, durations, aspect ratios, prompt limit, with sources and verification date.
 - `references/models/kling.md`: Kling 4.0, 4.0 Flash and 3.0 text-to-video limits, reference syntax and prompting guidance, with sources and verification date.
@@ -164,6 +166,7 @@ Load the smallest set that covers the task. The Load column in section 1 lists e
 | "Can Seedance (or Flash) do X?" | `references/models/seedance/capability-registry.md`, the version's profile | | Everything else |
 | Seedance aspect-ratio conversion, or a generation came out wrong | `references/models/seedance/troubleshooting.md`, the version's profile | `references/models/seedance/capability-registry.md` | Craft files, unless the fix is a prompt rewrite |
 | Record or check a tested Seedance result | `references/models/seedance/test-log.md` | `references/models/seedance/capability-registry.md` | Everything else |
+| Gemini Omni Flash 1.2 drama (storyboard, prompts, limits) | `references/models/omni-flash-drama.md`, `references/models/veo.md` | `references/visual-direction.md`, `references/audio-direction.md`, `references/models/platforms.md` | Other models' files |
 | Veo, Flow, Kling, Runway | That model's file | `references/models/platforms.md` | Other models' files |
 
 Writing any prompt for a video model, whatever the model, also needs `references/constraints.md`: the model files say what the model accepts, and the constraints file says what every production prompt must rule out. Never open every file. When a profile marks a feature UNVERIFIED, say so, name the fallback, and do not read other versions' files to fill the gap.

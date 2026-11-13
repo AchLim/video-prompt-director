@@ -27,6 +27,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
 | A question about Seedance: what it or Flash can do, a limit, a reference or editing operation, or a generation that came out wrong | F. Seedance knowledge | An answer that states each fact's status (official, user-reported, observed, tested or unverified) and the fix or fallback | `references/models/seedance.md` first, which names the version file; never answer Seedance limits from memory |
+| Gemini Omni Flash 1.2 (OF 1.2) drama: storyboard or prompts, low-motion, Flow or Gemini API | G. OF 1.2 drama | Per beat: Anchor/Start Frame Image Prompt, optional End Frame Image Prompt, OF 1.2 Video + Audio Prompt, Conversational Continuity Note, with the duration, reference and draft-pass guardrails checked | `references/models/omni-flash-drama.md`, `references/models/veo.md`, `references/visual-direction.md`, `references/audio-direction.md` |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
