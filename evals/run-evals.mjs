@@ -4,7 +4,7 @@
 // Objective checks are heuristics. Writing quality is judged separately by reading the
 // outputs against each scenario's rubric (read each output against its scenario rubric).
 //
-// Usage: node evals/run-evals.mjs [--only 01-english-hook,05-three-character-confrontation] [--concurrency 4] [--model <id>]
+// Usage: node evals/run-evals.mjs [--only 01-english-hook,05-three-character-confrontation] [--concurrency 4] [--repeat 3] [--model <id>]
 // Requires: `npm run build`, and an authenticated `claude` CLI. Each scenario uses your Claude usage.
 import { spawn, spawnSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, realpathSync, writeFileSync, readFileSync } from "node:fs";
@@ -20,6 +20,7 @@ const opt = (name, dflt) => {
 };
 const only = opt("only", "")?.split(",").filter(Boolean) ?? [];
 const concurrency = Number(opt("concurrency", "4"));
+const repeat = Math.max(1, Number(opt("repeat", "1")));
 const model = opt("model", undefined);
 const TIMEOUT_MS = 10 * 60 * 1000;
 
@@ -53,9 +54,7 @@ if (!existsSync(path.join(ROOT, "dist", "cli.js"))) {
   process.exit(2);
 }
 
-const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-const outDir = path.join(ROOT, "evals", "results", stamp);
-mkdirSync(outDir, { recursive: true });
+let outDir; // set for each run below
 
 function makeProject(s) {
   const proj = realpathSync(mkdtempSync(path.join(os.tmpdir(), `vpd-eval-${s.id}-`)));
@@ -98,22 +97,42 @@ function runClaude(prompt, cwd, resumeSession) {
 function analyse(stream) {
   const events = stream.split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
   const toolUses = [];
+  const toolNames = new Map(); // tool_use id -> tool name
   for (const e of events) {
     if (e.type !== "assistant") continue;
-    for (const c of e.message?.content ?? []) if (c.type === "tool_use") toolUses.push({ name: c.name, input: c.input });
+    for (const c of e.message?.content ?? []) if (c.type === "tool_use") { toolUses.push({ name: c.name, input: c.input }); toolNames.set(c.id, c.name); }
   }
   const result = events.find((e) => e.type === "result");
   const skillUsed = toolUses.some((t) => t.name === "Skill" && JSON.stringify(t.input).includes("video-prompt-director"));
-  // Files can be read with the Read tool or with `cat`/`sed` through Bash.
-  const filesRead = toolUses.flatMap((t) => {
-    if (t.name === "Read") return [t.input?.file_path ?? ""];
-    if (t.name !== "Bash") return [];
+
+  // A file counts as consulted however the model got at it: Read, a shell command, or a search result that listed it.
+  // The shell keeps its working directory between Bash calls, so a `cd` in one call applies to the next.
+  let skillBase; // directory the model last changed into inside the skill folder
+  const filesRead = [];
+  for (const t of toolUses) {
+    if (t.name === "Read") { filesRead.push(t.input?.file_path ?? ""); continue; }
+    if (t.name !== "Bash") continue;
     const cmd = String(t.input?.command ?? "");
-    // The model often runs `cd <skill>/references && cat a.md b.md models/c.md`, so resolve each .md token against the cd target.
-    const base = /cd\s+(\S*video-prompt-director\S*)/.exec(cmd)?.[1]?.replace(/\/+$/, "");
-    const paths = cmd.match(/[\w./-]+\.md\b/g) ?? [];
-    return paths.map((p) => (base && !p.includes("video-prompt-director/") && !p.startsWith("/") ? `${base}/${p}` : p));
-  });
+    for (const m of cmd.matchAll(/\bcd\s+("[^"]+"|'[^']+'|\S+)/g)) {
+      const target = m[1].replace(/^["']|["']$/g, "").replace(/\/+$/, "");
+      if (target.includes("video-prompt-director")) skillBase = target;
+      else if (skillBase && !target.startsWith("/")) skillBase = path.posix.normalize(`${skillBase}/${target}`);
+      else skillBase = undefined;
+    }
+    for (const p of cmd.match(/[\w./-]+\.md\b/g) ?? []) {
+      filesRead.push(p.includes("video-prompt-director/") || p.startsWith("/") || !skillBase ? p : `${skillBase}/${p}`);
+    }
+  }
+  for (const e of events) {
+    if (e.type !== "user") continue;
+    for (const c of e.message?.content ?? []) {
+      if (c.type !== "tool_result" || !["Grep", "Glob"].includes(toolNames.get(c.tool_use_id))) continue;
+      const text = typeof c.content === "string" ? c.content : (c.content ?? []).map((part) => part.text ?? "").join("\n");
+      for (const m of text.matchAll(/((?:[\w./-]*\/)?(?:references|examples)\/[\w./-]+\.md)/g)) {
+        filesRead.push(m[1].includes("video-prompt-director/") ? m[1] : `video-prompt-director/${m[1]}`);
+      }
+    }
+  }
   return {
     text: result?.result ?? "",
     sessionId: result?.session_id,
@@ -121,7 +140,7 @@ function analyse(stream) {
     costUsd: result?.total_cost_usd,
     durationMs: result?.duration_ms,
     skillUsed,
-    skillFilesRead: filesRead.filter((f) => f.includes("video-prompt-director")).map((f) => f.split("video-prompt-director/").pop()),
+    skillFilesRead: [...new Set(filesRead.filter((f) => f.includes("video-prompt-director")).map((f) => f.split("video-prompt-director/").pop()))],
     filesRead,
     toolUses: toolUses.map((t) => t.name),
   };
@@ -173,6 +192,12 @@ function check(c, a) {
       const d = lines.length ? tags / lines.length : 0;
       return { pass: d <= c.max, detail: `${tags} tag(s) over ${lines.length} line(s) = ${d.toFixed(2)} per line` };
     }
+    case "knowledge": {
+      // Behavioral check: the answer must carry enough facts that only the skill's reference files supply.
+      // It does not care how the model reached the files.
+      const hit = c.facts.filter((f) => new RegExp(f.pattern, `${f.flags ?? "i"}su`).test(t)).map((f) => f.label);
+      return { pass: hit.length >= c.min, detail: `${hit.length}/${c.facts.length} facts, need ${c.min}: ${hit.join(", ") || "none"}` };
+    }
     case "read_file": {
       const ok = a.filesRead.some((f) => new RegExp(c.pattern).test(f));
       return { pass: ok, detail: ok ? "read" : `not read (read: ${a.filesRead.map((f) => path.basename(f)).join(", ")})` };
@@ -211,22 +236,35 @@ async function runOne(s) {
   return summary;
 }
 
-// Set up every project before any Claude run, so later rebuilds of dist/ can't interfere.
-for (const s of scenarios) s.project = makeProject(s);
-const queue = [...scenarios];
-const results = [];
-await Promise.all(Array.from({ length: Math.min(concurrency, queue.length) }, async () => {
-  while (queue.length) {
-    const s = queue.shift();
-    try {
-      results.push(await runOne(s));
-    } catch (e) {
-      console.log(`ERROR ${s.id}: ${e.message}`);
-      results.push({ id: s.id, title: s.title, ok: false, error: e.message, checks: [{ type: "run", pass: false, detail: e.message }] });
+const tally = new Map(); // scenario id -> number of runs that passed every objective check
+for (let rep = 1; rep <= repeat; rep++) {
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  outDir = path.join(ROOT, "evals", "results", stamp);
+  mkdirSync(outDir, { recursive: true });
+  if (repeat > 1) console.log(`\n=== Run ${rep} of ${repeat} ===`);
+  // Set up every project before any Claude run, so later rebuilds of dist/ can't interfere.
+  const runScenarios = scenarios.map((s) => ({ ...s }));
+  for (const s of runScenarios) s.project = makeProject(s);
+  const queue = [...runScenarios];
+  const results = [];
+  await Promise.all(Array.from({ length: Math.min(concurrency, queue.length) }, async () => {
+    while (queue.length) {
+      const s = queue.shift();
+      try {
+        results.push(await runOne(s));
+      } catch (e) {
+        console.log(`ERROR ${s.id}: ${e.message}`);
+        results.push({ id: s.id, title: s.title, ok: false, error: e.message, checks: [{ type: "run", pass: false, detail: e.message }] });
+      }
     }
-  }
-}));
-results.sort((a, b) => a.id.localeCompare(b.id));
-writeFileSync(path.join(outDir, "summary.json"), JSON.stringify(results, null, 2));
-const passed = results.filter((r) => r.checks.every((c) => c.pass)).length;
-console.log(`\n${passed}/${results.length} scenarios passed objective checks. Outputs: ${outDir}`);
+  }));
+  results.sort((a, b) => a.id.localeCompare(b.id));
+  writeFileSync(path.join(outDir, "summary.json"), JSON.stringify(results, null, 2));
+  const passed = results.filter((r) => r.checks.every((c) => c.pass)).length;
+  console.log(`\n${passed}/${results.length} scenarios passed objective checks. Outputs: ${outDir}`);
+  for (const r of results) tally.set(r.id, (tally.get(r.id) ?? 0) + (r.checks.every((c) => c.pass) ? 1 : 0));
+}
+if (repeat > 1) {
+  console.log(`\nStability over ${repeat} runs (passes per scenario):`);
+  for (const [id, n] of [...tally].sort(([a], [b]) => a.localeCompare(b))) console.log(`${n === repeat ? "STABLE " : n === 0 ? "FAILING" : "FLAKY  "} ${id}  ${n}/${repeat}`);
+}
