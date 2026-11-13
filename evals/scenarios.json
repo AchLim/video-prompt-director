@@ -830,5 +830,363 @@
       }
     ],
     "rubric": "One self-contained prompt per panel with camera, ordered or timed action, performance as visible behavior, an ending state, and continuity notes between panels. Uses the Flash profile: plans inside Flash's documented limits, does not apply flagship-only limits to Flash, marks timestamps or other unlisted features UNVERIFIED for Flash or writes ordered beats, keeps one camera movement per shot, and does not add dialogue."
+  },
+  {
+    "id": "25-storyboard-production-mapping",
+    "title": "Production storyboard with full panel specs and a generation mapping",
+    "prompt": "I want a storyboard for this scene, and later video prompts for Seedance 2.5. Night, a narrow apartment hallway. LINA (30s, sage-green coat, packed bag) is leaving. MARCO (30s, navy sweater) blocks the front door and says: \"You do not get to leave like this.\" Lina says nothing. He grips her wrist; she twists free and her keys fall. She says: \"Watch me.\" and leaves. A phone on the console table lights up. Vertical 9:16. Start with the storyboard.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "\\b(Panel|P) ?0?[6-9]\\b|\\b(Panel|P) ?1[0-5]\\b",
+        "flags": "i",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "You do not get to leave like this",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "Watch me",
+        "min": 1
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Negative prompt"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "names a storyboard mode and why",
+            "pattern": "(Production|Cinematic) (mode|storyboard)|mode:?\\**:? ?\\**(Production|Cinematic)|recommend[^\\n]{0,40}(Production|Cinematic)|Mode[^\\n]{0,12}(Production|Cinematic)"
+          },
+          {
+            "label": "panels carry the full specification (composition, positions, orientation)",
+            "pattern": "composition[\\s\\S]*(orientation|facing)|(orientation|facing)[\\s\\S]*composition"
+          },
+          {
+            "label": "a panel to generation mapping is shown",
+            "pattern": "mapping[\\s\\S]*generation|generation[\\s\\S]*mapping"
+          },
+          {
+            "label": "says a panel is not automatically one clip",
+            "pattern": "not (automatically|always|necessarily)[^\\n]{0,30}(one|a|the same as a) (clip|generation|video)|(does|do)n't (automatically )?(equal|map)|does not (automatically )?(equal|map)|not every panel"
+          },
+          {
+            "label": "the grab is split into steps",
+            "pattern": "(approach|reach)[\\s\\S]{0,1500}(notice|eyes)[\\s\\S]{0,1500}(grab|grip)"
+          },
+          {
+            "label": "uses mapping types or equivalent (clip, shots in one generation, keyframe, post)",
+            "pattern": "keyframe[\\s\\S]*(post|overlay|edit)|(post|overlay|edit)[\\s\\S]*keyframe"
+          },
+          {
+            "label": "stops for approval before prompts",
+            "pattern": "approv|before I write (the )?prompts|wait for|once you (confirm|approve)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Recommends Production (detailed) or Cinematic mode with a reason, in the 9 to 12 panel range; each panel carries shot size, angle, composition, positions, orientation, expression, action, props, camera movement, purpose, continuity and ending state; the grab is decomposed into approach, notice, grab, reaction and pull away; coverage uses an establishing shot, over-the-shoulder, a reaction and an insert by purpose; the dialogue is exact; the panel-to-generation mapping distinguishes independent clips, shots inside one generation, keyframes and post-production, and says a panel is not automatically a clip; it stops for approval and does not write finished video prompts.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Panel labels such as 'P06' and 'Mode:** Production' failed the first patterns on wording; both are accepted. The full-specification fact is unchanged: a first run showed the model shortening Production panels, which was a real gap and was fixed in storyboard.md."
+    }
+  },
+  {
+    "id": "26-storyboard-quick-scene",
+    "title": "A simple scene gets a Quick storyboard, not a padded one",
+    "prompt": "Storyboard this for a vertical clip, nothing fancy: MIRA comes home, puts her keys on the counter and sees a note. She reads it and her face falls. No dialogue. Then wait for my approval.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "Panel",
+        "flags": "i",
+        "min": 3
+      },
+      {
+        "type": "not_regex",
+        "pattern": "Panel 0?[7-9]|Panel 1[0-9]",
+        "flags": "i"
+      },
+      {
+        "type": "knowledge",
+        "min": 4,
+        "facts": [
+          {
+            "label": "names Quick mode",
+            "pattern": "Quick"
+          },
+          {
+            "label": "states how each panel ends",
+            "pattern": "Ends on|ending state|carries out"
+          },
+          {
+            "label": "waits for approval",
+            "pattern": "approv|wait for|before I write"
+          },
+          {
+            "label": "says there is no dialogue",
+            "pattern": "no dialogue|nobody speaks|no one speaks|silent|no spoken"
+          },
+          {
+            "label": "three to five panels",
+            "pattern": "Panel 0?[345]\\b"
+          }
+        ]
+      }
+    ],
+    "rubric": "Recommends Quick mode and gives about three to five panels, each a meaningful beat (arrival, the keys and the note, the face falling), not two panels and not a padded set; states who is in frame and how each panel ends; keeps to no dialogue; stops for approval."
+  },
+  {
+    "id": "27-action-decomposition-wrist",
+    "title": "A grab is decomposed into the steps that matter",
+    "prompt": "In my scene a man grabs a woman's wrist as she tries to leave. She notices it coming, he grabs, she jerks free and pulls away. How should the storyboard show that? Don't write video prompts yet.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "separate panels for the steps",
+            "pattern": "separate panels?|own panel|a panel (for|per) (each|every) step|one panel per step|split (it|the action)"
+          },
+          {
+            "label": "the approaching hand",
+            "pattern": "approach|hand (rises|moves|reaches)|reaching"
+          },
+          {
+            "label": "the woman noticing",
+            "pattern": "notice|noticing|eyes (drop|go|move)|her eyes"
+          },
+          {
+            "label": "the grab as its own contact moment",
+            "pattern": "grab|grip|contact"
+          },
+          {
+            "label": "the physical reaction",
+            "pattern": "reaction|twist|tense|jerk"
+          },
+          {
+            "label": "the pull away or release",
+            "pattern": "pull(s|ing)? (away|free)|release|let(s)? go"
+          },
+          {
+            "label": "keeps contact simple with an insert or a keyframe",
+            "pattern": "insert|keyframe|implied|simple"
+          },
+          {
+            "label": "names which hand or body part",
+            "pattern": "(left|right) (hand|wrist|arm)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Splits the action into panels for the approaching hand, the other person noticing, the grab, the physical reaction and the pull away or release, with a reason (the viewer needs the order); names the hand or body part; keeps the contact simple (an insert or an independent keyframe for the grab); does not write video prompts."
+  },
+  {
+    "id": "28-dialogue-coverage-selection",
+    "title": "Dialogue coverage chosen by purpose, not every angle",
+    "prompt": "Two people argue at a kitchen table: she accuses him of lying, he denies it, then she puts a receipt on the table and he goes quiet. Plan the shots for the storyboard. I don't want every possible angle, just what the scene needs.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "an establishing two-shot",
+            "pattern": "two-shot|establishing"
+          },
+          {
+            "label": "over-the-shoulder or shot and reverse shot",
+            "pattern": "over[- ]the[- ]shoulder|shot[- ]reverse|reverse[- ]shot"
+          },
+          {
+            "label": "an insert on the receipt",
+            "pattern": "insert[\\s\\S]{0,300}receipt|receipt[\\s\\S]{0,300}insert|close-up[^\\n]{0,40}receipt"
+          },
+          {
+            "label": "a listener reaction",
+            "pattern": "reaction|listener|the turn|realis[ez]|his eyes drop|eyes drop"
+          },
+          {
+            "label": "the silence or pause when he goes quiet",
+            "pattern": "silence|pause|goes quiet|held|doesn't speak|does not speak|wordless|no words"
+          },
+          {
+            "label": "chosen by purpose, not every angle",
+            "pattern": "purpose|not every|only what|skip|Task:|only needs|the shots below|just what"
+          },
+          {
+            "label": "screen sides or eyelines kept",
+            "pattern": "screen side|screen (left|right)|eyeline|180|line between|neither side swaps"
+          }
+        ]
+      }
+    ],
+    "rubric": "Chooses an establishing two-shot, over-the-shoulder or shot and reverse shot, a close-up on the line or turn that matters, an insert on the receipt, a listener reaction and a held silence, each with a reason; does not list every possible angle; keeps screen sides and eyelines consistent.",
+    "revision": {
+      "date": "2026-11-13",
+      "note": "Fact patterns widened after a correct Quick-mode answer (establishing two-shot, over-the-shoulder, a receipt insert, the turn on his face, his silence, fixed screen sides) failed on wording: 'reaction', 'silence' and 'screen side' were required literally, and 'insert' and 'receipt' had to share a line."
+    }
+  },
+  {
+    "id": "29-panel-generation-mapping-types",
+    "title": "Panels are not automatically clips: the four mapping types",
+    "prompt": "I have an approved 8-panel storyboard. Explain how the panels turn into Seedance generations. Are they all separate clips? I want to see what is a clip, what is several shots in one generation, what is a keyframe, and what I do in post-production.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 6,
+        "facts": [
+          {
+            "label": "independent clip",
+            "pattern": "independent(ly)? generated clip|separate (clip|generation)|one clip|its own (clip|generation)"
+          },
+          {
+            "label": "several shots inside one generation",
+            "pattern": "several (panels|shots)[^\\n]{0,60}one generation|multi-shot|shots (inside|in) one generation|two or three[^\\n]{0,40}shots"
+          },
+          {
+            "label": "keyframe",
+            "pattern": "keyframe"
+          },
+          {
+            "label": "post-production",
+            "pattern": "post-production|in post|in the edit|overlay"
+          },
+          {
+            "label": "a panel is not automatically a clip",
+            "pattern": "not (automatically|always|necessarily)[^\\n]{0,30}(one|a|the same as a) (clip|generation|video)|(does|do)n't (automatically )?(equal|map)|does not (automatically )?(equal|map)|not every panel"
+          },
+          {
+            "label": "a mapping table",
+            "pattern": "mapping table|\\| ?Panel ?\\|"
+          },
+          {
+            "label": "dialogue and reactions separate, only closely related shots together",
+            "pattern": "closely related|two or three|2 to 3|dialogue[^\\n]{0,80}separate|separate[^\\n]{0,80}dialogue"
+          },
+          {
+            "label": "images count against the reference limit",
+            "pattern": "count(s)? (against|toward)|reference (limit|budget|count)|images count"
+          }
+        ]
+      }
+    ],
+    "rubric": "Explains the four mapping types (independent clip, several shots in one generation, keyframe, post-production), says a panel does not automatically equal a generation, shows the mapping as a table, puts important dialogue and reactions in separate generations and only closely related shots together, and notes that sheets and keyframes are images that count against the model's reference limits."
+  },
+  {
+    "id": "30-storyboard-sheet-split",
+    "title": "A long sequence is split into sheets; 15 is a recommendation, not an API limit",
+    "prompt": "My action sequence needs about 20 panels. Can I put them all on one storyboard image for Seedance?",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "the guide recommends 15 panels or fewer",
+            "pattern": "\\b15 panels|15 or fewer|fifteen"
+          },
+          {
+            "label": "a recommendation, not an API limit",
+            "pattern": "recommend[^\\n]{0,80}(not|rather than)[^\\n]{0,40}limit|not (a|an) (hard |technical |API )?limit|isn't (a|an) (hard |API |technical )?limit|not an API limit|not a technical limit"
+          },
+          {
+            "label": "split into several sheets",
+            "pattern": "multiple sheets|several sheets|two sheets|more than one sheet|split"
+          },
+          {
+            "label": "each sheet carries a continuity header or starts from the previous ending",
+            "pattern": "continuity header|starts? from the previous|previous sheet"
+          },
+          {
+            "label": "cut per generation, not the whole sequence",
+            "pattern": "per generation|one generation|each generation|that generation"
+          },
+          {
+            "label": "too many panels give still frames or the wrong order",
+            "pattern": "still frames|wrong order|wrong sequence"
+          },
+          {
+            "label": "keyframes for strict alignment",
+            "pattern": "keyframe"
+          }
+        ]
+      }
+    ],
+    "rubric": "Says no: about 20 panels should be split into several readable sheets, because Seedance's guide recommends about 15 panels or fewer per sheet (an 18-panel example gave still frames or wrong order); presents 15 as a recommendation and not an API limit; cuts each Seedance sheet from one generation; gives each sheet a continuity header; offers independent keyframes when strict alignment is needed."
+  },
+  {
+    "id": "31-seedance-sheet-and-keyframe-prompts",
+    "title": "Tool-independent sheet and keyframe image prompts",
+    "prompt": "For generation 3 of my storyboard I need two image prompts. First, a Seedance reference sheet for panels 4, 5 and 6: Marco's hand moving toward Lina's left wrist, Lina's eyes dropping to the hand, then his fingers closing around her wrist. Second, an independent keyframe image prompt for panel 6. Vertical 9:16. I will use a different image generator than the video model.",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "knowledge",
+        "min": 5,
+        "facts": [
+          {
+            "label": "line art or stick figures",
+            "pattern": "line art|stick[- ]figure|outline"
+          },
+          {
+            "label": "no text inside the image",
+            "pattern": "no (text|numbers|captions|labels)|without (any )?text|no text, numbers"
+          },
+          {
+            "label": "identity comes from separate references, not the sheet",
+            "pattern": "separate (reference|character)|identity[^\\n]{0,60}(reference|separate)|no faces|do not add[^\\n]{0,30}(faces|clothing|colour)|faces[^\\n]{0,40}(separate|reference)"
+          },
+          {
+            "label": "9:16 panels",
+            "pattern": "9:16"
+          },
+          {
+            "label": "the keyframe is one full-frame image",
+            "pattern": "keyframe[^\\n]{0,120}(single|one|full-frame|separate image)|(single|one|full-frame)[^\\n]{0,60}keyframe"
+          },
+          {
+            "label": "the sheet gives structure and rhythm only",
+            "pattern": "structure|rhythm|composition (and|only)|composition, positions"
+          },
+          {
+            "label": "names the hand and wrist in the contact",
+            "pattern": "(right|Marco's)[^\\n]{0,40}(hand|fingers)[^\\n]{0,60}(left )?wrist|left wrist"
+          },
+          {
+            "label": "tool independent wording",
+            "pattern": "any (image )?generator|tool[- ]independent|your (image )?(generator|tool)|not tied to|adjust[^\\n]{0,40}(generator|tool)"
+          }
+        ]
+      }
+    ],
+    "rubric": "Gives a simple monochrome line-art reference sheet prompt for the three panels with no text in the image, no identity detail (characters come from separate reference assets), 9:16 panels and positions and actions only; and a separate single full-frame keyframe prompt for the grab that names the hand and the wrist, matches the character references and carries no text; keeps both tool independent; notes that the sheet supplies structure and rhythm and the video prompt describes the real style."
   }
 ]

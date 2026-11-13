@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { it } from "node:test";
@@ -107,4 +108,21 @@ it("scenario 02 is the unchanged baseline and its Flash variant is marked as not
   const base = scenarios.find((s) => s.id === "02-panel-to-prompt-seedance") as { prompt: string; checks: Array<{ type: string }> };
   assert.doesNotMatch(base.prompt, /Flash/);
   assert.ok(base.checks.some((c) => c.type === "read_file"));
+});
+
+it("removes the temporary projects it created, unless asked to keep them", () => {
+  const dir = tmpDir("vpd-eval-cli-");
+  const mock = mockClaude(dir, stream(done("Rain on the glass.")));
+  const tmp = realpathSync(os.tmpdir());
+  const mine = () => readdirSync(tmp).filter((n) => n.startsWith("vpd-eval-09-no-activation-"));
+  const before = new Set(mine());
+  const run = (extra: string[]) => spawnSync(process.execPath, ["evals/run-evals.mjs", "--only", "09-no-activation", ...extra], {
+    cwd: ROOT, encoding: "utf8", env: { ...process.env, VIDEO_PROMPT_DIRECTOR_EVAL_CLI_SCRIPT: mock },
+  });
+  run([]);
+  assert.deepEqual(mine().filter((n) => !before.has(n)), [], "default run should leave no temp project behind");
+  run(["--keep-projects"]);
+  const kept = mine().filter((n) => !before.has(n));
+  assert.equal(kept.length, 1, "--keep-projects should keep the project");
+  for (const n of kept) rmSync(path.join(tmp, n), { recursive: true, force: true }); // the test cleans up after itself
 });

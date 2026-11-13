@@ -4,10 +4,10 @@
 // Objective checks are heuristics. Writing quality is judged separately by reading the
 // outputs against each scenario's rubric (read each output against its scenario rubric).
 //
-// Usage: node evals/run-evals.mjs [--only 01-english-hook,05-three-character-confrontation] [--concurrency 4] [--repeat 3] [--model <id>]
+// Usage: node evals/run-evals.mjs [--only 01-english-hook,05-three-character-confrontation] [--concurrency 4] [--repeat 3] [--keep-projects] [--model <id>]
 // Requires: `npm run build`, and an authenticated `claude` CLI. Each scenario uses your Claude usage.
 import { spawn, spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, realpathSync, writeFileSync, readFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync, readFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,6 +21,7 @@ const opt = (name, dflt) => {
 const only = opt("only", "")?.split(",").filter(Boolean) ?? [];
 const concurrency = Number(opt("concurrency", "4"));
 const repeat = Math.max(1, Number(opt("repeat", "1")));
+const keepProjects = args.includes("--keep-projects");
 const model = opt("model", undefined);
 const TIMEOUT_MS = 10 * 60 * 1000;
 
@@ -64,6 +65,13 @@ function makeProject(s) {
   if (r.status !== 0) throw new Error(`install failed: ${r.stderr}`);
   for (const f of s.fixtures ?? []) cpSync(path.join(ROOT, "evals", "fixtures", f), proj, { recursive: true });
   return proj;
+}
+
+// Remove a temporary project made by makeProject. Refuses any path that is not a vpd-eval folder inside the temp directory.
+function removeProject(dir) {
+  const tmp = realpathSync(os.tmpdir());
+  if (!dir || path.dirname(dir) !== tmp || !path.basename(dir).startsWith("vpd-eval-")) return;
+  rmSync(dir, { recursive: true, force: true });
 }
 
 function runClaude(prompt, cwd, resumeSession) {
@@ -242,8 +250,9 @@ for (let rep = 1; rep <= repeat; rep++) {
   outDir = path.join(ROOT, "evals", "results", stamp);
   mkdirSync(outDir, { recursive: true });
   if (repeat > 1) console.log(`\n=== Run ${rep} of ${repeat} ===`);
+  let runScenarios = [];
   // Set up every project before any Claude run, so later rebuilds of dist/ can't interfere.
-  const runScenarios = scenarios.map((s) => ({ ...s }));
+  runScenarios = scenarios.map((s) => ({ ...s }));
   for (const s of runScenarios) s.project = makeProject(s);
   const queue = [...runScenarios];
   const results = [];
@@ -263,6 +272,8 @@ for (let rep = 1; rep <= repeat; rep++) {
   const passed = results.filter((r) => r.checks.every((c) => c.pass)).length;
   console.log(`\n${passed}/${results.length} scenarios passed objective checks. Outputs: ${outDir}`);
   for (const r of results) tally.set(r.id, (tally.get(r.id) ?? 0) + (r.checks.every((c) => c.pass) ? 1 : 0));
+  // The temporary projects are throwaway copies this run created. Remove only those, so repeated runs do not fill the disk.
+  if (!keepProjects) for (const s of runScenarios) removeProject(s.project);
 }
 if (repeat > 1) {
   console.log(`\nStability over ${repeat} runs (passes per scenario):`);

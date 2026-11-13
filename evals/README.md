@@ -35,6 +35,8 @@ A single run is noisy: the same prompt can be worded differently each time, and 
 | `regex`, `not_regex` | The answer matches (at least `min` times) or does not match a pattern |
 | `script`, `speakers`, `tag_density` | Dialogue-language and dialogue-format checks |
 
+Each run installs a temporary copy of the skill per scenario. The evaluator removes the copies it created when the run ends, so repeated runs do not fill the disk; pass `--keep-projects` to keep them for inspection.
+
 A file counts as consulted however the model got at it: the `Read` tool, a shell command that names it, or a `Grep` or `Glob` result that lists it. The shell keeps its working directory between calls, so a `cd` in one Bash call applies to the next. Earlier versions of the evaluator missed both cases and reported correct answers as failures.
 
 ## Keeping the baseline comparable
@@ -44,6 +46,7 @@ The numbered scenarios from 01 to 15 are the original baseline. Keep them as the
 - **Scenario 02** is unchanged. Its Flash-aware update is scenario `24-panel-to-prompt-seedance-flash`, marked `variant_of` and `comparable_with_baseline: false`. Do not compare 24 with the baseline's 02.
 - **Scenario 12** has a `revision` note: its rubric now separates Seedance 2.0 shot-based timing from 2.5 integer-second timestamps, and its camera-travel pattern accepts a camera that backs away in front of a walking subject. The baseline run failed only because the answer said "backs away" and not "track" or "follow".
 - **Scenarios 08, 11, 13, 15, 16, 20 and 23** have a `revision` note: a check that counted a word or listed a few phrasings was replaced by a `knowledge` check on the facts the rubric asks for, because correct answers were failing on wording.
+- **Scenarios 25 to 31** cover the storyboard and mapping work. Scenario 01 stays unchanged as the baseline storyboard gate; its rubric text predates the mapping (it says durations fit 6-second clips), and its objective checks still hold.
 - **Scenarios 16 to 23** were added for the Seedance knowledge files. They use `knowledge` checks and carry a `revision` note where their checks were changed after first use.
 
 A scenario that changes in a way that affects its objective checks gets a `revision` note with the date and the reason, or becomes a new scenario.
