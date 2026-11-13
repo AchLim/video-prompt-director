@@ -6,8 +6,29 @@ Craft and guardrails for Gemini Omni 1.2 Flash ("OF 1.2") short dramas. Document
 
 - Subjects sit or stand. Allowed motion: slow blink, subtle head turn, hand tremor, one tear, breath, a swallow. No walking, full-body turns, gesturing or object handoffs.
 - Momentum comes from the camera: slow dolly push-in, 30 to 45 degree orbit, slow pull-back that reveals a background clue, rack focus (foreground prop to the eyes).
-- Budget: one camera move per take, plus at most one rack focus. Always "slow".
+- Budget: one camera path per take, plus at most one rack focus. The path is either a single move or one **motivated compound move** travelling a single continuous path at one constant speed (section 1.1). Always "slow", constant velocity, no change of direction mid-take.
 - Why: limb and physics warping grows with body motion; camera motion on a still subject is cheap. This mode overrides the "most shots are locked off" default.
+
+### 1.1 Single-take choreography (HEURISTIC, user's production practice, 2026-11-14)
+
+A 15 s take that only pushes in slowly reads as bland, and a film of such takes reads as one shot repeated. Design each take as a small piece of choreography, and design the takes as a sequence.
+
+**Inside a take: the motivated compound move.**
+- Start on the thing the beat is about: an intimate insert of hands or an object doing the beat's one action (a pot set down, swollen knuckles rubbed, a mug slid across a table). Hold it 1 to 3 s.
+- Then travel one continuous path to the emotion: tilt up, pan, or crane up from the insert into a tight close-up of the eyes, arriving before the line or the reaction lands. Optionally rack focus once along the way (foreground object to the eyes, or one face to the other).
+- Name the start framing, the path, the end framing and the second the camera arrives: "starts on a low tabletop insert of her hands; at 3 s a slow continuous tilt up her arm to a tight close-up of her eyes, arriving at 8 s, then holds."
+- One path only: no push then pan then tilt as separate moves, no reversal, no speed change. The body stays still while the camera travels (section 1).
+- Use stabilized-rig wording (section 7.2) for the whole path, so the model keeps constant velocity and does not warp limbs.
+
+**Across takes: vary size and angle.**
+- Alternate shot sizes and angles beat to beat: a wide or medium two-shot, a low-angle tabletop insert that tilts or racks to a face, an over-the-shoulder close-up, a tight face close-up, then wide again for the release.
+- No two consecutive takes share the same size, angle and move. No more than two push-ins in a row in an episode; prefer one push-in per three takes.
+- Keep the 180-degree line (section 7.3) while varying: over-the-shoulder and reverse close-ups stay on the same side of the line.
+- Save the widest frame for the opening context and the ending release; save the tightest frame for the turn.
+
+**Faces arriving mid-take.**
+- Ingredients mode (reference images, no start frame): the references anchor the faces, so a compound move may start on hands and arrive on a face mid-take.
+- Frames mode (start image, or start and end image): every face in the take must be in the start frame; a face that enters mid-take is invented from text. Start a Frames take on the face, or keep the move inside the frame the start image shows.
 
 ## 2. Visual wrappers (one per series, repeated in every prompt)
 
@@ -67,6 +88,7 @@ For a non-realistic wrapper (section 2), keep the sentence exact and let the wra
 ## 4. Take formats
 
 - **15 s continuous take** (default, one image or text only): include the single-shot lock (section 9.1), then `[0-5s]`, `[5-10s]`, `[10-15s]` beats: camera move, micro-acting, line, sound.
+- **Ingredients or Frames.** Ingredients mode passes reference images (character master sheets, the set) and no start frame: the prompt opens with the reference bindings and never mentions a start or end image. Frames mode passes a start image (or a start and an end image): only then does the prompt say the supplied image fixes identity, framing and light. Mark each take's mode in the plan and write only that mode's sentence.
 - **10 s first-and-last-frame** (micro-twist): supply Start and End images. The End image has the same framing, lens, light and pose; only the changed detail differs (smile gone, single tear). The prompt describes only the transition. Duration capped at 10 s (section 3.1).
 - 9:16 unless the user says otherwise. Exclusions are written inside the prompt; there is no negative-prompt parameter.
 
@@ -78,6 +100,12 @@ Audio is generated with the picture. Write dialogue, tone and sound in separate 
 `Sound: rain on glass, a clock ticking, a held breath.`
 
 Speaker tag = stable visual description plus name; tone of voice stated; lines verbatim; only the speaker's mouth moves; each sound effect tied to a beat. No music unless the user asks for it.
+
+**Inner voice-over and off-screen lines** (HEURISTIC, 2026-11-14). A named speaker in the dialogue makes the model move that person's lips, or put an off-screen person into frame.
+- Never write `CHARACTER (@tag) says:` for an inner voice-over. Label it by the mouth that stays shut, with the voice description and no tag: `Off-screen voiceover (while June's mouth remains completely closed), soft husky alto, unhurried, says: "..."`. Then state it outright: `Her lips never move.`
+- An off-screen spoken line is labelled the same way: `Off-screen voice (while Walter's mouth remains completely closed), ...`.
+- Leave the inner voice-over speaker out of any automatic voice or speaker list appended to the prompt.
+- **Solo shots.** When one person is on screen and someone else speaks or is thought about off-screen, never name the off-screen person as a noun ("toward the seated man, who is out of frame", "at the waitress"). Give the eyeline as a direction only ("slightly off-camera to screen-right") and add `Solo shot only, no other people anywhere in frame.`
 
 ## 6. Conversational edit (same location, next beat)
 
@@ -147,3 +175,6 @@ Source: the official Gemini Omni 1.2 Flash prompt guidance (summarized in `refer
 7. One lens for the episode, stabilized-rig wording with constant velocity, three anchors repeated, eye-line sides stated, one micro-atmosphere cue.
 8. Upscale path respects the ladder (720p to 1080p or 4K; 360p to 720p or 1080p).
 9. Single-shot lock phrase present (unless a montage was requested); timestamps inside the duration (10 s with two keyframes); ends with the no-subtitles clause (or quoted diegetic text with placement); no-music clause present; edits are one change plus `keep everything else the same`.
+10. Camera: one path per take (single or compound move, constant velocity), named start and end framing and arrival second; consecutive takes vary size and angle; no more than two push-ins in a row.
+11. Mode: Ingredients takes never mention a start image; Frames takes have every face in the start frame.
+12. Inner voice-over and off-screen lines labelled by the closed mouth, no tag, "lips never move" stated; solo shots name no off-screen person and carry the solo line.

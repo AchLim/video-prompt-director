@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Changed
+- OF 1.2 drama profile (`references/models/omni-flash-drama.md`): single-take camera choreography (new section 1.1). A take's camera budget is one path, either a single move or a motivated compound move (start on an insert of hands or an object, then tilt, pan or crane in one continuous constant-velocity path to a tight close-up of the eyes, with at most one rack focus), with the start framing, end framing and arrival second named. Consecutive takes vary shot size and angle (wide two-shot, low tabletop insert, over-the-shoulder close-up, tight close-up), never repeat size, angle and move, and use no more than two push-ins in a row. Faces may arrive mid-take only in Ingredients mode; in Frames mode every face is in the start frame.
+- OF 1.2 drama profile: Ingredients and Frames modes are named per take; only Frames prompts mention a supplied start or end image.
+- OF 1.2 drama profile: inner voice-over and off-screen lines are labelled by the mouth that stays shut (`Off-screen voiceover (while June's mouth remains completely closed), ...`), never `CHARACTER (@tag) says:`, with "her lips never move" stated and the speaker left out of any appended voice list. Solo shots never name the off-screen person and carry `Solo shot only, no other people anywhere in frame.` The pre-return checklist gains items 10 to 12.
+
 ## [0.3.0] - 2026-11-14
 
 ### Added
