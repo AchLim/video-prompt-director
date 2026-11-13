@@ -1,57 +1,49 @@
-# Seedance (ByteDance, via BytePlus ModelArk)
+# Seedance (ByteDance, via BytePlus ModelArk): router
 
-How to use this file: documented facts below were checked against official pages on **2026-11-11**. The pages were read through a fetch tool that summarizes them, so confirm anything that gates a paid run in the current documentation. A fact marked "not documented" was not found on the pages opened; do not fill it from memory. Pricing is not recorded here; check the provider.
+Seedance is a family of models with different limits and different features. Start here, choose the version, and load only the files the task needs. Do not apply one version's facts to another: Seedance 2.5 Flash is its own model with its own profile, and it inherits nothing from the flagship.
 
-Sources (official):
-- Tutorial: https://ai.byteplus.com/ark/region:ap-southeast-1/docs/seedance-2-0
-- Prompt guide: https://ai.byteplus.com/ark/region:ap-southeast-1/docs/seedance-2-0-prompt-guide
-- API reference: https://ai.byteplus.com/ark/region:ap-southeast-1/docs/create-video-generation-task-api
-- Mirror, shows "Last updated: October 28, 2026": https://docs.byteplus.com/en/docs/ModelArk/1520757
+All Seedance facts were re-read on **2026-11-13** from the official pages. Provenance tags are defined in `references/models/other.md`. Pricing is not recorded.
 
-## Documented capabilities (verified 2026-11-11)
+## 1. Pick the version
 
-| Item | Seedance 2.0 series | Seedance 2.5 |
+Ask once if it is not clear. A user who writes "Seedance 2.5" without "Flash" gets a question, not an assumption.
+
+| The user says | Load first | Never assume |
 |---|---|---|
-| Model IDs | `dreamina-seedance-2-0-260128`, `dreamina-seedance-2-0-fast-260128`, `dreamina-seedance-2-0-mini-260615` | `dreamina-seedance-2-5-260628` (API reference) |
-| Modes | Text-to-video, first-frame image-to-video, first-and-last-frame image-to-video, omni reference, video editing, video extension, video with audio | Not read in detail |
-| Duration | 4 to 15 seconds | Range 4 to 30, or -1 (default -1) |
-| Resolution | 480p, 720p, 1080p, 4K (Fast and mini: 480p and 720p only) | 480p, 720p, 1080p (default 720p) |
-| Aspect ratio | 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 | `adaptive` for first-frame and video edit/extend; full list not documented in what was read |
-| Reference inputs (omni reference) | Images 0 to 9, videos 0 to 3, audio 0 to 3; audio-only input not supported | Not documented in what was read |
-| Native audio | `generate_audio` parameter, default true | Same parameter in the API reference |
-| Real-face references | Not supported: direct uploads of reference images or videos containing real human faces | Not documented in what was read |
-| Prompt length | Recommended at most 500 Chinese characters or 1,000 English words; longer text can make the model drop details | Same guidance in the API reference |
-| Negative prompt | No negative-prompt parameter found | Not documented |
+| Seedance 2.5 Flash, or "Flash" | `references/models/seedance/profile-2-5-flash.md` | The flagship's 30 images, 10 videos, 10 audio clips, 1080p or Draft |
+| Seedance 2.5, flagship | `references/models/seedance/profile-2-5.md` | That Flash works the same way |
+| Seedance 2.0, 2.0 Fast or 2.0 Mini | `references/models/seedance/profile-legacy-2-0.md` | Timestamps, audio-only references, 30 s clips, `omni_reference_task_type` |
+| Not stated | Ask which version and which interface | A version |
 
-The tutorial does not mention 2.5. Check which version the user is running before choosing limits. A 4,000-character prompt limit was **not** found on any official page opened. If the user's workflow configures a limit, follow the user's configured value.
+Then read `references/models/platforms.md` for the user's own interface limits. A platform limit is not a model limit.
 
-## Prompting guidance from the official prompt guide
+## 2. Load by task
 
-- Formula: precise subject, action details, scene and environment, lighting and color tone, camera movement, then visual style, image quality and constraints.
-- Camera terms the guide uses: medium shot, close-up, wide shot, slow push-in, smooth lateral tracking, fixed shot. "Try to specify only 1 type of camera movement in a single shot."
-- Multiple references: address inputs as `Image 1`, `Image 2` and `Video 1` and say what each does. The guide also shows `@Image 1` in asset lists and templates such as "Reference <Subject_N> in <Image_N> to generate...".
-- More than 4 reference people lowers output stability; the guide recommends 4 to 5 assets in total.
-- Audio notation in the prompt: music in parentheses, sound effects in angle brackets, dialogue in braces, for example `{Hello}`. Mark less common languages, for example "says in Japanese {...}", and keep the dialogue language consistent.
-- Exclusions are written as phrases inside the prompt ("do not generate a watermark", "keep it subtitle-free"), since there is no negative-prompt parameter.
-- Timeline style ("Shot 1 / Shot 2") is shown for complex videos. The guide says support for precise timing such as 0 to 3 seconds is unstable, so treat timed beats as a guide and keep the action ordered in sentences.
+| Task | Load |
+|---|---|
+| Write a plain Seedance prompt (text-to-video, first frame) | The version's profile, then `references/models/seedance/syntax.md` |
+| Anything beyond a text prompt: references, keyframes, storyboard, clay model, editing, audio editing, extension, transitions, one-click creation, combining features | `references/models/seedance/capability-registry.md`, then the profile, then `syntax.md` |
+| "Can Seedance do X?" or "Does Flash do X?" | `references/models/seedance/capability-registry.md`, then the version's profile. Answer from the row's status, not from memory |
+| A generation came out wrong | `references/models/seedance/troubleshooting.md`, then the profile |
+| Record or check a tested result | `references/models/seedance/test-log.md` |
 
-## Production practice (not from the official pages read)
+Do not load the registry, the troubleshooting file or the clay and editing rows for a request that does not touch them.
 
-These come from one working short-drama pipeline that sends Seedance prompts, and from its notes on a vendor prompt guide. They are practice to try and check, not documented facts about the model.
+## 3. Where the old content went
 
-- **Language:** the pipeline writes the whole prompt body in one language, Chinese, with dialogue in a single language. Ask the user which language to use; the official guide checked above only says the dialogue language must be consistent.
-- **Order, not seconds:** inside the prompt body it describes what happens in order (camera, then action and expression, then position change) and does not write second ranges, because the official guide calls precise timing unstable.
-- **Generic identity:** it refers to people by a visual description and the reference id, not by name, and keeps names for dialogue. The pipeline's notes cite the vendor's guide for this; confirm it for the version in use.
-- **One camera move per cut.**
-- **References:** four to five assets, most important first; headshot plus full-body, not multi-view sheets.
-- **Subtitles:** use "keep it subtitle-free" and check; the vendor FAQ says it cannot be fully prevented.
-- **Chinese dialogue pronunciation:** rare or polyphonic characters are sometimes misread; a common homophone can be substituted.
-- **Narrated clips:** a noise at the very end is possible, so fade out in post.
+This file used to hold the Seedance facts. They are now organized by version:
 
-## How the skill applies this
+| Former content | Now in |
+|---|---|
+| Model IDs, modes, durations, resolutions, ratios, reference counts, audio, real-face rule, prompt length | `profile-2-5.md` for 2.5; `profile-legacy-2-0.md` for the 2.0 series |
+| The prompt formula, camera terms, reference binding, audio notation, timeline and exclusion guidance | `syntax.md` |
+| "Production practice" notes (language, order, generic identity, references, subtitles, pronunciation, narration noise) | `profile-legacy-2-0.md`, tagged OBSERVED |
+| The statement that no 4,000-character prompt limit was found on any official page | `references/models/platforms.md` (the user's interface limit is USER-REPORTED and separate) |
 
-- Use the model's reference syntax and state each reference's role (`references/continuity.md`).
-- One camera movement per shot.
-- Put exact dialogue in braces if the user wants Seedance to speak it, and ask whether native audio should be on before adding any audio text.
-- Keep the prompt well under the recommended length and put the essentials first.
-- Use inline exclusions instead of a negative field.
+## 4. Rules that hold for every version
+
+- State the version and the interface before writing limits into a prompt.
+- Put exclusions inside the prompt; no negative-prompt parameter is documented.
+- Bind every asset in the prompt with a role, in the order the subjects first appear.
+- Say what is official, what is this skill's pattern, and what is untested. A feature the documentation lists without an example stays in the registry with its true status; do not drop it and do not promote it.
+- When the documentation conflicts, report both statements and mark the point UNVERIFIED (`capability-registry.md`, discrepancies).

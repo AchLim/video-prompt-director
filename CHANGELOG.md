@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Added
+- Seedance capability registry (`references/models/seedance/capability-registry.md`): 82 capabilities the official documentation names (generation, reference-to-video, 3D clay-model workflows, video and audio editing, extension and assembly, platform and API), each with its official coverage, its status per version (2.5, 2.5 Flash, 2.0 series) and its source. Features that the documentation lists without an example stay in the registry with their true status. Thirteen documentation discrepancies are recorded and left UNVERIFIED.
+- Separate Seedance profiles: `profile-2-5.md` (flagship parameters, task types, Draft mode, output specs, errors), `profile-2-5-flash.md` (provisional; what is official, user-reported or unverified, and a re-verification checklist) and `profile-legacy-2-0.md` (2.0, Fast and Mini).
+- Seedance syntax (`syntax.md`) and a troubleshooting knowledge base (`troubleshooting.md`) covering the failure patterns the official guides document, with causes, official fixes and prompt patterns.
+- Platform facts kept apart from model facts (`references/models/platforms.md`), and a test log (`references/models/seedance/test-log.md`) that is the only source of the TESTED tag.
+- Provenance tags (OFFICIAL, USER-REPORTED, OBSERVED, HEURISTIC, TESTED, UNVERIFIED) in `references/models/other.md`.
+- A reference loading matrix in `SKILL.md`, so a request opens only the files it needs.
+- An optional registry validator (`scripts/check_registry.py`, Python standard library, `npm run check:registry`) with a test that breaks the registry on purpose.
+- Nine evals for Seedance behavior (16 to 24): Flash limits, role exclusivity, edit duration, unwanted music, character swapping, aspect conversion, audio references, listed-only features, and a Flash variant of the panel-to-prompt scenario. Scenario 02 is kept unchanged as the baseline; scenario 24 is its updated variant and is marked as not comparable with the baseline.
+- Evaluator: a `knowledge` check type (behavioral, independent of which tool the model used), a `--repeat N` option with a stability table, and `evals/README.md` explaining check types, baselines and how to read repeated runs.
+
+### Changed
+- `references/models/seedance.md` is now a router to the version profiles. Its former facts moved into the profiles, retagged by provenance.
+- The Seedance 2.5 Flash model is no longer assumed to share the flagship's limits.
+- `SKILL.md` routes Seedance capability, limit and troubleshooting questions (workflow F) and carries a reference loading matrix. `when_to_use` mentions them, which only affects Claude Code, because the Claude.ai export drops that field.
+- Eval scenario 12: the rubric separates Seedance 2.0 shot-based timing from 2.5 integer-second timestamps, and the camera-travel pattern accepts a camera that backs away in front of a walking subject.
+
+### Fixed
+- Removed stray contents lines left inside the body of `constraints.md`, `continuity.md`, `camera-language.md` and `performance.md`.
+- The eval evaluator ignored a file read through a later Bash call after a `cd`, and a file that a `Grep` result surfaced, so correct answers were scored as failures. It now counts both.
+
 ## [0.2.0] - 2026-11-11
 
 ### Added

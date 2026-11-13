@@ -1,7 +1,7 @@
 ---
 name: video-prompt-director
 description: "Turns scripts and approved storyboards into model-ready AI video prompts: camera, timed action, natural acting, dialogue, continuity, and a quality check. Seedance, Veo, Kling, Runway."
-when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images: storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage."
+when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images: storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage. Also use for questions about what Seedance (2.5, 2.5 Flash, 2.0, Mini) can do or its limits, reference, keyframe, storyboard, editing, extension and audio operations, and for fixing a failed Seedance generation (swapped characters, unwanted music or subtitles, edit length, glowing eyes, image upload errors)."
 license: MIT
 metadata:
   version: "0.2.0"
@@ -20,7 +20,7 @@ This skill writes prompts and storyboards. It does not generate video, and it do
 Check what the user already supplied (script, storyboard, shot list, reference images, earlier prompts, project files) before asking. Ask only for what is missing and matters. State any assumption the user can veto.
 
 1. **Source.** A script, a storyboard, loose shot descriptions, or an existing prompt to fix. Any of these is a valid start.
-2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. If unnamed, ask once, or write a model-neutral prompt and say so.
+2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. For Seedance, also the version (2.5, 2.5 Flash, or the 2.0 series) and the interface, because each has its own limits. If unnamed, ask once, or write a model-neutral prompt and say so.
 3. **Clip length.** Seconds per generation, as the user states it. Do not assume a model's limit; read `references/models/` and check the date.
 4. **References.** Which images define identity, wardrobe, environment or style, and what each one controls.
 5. **Dialogue and audio.** Exact lines, who speaks, in what language, and whether the model should generate audio. Keep audio out of visual prompts unless the user asks and the model supports it.
@@ -32,6 +32,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
+| A question about Seedance: what it or Flash can do, a limit, a reference or editing operation, or a generation that came out wrong | F. Seedance knowledge | An answer that states each fact's status (official, user-reported, observed, tested or unverified) and the fix or fallback | `references/models/seedance.md` first, which names the version file; never answer Seedance limits from memory |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
@@ -59,7 +60,7 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Rule out what models add on their own.** By default: no generated text, subtitles, logos or watermarks, no background music, no extra people, no change to faces or wardrobe, and no zoom or dissolve at a cut. List who is in each shot and state that no one else appears. Apply the user's changes to these defaults. See `references/constraints.md`.
 
-**Never invent model facts.** Do not state a model's limits, supported inputs, prompt-length cap or price from memory. Use `references/models/`, which gives each documented fact with its source and verification date. If a fact is missing or old, say so and ask the user to confirm it in the model's current documentation.
+**Never invent model facts.** Do not state a model's limits, supported inputs, prompt-length cap or price from memory. Use `references/models/`, which gives each documented fact with its source and verification date. If a fact is missing or old, say so and ask the user to confirm it in the model's current documentation. Facts carry a provenance tag (OFFICIAL, USER-REPORTED, OBSERVED, HEURISTIC, TESTED, UNVERIFIED); the rules for them are in `references/models/other.md`. Documentation that conflicts stays UNVERIFIED, and a model with no page of its own does not inherit its neighbour's limits.
 
 ## 3. Output format
 
@@ -103,10 +104,39 @@ Load only what the current task needs.
 - `references/continuity.md`: character identity, wardrobe, props, spatial relationships, screen direction, shot-to-shot checks, reference-image roles, the continuity ledger.
 - `references/constraints.md`: defaults that every production prompt rules out (text and subtitles, music, extra people, identity and wardrobe drift, cuts, replayed actions, leaked instructions) and how to word them.
 - `references/prompt-quality.md`: the validation checklist, scoring, contradiction and length checks, and how to revise.
-- `references/models/seedance.md`: Seedance (BytePlus ModelArk) limits, reference syntax, audio notation and prompting guidance, with sources and verification date.
+- `references/models/seedance.md`: router for Seedance (BytePlus ModelArk): which version file to load, which file for which task, and where the older Seedance facts moved.
+- `references/models/seedance/capability-registry.md`: every Seedance capability the official documentation names, with its evidence status per version (2.5, Flash, 2.0 series), discrepancies and traceability.
+- `references/models/seedance/profile-2-5.md`: Seedance 2.5 flagship limits, task types, parameters, Draft mode, output specs, errors and rules, with sources and read date.
+- `references/models/seedance/profile-2-5-flash.md`: Seedance 2.5 Flash, provisional: what is official, user-reported or unverified, and the re-verification checklist.
+- `references/models/seedance/profile-legacy-2-0.md`: the Seedance 2.0 series (2.0, Fast, Mini): limits, behavior that differs from 2.5, and observed practice.
+- `references/models/seedance/syntax.md`: Seedance prompt formulas, reference binding, audio markup, timestamps, trigger wording and constraint wording by version.
+- `references/models/seedance/troubleshooting.md`: documented Seedance failure patterns with causes, official fixes and prompt patterns.
+- `references/models/seedance/test-log.md`: the record of real generations; the only source of the TESTED tag.
+- `references/models/platforms.md`: the user's interface limits and controls (platform facts, separate from model facts).
 - `references/models/veo.md`: Google Veo, Gemini Omni Flash and Flow, with sources and verification date.
 - `references/models/runway.md`: Runway API models, durations, aspect ratios, prompt limit, with sources and verification date.
 - `references/models/kling.md`: Kling 4.0, 4.0 Flash and 3.0 text-to-video limits, reference syntax and prompting guidance, with sources and verification date.
 - `references/models/other.md`: any other model, and how to add a model file.
 - `examples/production-prompt.md`: one complete series-clip prompt built with the anatomy, with recorded dialogue.
 - `examples/weak-vs-strong-prompts.md`: weak and strong prompts for natural movement, emotional acting, dialogue and multi-character scenes.
+
+## Reference loading matrix
+
+Load the smallest set that covers the task. The Load column in section 1 lists everything a workflow can use; this matrix says what to open for a given request, and wins when the two differ. Open a file because the request touches it, not because the workflow names it.
+
+| The request | Load | Load only if it applies | Do not load |
+|---|---|---|---|
+| A script or scene, no storyboard | `references/storyboard.md`, `references/cinematography.md` | `references/episode-beats.md` (short drama or series), `references/camera-language.md` (camera moves, several cuts) | Model files, `references/constraints.md`, `references/prompt-quality.md` |
+| Approved storyboard to prompts | `references/prompt-anatomy.md`, `references/cinematography.md`, `references/performance.md`, `references/constraints.md`, the target model's file | `references/pacing.md` (dialogue or a tight duration), `references/continuity.md` (more than one shot), `references/camera-language.md` (a move or cuts), `references/physical-realism.md` (objects, hands, contact, crowds), `references/episode-beats.md` (short drama), the examples (to see the level expected) | Files for models the user is not using |
+| One dialogue clip | `references/performance.md`, `references/pacing.md`, `references/constraints.md` | `references/prompt-anatomy.md` (a series clip with recorded audio), the model's file | `references/physical-realism.md` unless an object matters |
+| Repair a prompt | `references/prompt-quality.md`, `references/constraints.md` | Only the craft files the diagnosed problems touch | The rest |
+| Adapt to another model | The target model's file, `references/prompt-quality.md` | `references/models/other.md` (unlisted model) | Other models' files |
+| Several shots in one scene | `references/continuity.md` | `references/camera-language.md` (cuts and joins), `references/pacing.md` | Files for single-shot craft already applied |
+| Seedance, plain text-to-video or first-frame prompt | `references/constraints.md`, `references/models/seedance.md`, then the version's profile under `references/models/seedance/`, then `references/models/seedance/syntax.md` | The craft files that the prompt-writing rows above name for the shot (`references/cinematography.md`, `references/performance.md`, and so on); `references/models/platforms.md` (limits of the user's interface) | The registry, troubleshooting, editing and clay material |
+| Seedance beyond a text prompt: references, keyframes, storyboard reference, clay model, editing, audio editing, extension, transition, one-click creation, combined features | `references/models/seedance/capability-registry.md`, the version's profile, `references/models/seedance/syntax.md` | `references/constraints.md` (whenever a generation prompt is written), the craft files for the shot, `references/models/platforms.md` | Rows and notes about features the request does not use. A clay model is only for a clay-model asset or a request that names it |
+| "Can Seedance (or Flash) do X?" | `references/models/seedance/capability-registry.md`, the version's profile | | Everything else |
+| A Seedance generation came out wrong | `references/models/seedance/troubleshooting.md`, the version's profile | `references/models/seedance/capability-registry.md` | Craft files, unless the fix is a prompt rewrite |
+| Record or check a tested Seedance result | `references/models/seedance/test-log.md` | `references/models/seedance/capability-registry.md` | Everything else |
+| Veo, Flow, Kling, Runway | That model's file | `references/models/platforms.md` | Other models' files |
+
+Writing any prompt for a video model, whatever the model, also needs `references/constraints.md`: the model files say what the model accepts, and the constraints file says what every production prompt must rule out. Never open every file. When a profile marks a feature UNVERIFIED, say so, name the fallback, and do not read other versions' files to fill the gap.

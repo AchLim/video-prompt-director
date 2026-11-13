@@ -14,7 +14,7 @@ This skill writes prompts and storyboards. It does not generate video, and it do
 Check what the user already supplied (script, storyboard, shot list, reference images, earlier prompts, project files) before asking. Ask only for what is missing and matters. State any assumption the user can veto.
 
 1. **Source.** A script, a storyboard, loose shot descriptions, or an existing prompt to fix. Any of these is a valid start.
-2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. If unnamed, ask once, or write a model-neutral prompt and say so.
+2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. For Seedance, also the version (2.5, 2.5 Flash, or the 2.0 series) and the interface, because each has its own limits. If unnamed, ask once, or write a model-neutral prompt and say so.
 3. **Clip length.** Seconds per generation, as the user states it. Do not assume a model's limit; read `references/models/` and check the date.
 4. **References.** Which images define identity, wardrobe, environment or style, and what each one controls.
 5. **Dialogue and audio.** Exact lines, who speaks, in what language, and whether the model should generate audio. Keep audio out of visual prompts unless the user asks and the model supports it.
@@ -26,6 +26,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
+| A question about Seedance: what it or Flash can do, a limit, a reference or editing operation, or a generation that came out wrong | F. Seedance knowledge | An answer that states each fact's status (official, user-reported, observed, tested or unverified) and the fix or fallback | `references/models/seedance.md` first, which names the version file; never answer Seedance limits from memory |
 
 Users describe goals in their own words. They do not need to name a workflow.
 
@@ -53,7 +54,7 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Rule out what models add on their own.** By default: no generated text, subtitles, logos or watermarks, no background music, no extra people, no change to faces or wardrobe, and no zoom or dissolve at a cut. List who is in each shot and state that no one else appears. Apply the user's changes to these defaults. See `references/constraints.md`.
 
-**Never invent model facts.** Do not state a model's limits, supported inputs, prompt-length cap or price from memory. Use `references/models/`, which gives each documented fact with its source and verification date. If a fact is missing or old, say so and ask the user to confirm it in the model's current documentation.
+**Never invent model facts.** Do not state a model's limits, supported inputs, prompt-length cap or price from memory. Use `references/models/`, which gives each documented fact with its source and verification date. If a fact is missing or old, say so and ask the user to confirm it in the model's current documentation. Facts carry a provenance tag (OFFICIAL, USER-REPORTED, OBSERVED, HEURISTIC, TESTED, UNVERIFIED); the rules for them are in `references/models/other.md`. Documentation that conflicts stays UNVERIFIED, and a model with no page of its own does not inherit its neighbour's limits.
 
 ## 3. Output format
 
