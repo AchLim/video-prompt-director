@@ -81,9 +81,6 @@ Do not add audio, music or sound-effect instructions to a visual prompt unless t
 Example: "The woman speaks in a restrained, trembling voice: 'You knew.' Her lips move naturally with the line. She glances away before the last word. The man says nothing and watches her, his jaw tight."
 
 ## 7. Listeners and conversation
-8. What models render reliably
-9. Per-line delivery, voice and lip-sync
-10. Every person gets a direction
 
 - The speaker gestures when it fits the line. The listener reacts at meaningful moments, not constantly.
 - Do not give both people the same gesture, the same head movement, or synchronized blinks.
@@ -92,8 +89,6 @@ Example: "The woman speaks in a restrained, trembling voice: 'You knew.' Her lip
 - In shot-reverse-shot coverage, keep each person's eyeline and screen direction consistent across panels (`references/continuity.md`).
 
 ## 8. What models render reliably
-9. Per-line delivery, voice and lip-sync
-10. Every person gets a direction
 
 Production notes from a working short-drama pipeline: models draw some direction well and some not at all. Write for what they draw.
 

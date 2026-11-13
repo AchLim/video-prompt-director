@@ -94,12 +94,6 @@ Performance notes, delivery notes and constraints can leak: a model may speak th
 - **Do not contradict yourself.** Do not exclude "movement" in a shot that has a walk.
 
 ## 10. Where a constraint goes
-11. Sound in layers
-12. Look and style wording
-13. Do not add story content
-14. Recorded dialogue: the full rules
-15. Silent lip-sync mode
-16. Other defaults
 
 | Kind | Put it |
 |---|---|
@@ -128,9 +122,6 @@ A sound line is also a direction. If the sound line says "the bell explodes on i
 - **Realistic references still need a style line.** A vendor FAQ notes that realistic reference images with no style words can drift to a different look.
 
 ## 13. Do not add story content
-14. Recorded dialogue: the full rules
-15. Silent lip-sync mode
-16. Other defaults
 
 Do not add people, props, actions, dialogue or visible text that the script and storyboard do not contain. A storyboard assembles assets; it does not invent. Do not use era words ("ancient", "period costume") as pictures; describe garments, objects and architecture instead.
 

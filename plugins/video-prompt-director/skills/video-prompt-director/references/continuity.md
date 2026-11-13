@@ -68,10 +68,6 @@ For each adjacent pair of prompts:
 Fix what fails by editing the prompts. Do not return a list of continuity problems you could have resolved.
 
 ## 7. The continuity ledger
-8. Identity anchors, costume variants, and reference sets
-9. State changes need a cause
-10. Attach only what is in the clip
-11. Room map and screen sides
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
 
@@ -83,9 +79,6 @@ For more than two shots, keep a short ledger and update it per shot. Show it to 
 ```
 
 ## 8. Identity anchors, costume variants, and reference sets
-9. State changes need a cause
-10. Attach only what is in the clip
-11. Room map and screen sides
 
 Practices from a working series pipeline, useful when a series runs over many clips.
 

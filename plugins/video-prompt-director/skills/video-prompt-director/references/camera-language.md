@@ -206,7 +206,6 @@ Roughness comes from what changes at the cut. Change one thing at a time.
 - Do not fix a rough join with a dissolve or a zoom. Fix the frames, the sound or the motion that connects them.
 
 ## 15. Camera mistakes to avoid
-13. Describing the camera position in words
 
 - A shot size with no lens, angle or composition, so the model decides.
 - Two or more moves in one cut.
