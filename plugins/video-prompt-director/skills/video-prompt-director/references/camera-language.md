@@ -79,7 +79,7 @@ Stability is a separate setting from movement. A locked camera can still carry a
 
 Smoothness comes from these habits:
 - State the stability for every cut, or the model chooses randomly.
-- Keep moves slow and small: "slow", "slight", "gentle". A fast move increases instability, and multiple moves make it worse (a model vendor's guide advises one move per shot, see `references/models/seedance.md`).
+- Keep moves slow and small: "slow", "slight", "gentle". A fast move increases instability, and multiple moves make it worse (a legacy Seedance 2.0 guide advises one move per shot; see `references/models/seedance/profile-legacy-2-0.md`).
 - Do not ask for shake on a static dialogue shot. Shake on a follow shot is fine; shake everywhere reads as amateur footage.
 - Describe the camera and the subject in separate sentences so the move is not blended with the action.
 

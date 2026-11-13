@@ -17,12 +17,12 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. For Seedance, also the version (2.5, 2.5 Flash, or the 2.0 series) and the interface, because each has its own limits. If unnamed, ask once, or write a model-neutral prompt and say so.
 3. **Clip length.** Seconds per generation, as the user states it. Do not assume a model's limit; read `references/models/` and check the date.
 4. **References.** Which images define identity, wardrobe, environment or style, and what each one controls.
-5. **Dialogue and audio.** Exact lines, who speaks, in what language, and whether the model should generate audio. Keep audio out of visual prompts unless the user asks and the model supports it.
+5. **Dialogue and audio.** Exact lines and speakers, spoken language, and the audio plan: native audiovisual, dialogue-only, supplied recording, or silent picture. Check the model and interface; use `references/audio-direction.md`.
 
 | Request looks like | Workflow | Deliver | Load |
 |---|---|---|---|
 | A script or scene and no storyboard | A. Storyboard | Panels planned by mode (Quick, Production, Cinematic), each a meaningful shot or beat with its full specification in Production and Cinematic modes, plus a panel-to-generation mapping, for the user to approve; sheet and keyframe image prompts on request | `references/storyboard.md`, `references/cinematography.md`, `references/episode-beats.md` (short dramas and series episodes), `references/camera-language.md`, `references/physical-realism.md` (contact or multi-step action), `references/storyboard-images.md` (sheets and keyframes) |
-| An approved storyboard, "write the prompts" | B. Panel to prompt | One shot block per panel, each with a ready-to-paste prompt | `references/episode-beats.md` (short dramas and series episodes), `references/prompt-anatomy.md`, `references/pacing.md`, `references/cinematography.md`, `references/camera-language.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` and `examples/production-prompt.md` for the level expected |
+| An approved storyboard, "write the prompts" | B. Panel to prompt | Draft and confirm a panel-to-generation mapping if one is missing, then one ready-to-paste prompt per approved generation | `references/episode-beats.md` (short dramas and series episodes), `references/prompt-anatomy.md`, `references/pacing.md`, `references/cinematography.md`, `references/camera-language.md`, `references/performance.md`, `references/physical-realism.md`, `references/continuity.md`, `references/constraints.md`, the model file, and `examples/weak-vs-strong-prompts.md` and `examples/production-prompt.md` for the level expected |
 | An existing prompt that looks stiff, frozen or wrong | C. Prompt repair | Diagnosis, then the corrected prompt | `references/prompt-quality.md`, `references/constraints.md`, `examples/weak-vs-strong-prompts.md`, plus the craft files the problems touch |
 | "Make this work for Kling/Veo/..." | D. Model adaptation | The same shot compiled for another model, with what changed and why | The target `references/models/` file, `references/prompt-quality.md` |
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
@@ -30,7 +30,17 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 
 Users describe goals in their own words. They do not need to name a workflow.
 
-**Storyboard gate.** If the user supplied no storyboard, make one first and let them approve or change it before you write any prompts, unless they said to go straight through. A supplied storyboard counts as approved. If the user only wants one shot, treat their shot description as the panel. A panel is a shot or a visual beat, not automatically one clip: the mapping in `references/storyboard.md` says which panels become independent clips, shots inside one generation, keyframes, or post-production, and the user approves it with the panels.
+For a model limit stated only as a maximum, do not claim a particular lower value is supported when its minimum or permitted values are unknown. Mark the duration UNVERIFIED and suggest confirming it in the user's interface.
+
+For a Seedance capability or API question, actually consult the registry and the named version profile before answering, even when you remember a plausible value. Do not say a Flash-specific method is a working default when the mode is unverified.
+
+For capability answers, USER-REPORTED means a statement from this user, not a third-party claim. Attribute external claims to their actual source and leave support unverified unless the relevant model's evidence establishes it.
+
+When a recording is supplied, identify the version and interface before promising native audio handling. If exact passthrough is undocumented, say it is UNVERIFIED before the prompt, use a silent picture plus the original recording mixed in post as the default fallback, and treat lip-sync as an experiment. Do not write a prompt that requires unverified passthrough as though it were a supported setting.
+
+**Storyboard gate.** If the user supplied no storyboard, make one first and let them approve or change it before you write any prompts, unless they said to go straight through. A supplied storyboard counts as approved unless marked draft, but a missing panel-to-generation mapping must still be proposed and approved before final prompts unless the user explicitly asks to proceed in one pass. If the user explicitly asks for one shot, treat their description as the panel and its one-generation mapping; no separate approval step is needed. A panel is a shot or a visual beat, not automatically one clip: the mapping in `references/storyboard.md` says which panels become independent clips, shots inside one generation, keyframes, or post-production, and the user approves it with the panels.
+
+**Reference sheets follow the mapping.** For a long sequence, plan which shots belong to each generation first; each Seedance reference sheet shows only its own generation's panels. Split for readability and continuity, not at arbitrary scene-wide panel counts. Seedance's recommendation of at most about 15 panels per sheet is not an API limit. A sheet guides structure, while keyframes can improve alignment without guaranteeing it (`references/storyboard-images.md`).
 
 ## 2. Craft rules for every shot
 
@@ -44,7 +54,7 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 **Keep physical action simple.** Describe hand and object interactions step by step, one main action per short clip, and avoid contact choreography a model will likely break. See `references/physical-realism.md`.
 
-**Dialogue is exact and has to fit.** Preserve supplied lines word for word, assign each to its speaker, never invent lines, and check that the speech fits the clip with room for the action (`references/pacing.md`). For a supplied recording, follow `references/constraints.md` section 14. See `references/performance.md` section 6.
+**Dialogue is exact and has to fit.** Preserve supplied lines word for word, assign each to its speaker, never invent lines, and check that the speech fits the clip with room for the action (`references/pacing.md`). If the line does not fit, propose a longer clip or split it; show the complete unchanged line or the complete split, and do not output a rushed version as a workable solution. For a supplied recording, follow `references/constraints.md` section 14: ask for the model and interface, state when exact playback and lip-sync are unverified, and offer mixing the original in post. Never assume audio timing or claim the model will preserve it. See `references/performance.md` section 6.
 
 **Continuity is part of the prompt.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot. State them in every prompt that needs them; a video model sees only the prompt in front of it. See `references/continuity.md`.
 
@@ -58,7 +68,7 @@ Users describe goals in their own words. They do not need to name a workflow.
 
 ## 3. Output format
 
-For each shot:
+For each approved generation, give one self-contained video prompt. A multi-shot generation includes an ordered block per shot within that single prompt; keyframes and post-production items are assets or instructions, not video prompts. Show continuity between related generations. For example, a single-shot generation can use:
 
 ```
 ### Shot 03 (Panel 03)

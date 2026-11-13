@@ -60,9 +60,9 @@ Purpose: a new fact; who is "downstairs" is the question the episode leaves. End
 | 01 | P | G1 | 1 of 1 | 4 s | Lina and Marco references, hallway | establishing; ends with both still |
 | 02 | M | G2 | 1 of 2 | 7 s total | storyboard sheet (2 panels), references | Marco's line; starts from G1's end |
 | 03 | M | G2 | 2 of 2 | (in G2) | (in G2) | listener reaction and one pause |
-| 04 | K | G3 | keyframe 1 of 3 | 6 s total | keyframe image | contact step 1 |
-| 05 | K | G3 | keyframe 2 of 3 | (in G3) | keyframe image | she notices |
-| 06 | K | G3 | keyframe 3 of 3 | (in G3) | keyframe image | the grab; strict alignment |
+| 04 | M + K | G3 | shot 1, keyframe 1 of 3 | 6 s total | keyframe image | contact step 1 |
+| 05 | M + K | G3 | shot 2, keyframe 2 of 3 | (in G3) | keyframe image | she notices |
+| 06 | M + K | G3 | shot 3, keyframe 3 of 3 | (in G3) | keyframe image | the grab; alignment intended, not guaranteed |
 | 07 | P | G4 | 1 of 1 | 4 s | references | twist, keys fall, release |
 | 08 | P | G5 | 1 of 1 | 4 s | Lina reference | her line; separate for exact delivery |
 | 09 | P + X | G6 | 1 of 1 | 3 s | phone reference | blank screen generated; message overlaid in the edit |
@@ -70,7 +70,7 @@ Purpose: a new fact; who is "downstairs" is the question the episode leaves. End
 
 Why this mapping:
 - Dialogue and reactions that need control are separate generations (G1, G4, G5), except the line and the reaction that follow each other in one position (G2), where two shots in one generation help coherence.
-- The three contact steps are keyframes (G3) because the grab geometry must match the plan, and a sheet does not guarantee that.
+- G3 is one multi-shot generation (M) using three independent keyframe assets (K). These can improve alignment of the contact steps but cannot guarantee it; if the model or interface cannot do this, use separate shots and assemble them in post.
 - Panel 09's text is an overlay in the edit (`references/episode-beats.md` section 6); the generated shot supplies a blank screen and a held frame.
 
 Checks before approval:

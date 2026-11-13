@@ -1,7 +1,7 @@
 {
   "name": "@akoru/video-prompt-director",
   "version": "0.2.0",
-  "description": "Claude Code skill that turns scripts and approved storyboards into AI video generation prompts, with an installer CLI.",
+  "description": "Agent Skill for model-aware video production, storyboards and multimodal prompts, with an installer CLI.",
   "homepage": "https://github.com/AchLim/video-prompt-director#readme",
   "repository": {
     "type": "git",

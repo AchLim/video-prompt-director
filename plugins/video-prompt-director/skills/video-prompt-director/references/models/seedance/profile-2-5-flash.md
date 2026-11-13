@@ -18,18 +18,18 @@ Tags are defined in `references/models/other.md`. Capability status per feature 
 | The model is named Seedance 2.5 Flash; its page slug is `dreamina-seedance-2-5-flash` | OFFICIAL | FL URL, 2026-11-13 |
 | The API model ID | UNVERIFIED | Not stated on any page read. Do not guess an ID from the flagship's. |
 | Available for online experience and API calls from 14:00 (UTC+8) on 2026-11-15 | OFFICIAL | T25 and API notice, read 2026-11-13 |
-| The same notice also says Flash "is now available" | OFFICIAL | Conflicts with the dated statement (DISC-06). The dated statement is the operative one. |
+| The same notice also says Flash "is now available" | OFFICIAL | Conflicts with the dated statement (DISC-06). The statements conflict; availability before the dated rollout is unconfirmed. |
 | The user is generating with Flash | USER-REPORTED | The user, 2026-11-13. This predates the API date, so the interface the user has may expose Flash earlier. Which interface is not yet confirmed (`platforms.md`). |
 
 ## Facts the Flash page states
 
 | Fact | Tag | Note |
 |---|---|---|
-| A single clip up to 30 seconds | OFFICIAL | FL. The minimum duration is not stated. |
+| A single clip up to 30 seconds | OFFICIAL | FL. The minimum duration and allowed intermediate durations are not stated; a duration below 30 s is UNVERIFIED unless the interface confirms it. |
 | Resolutions 480p and 720p | OFFICIAL | FL. 1080p is not listed; plan without it. |
 | Up to 10 images, 5 videos and 5 audio clips in one request | OFFICIAL | FL. The flagship's 30, 10 and 10 do not apply. |
 | Retains a broad range of 2.5 capabilities, including multimodal references and video editing | OFFICIAL | FL, in general terms. Nothing is itemized. |
-| Faster and cheaper than the flagship, with quality described as near flagship | OFFICIAL | FL, a vendor claim. Figures are not recorded here. |
+| Faster and cheaper than the flagship, with quality described as near flagship | OFFICIAL | FL, a vendor claim. The user reports provider figures of approximately 2x faster and 34% lower cost; those precise figures are USER-REPORTED pending independent verification. |
 | The same 30 s, 10 / 5 / 5 and 480p / 720p values | USER-REPORTED | The user supplied them on 2026-11-13. They match FL, so they stand as OFFICIAL. |
 
 Planning limits for Flash until the documentation grows: 30 s, 480p or 720p, 10 images, 5 videos, 5 audio clips. The per-asset format, size and duration limits of the flagship are UNVERIFIED for Flash; use them only as a cautious default and say so.
@@ -54,7 +54,7 @@ No Flash feature has a recorded generation yet. A feature becomes TESTED only wh
 
 ## Cost-aware testing
 
-A feature the plan depends on should be tried first as one short clip at the lowest resolution Flash offers, with the smallest asset set that exercises it. Record the result in `test-log.md` whether it passes or fails. A passing result applies to that model, platform and settings only.
+A feature the plan depends on should be tried first at a duration the interface actually accepts and the lowest resolution Flash offers, with the smallest asset set that exercises it. Record the result in `test-log.md` whether it passes or fails. A passing result applies to that model, platform and settings only.
 
 ## Re-verification checklist (after 2026-11-15 14:00 UTC+8)
 

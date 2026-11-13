@@ -1,6 +1,6 @@
 # Evals
 
-Behavioral scenarios for the skill. Each one installs the skill into a fresh temporary project, runs a prompt through headless Claude Code (`claude -p`), saves the output, and applies objective checks. Writing quality is judged separately, by reading each output against its scenario's `rubric`.
+Behavioral scenarios for the skill. Each one installs the skill into a fresh temporary project, runs a prompt through Claude Code or Codex, saves the output, and applies objective checks. Writing quality is judged separately, by reading each output against its scenario's `rubric`.
 
 The checks are heuristics. A pass means the objective checks held on that run, not that the answer is good, and a fail on a regex can be a correct answer worded differently. Read the output before drawing a conclusion.
 
@@ -9,12 +9,14 @@ The checks are heuristics. A pass means the objective checks held on that run, n
 ```bash
 npm run build                                   # the evals install the built CLI
 node evals/run-evals.mjs                        # every scenario, once
+node evals/run-evals.mjs --backend codex        # run with Codex CLI
 node evals/run-evals.mjs --only 12-camera-follow-smoothness,19-seedance-unwanted-bgm
 node evals/run-evals.mjs --repeat 3             # three full runs, then a stability table
 node evals/run-evals.mjs --recheck evals/results/<run>   # re-score saved output without calling Claude
 ```
 
-Each scenario uses your Claude usage. Results go to `evals/results/<timestamp>/` (not committed).
+Each scenario uses the selected host's account and usage. The default backend is `claude`; Codex requires a signed-in Codex CLI. Codex runs read-only in an ephemeral session with web search and plugins disabled for that invocation, so unrelated plugin skills do not redirect the test. Other globally installed non-plugin skills can still be visible; inspect traces for interference. Codex multi-turn scenarios are not yet supported. Results go to `evals/results/<timestamp>/` (not committed), with the host and optional model saved in `run.json`. Compare scores within the same host, model and configuration; they are not directly comparable across hosts.
+The command exits nonzero when any scenario fails, or when a recheck finds no saved outputs. A recheck reports how many saved scenarios it actually scored; it does not run missing scenarios.
 
 ## Reading results from more than one run
 
@@ -39,11 +41,15 @@ Each run installs a temporary copy of the skill per scenario. The evaluator remo
 
 A file counts as consulted however the model got at it: the `Read` tool, a shell command that names it, or a `Grep` or `Glob` result that lists it. The shell keeps its working directory between calls, so a `cd` in one Bash call applies to the next. Earlier versions of the evaluator missed both cases and reported correct answers as failures.
 
+For Codex, only successfully completed commands that name a skill file count as evidence it was consulted. This is a heuristic: other access methods or indirect file reads may be missed. Codex results should be read alongside the trace and rubric, especially for file-read checks.
+
 ## Keeping the baseline comparable
 
 The numbered scenarios from 01 to 15 are the original baseline. Keep them as they are so results stay comparable across releases.
 
 - **Scenario 02** is unchanged. Its Flash-aware update is scenario `24-panel-to-prompt-seedance-flash`, marked `variant_of` and `comparable_with_baseline: false`. Do not compare 24 with the baseline's 02.
+- **Scenario 32** tests recorded-dialogue evidence and the post-production fallback as a separate, non-comparable variant of scenario 14.
+- **Scenario 14** retains its original prompt and checks, but its revised rubric labels recording preservation as an observed intention, not a guarantee; historical rubric judgments are not directly comparable. The original is preserved in Git.
 - **Scenario 12** has a `revision` note: its rubric now separates Seedance 2.0 shot-based timing from 2.5 integer-second timestamps, and its camera-travel pattern accepts a camera that backs away in front of a walking subject. The baseline run failed only because the answer said "backs away" and not "track" or "follow".
 - **Scenarios 08, 11, 13, 15, 16, 20 and 23** have a `revision` note: a check that counted a word or listed a few phrasings was replaced by a `knowledge` check on the facts the rubric asks for, because correct answers were failing on wording.
 - **Scenarios 25 to 31** cover the storyboard and mapping work. Scenario 01 stays unchanged as the baseline storyboard gate; its rubric text predates the mapping (it says durations fit 6-second clips), and its objective checks still hold.

@@ -16,7 +16,7 @@ A video model sees only the prompt. For a series, where the same people, rooms a
 | # | Section | What it holds | Needed when |
 |---|---|---|---|
 | 1 | **References** | The list of attached images with the id each is called by (`@Alya`, `Image 1`) and what each controls | Any prompt with images |
-| 2 | **Recorded dialogue rules** | That the dialogue audio is final, how the model must treat it (`references/constraints.md` section 5) | A dialogue recording is supplied |
+| 2 | **Recorded dialogue rules** | That the dialogue audio is final, how the model must treat it (`references/constraints.md` section 14; OBSERVED, verify model support) | A dialogue recording is supplied |
 | 3 | **Episode and segment context** | Episode title, the clip's position (clip 3 of 8), the episode's emotional line in one sentence | A series |
 | 4 | **Segment task** | This clip's story job and emotion: the hook, the turn, the beat that must land | Always for a series |
 | 5 | **Scene and light** | Place, time of day, the main light source and where it falls, reflections, which areas are dark, how light falls on faces | Always |
@@ -32,7 +32,7 @@ A video model sees only the prompt. For a series, where the same people, rooms a
 ## 3. Compact and full forms
 
 - **Compact form** for a silent or simple clip: references, blocking, cuts, ambient sound, constraints. It runs about 700 characters in the observed Mandarin series.
-- **Full form** for a dialogue clip with recorded audio: all sections. It runs about 1,500 characters in the observed Indonesian series, so check the model's documented prompt length (`references/models/`) before you add everything. If the prompt is too long, cut redundant description first (appearance details already fixed by the reference image), then secondary detail, never the dialogue, the camera, the opening and ending states, or the constraints.
+- **Full form** for a dialogue clip with recorded audio: all sections. In one observed Indonesian series it ran about 1,500 characters; this is an example, not a target or limit. Check the model's documented prompt length (`references/models/`) before you add everything. If the prompt is too long, cut redundant description first (appearance details already fixed by the reference image), then secondary detail, never the dialogue, the camera, the opening and ending states, or the constraints.
 
 ## 4. Rules for building each section
 

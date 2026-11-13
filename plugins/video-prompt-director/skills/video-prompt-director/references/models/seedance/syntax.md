@@ -109,7 +109,7 @@ There is no negative-prompt parameter in the documentation read. Exclusions go i
 
 ## Prompt length
 
-The recommended maximum is 500 Chinese characters or 1,000 English words (API, `text` item). It is a recommendation, not a stated cap. Tiers, budgets and counting are handled in Phase 2 (`density-and-budget`, not yet written). Until then: keep every sentence changing what the model makes, put essentials first, and do not treat the user's interface limit as the recommended length (`references/models/platforms.md`).
+The recommended maximum is 500 Chinese characters or 1,000 English words (API, `text` item). It is a recommendation, not a stated cap. Tiers, budgets and counting are in `references/density-and-budget.md`. In all cases: keep every sentence changing what the model makes, put essentials first, and do not treat the user's interface limit as the recommended length (`references/models/platforms.md`).
 
 ## Languages
 

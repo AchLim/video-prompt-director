@@ -13,7 +13,7 @@ Contents:
 
 ## 1. Evidence and limits
 
-The numbers here come from a working vertical short-drama pipeline (two series, Seedance clips of 4 to 15 seconds, dialogue in Indonesian and Mandarin). They are planning estimates. Video models approximate timing and never hit it frame for frame, so exact timing is set in the edit. Use these figures to avoid plans that cannot fit, not to promise a result.
+The numbers here come from a working vertical short-drama pipeline (two series, Seedance clips of 4 to 15 seconds, dialogue in Indonesian and Mandarin). That historical range is not a current model limit. Check the selected model and interface profile for available durations. They are planning estimates. Video models approximate timing and never hit it frame for frame, so exact timing is set in the edit. Use these figures to avoid plans that cannot fit, not to promise a result.
 
 ## 2. Speech takes time: does the dialogue fit the clip
 
@@ -27,12 +27,12 @@ Before writing a clip, estimate how long the spoken lines take, then check that 
 
 Worked example: 14 words of English dialogue is about 5.6 s; with one speaker change, about 6 s. In a 6 s clip that leaves nothing for entry, reaction or ending.
 
-- **Dialogue longer than the clip:** use a longer clip or split the lines across two clips. Never compress the speech or cut words.
+- **Dialogue longer than the clip:** use a longer clip or split the lines across two clips. Never compress the speech or cut words. Do not supply a rushed prompt as the solution: explain the conflict and show a feasible longer duration or split; preserve the requested line exactly.
 - **Dialogue that nearly fills the clip:** little room is left for the action. Either simplify the action or lengthen the clip.
 - **The line must appear in the prompt word for word,** in its language.
 - **For other languages,** use the user's measured rate if they have one, or ask. For a language not listed, say the estimate is rough.
 
-`references/models/` gives each model's documented durations; if a model takes a recorded audio file, the recording's length decides the clip length (`references/constraints.md` section 5).
+`references/models/` gives each model's documented durations; a recording's timing constrains the edit when it is used; whether it can be passed through unchanged depends on the model and interface (`references/constraints.md` section 14).
 
 ## 3. Entry beat
 
@@ -103,5 +103,5 @@ These counts describe what the pipeline did, not a target. A 10 s clip with thre
 
 1. Count: dialogue seconds, entry beat, pauses, closing hold, and the action.
 2. If the total exceeds the clip, remove the weakest item in this order: a repeated pause, the entry beat, a secondary action. Keep the line and the story beat.
-3. If it still does not fit, propose a longer clip or a split, and show the split.
+3. If it still does not fit, propose a longer clip or a split, and show the complete unchanged dialogue in the proposed arrangement. Check that each proposed duration is supported by the chosen model and mode; if the version is unknown, ask or mark the duration unverified. If only shorter clips are available, split at a natural phrase boundary.
 4. Tell the user what you changed.

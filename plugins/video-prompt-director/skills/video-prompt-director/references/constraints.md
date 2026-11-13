@@ -62,7 +62,7 @@ Ask once at the start when a default would change the result a lot and the proje
 - **No music by default.** If the pipeline adds music later, rule it out in the prompt.
 - **Do not add audio direction unless asked.** If the model generates audio by default (check its file in `references/models/`), either describe the ambient sound you want, or say what to exclude, and tell the user.
 - **Ambient sound:** one short line is enough, tied to what is on screen: "room tone, paper handling".
-- **Dialogue supplied as a recording:** when the user gives a dialogue audio file, the prompt names who speaks each line, when in the clip it starts (in seconds), and that their mouth moves only during their own lines. State that the voices come from the supplied audio and must not be re-voiced, changed or imitated. Respect the model's documented limits on audio inputs (count and total duration); see its file.
+- **Dialogue supplied as a recording:** first check the model and interface, and follow section 14. Audio-reference support does not establish exact playback or lip-sync. If the timing is unknown, do not invent timestamps; ask for the waveform or onset. When exact preservation matters and is not documented, mix the original in post and treat lip-sync as an experiment.
 - **Dialogue in the prompt:** keep each line exact, in its language, with the speaker named (`references/performance.md`).
 - **Shots with no dialogue:** say that no one speaks and every mouth stays closed.
 
@@ -127,7 +127,7 @@ Do not add people, props, actions, dialogue or visible text that the script and 
 
 ## 14. Recorded dialogue: the full rules
 
-When the user supplies the dialogue as a finished audio file (for example a text-to-speech or actor recording), put these rules in the prompt. They exist because models otherwise voice the lines again, with a different voice.
+OBSERVED in one production workflow, not a documented guarantee. When a user supplies finished dialogue, first verify that the selected model and interface support exact recording preservation and lip-sync. Seedance 2.5 documents voice/timbre reference, not guaranteed verbatim playback; Flash is UNVERIFIED. If exact preservation is essential, mix the original recording in post and treat generated lip-sync as an experiment. Only after the user chooses a compatible model or an explicit experiment, these are prompt intentions, not assured behavior. Do not present them as guaranteed, and do not attach the recording to a mode whose support is unverified:
 
 1. **The recording is final and exactly as long as the clip.** The voices in the finished video are this recording, used as is, word for word and second for second.
 2. **The model must not generate, re-voice, re-read, change or imitate the dialogue.** No added, removed or altered words. No stretched or shortened syllables.
@@ -141,7 +141,7 @@ Check the model's file for how many audio inputs it takes and their total length
 
 ## 15. Silent lip-sync mode
 
-If the audio is mixed in afterwards, ask the model for a silent clip: "only mouth movement to the line, no sound of its own; expression follows the line's emotion". Still give the line, its language, its start second and its delivery, so the mouth matches. State "no one speaks" and "mouths closed" for clips with no dialogue.
+OBSERVED workflow, not a guaranteed model capability. If the audio is mixed in afterwards, ask the model for a silent clip: "only mouth movement to the line, no sound of its own; expression follows the line's emotion". Still give the line, its language, its start second and its delivery, to guide mouth movement; verify synchronization in the edit. State "no one speaks" and "mouths closed" for clips with no dialogue.
 
 ## 16. Other defaults
 

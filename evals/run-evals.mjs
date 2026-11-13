@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Behavioural evals: install the skill into a fresh temp project, run each scenario
-// through headless Claude Code (`claude -p`), save the outputs, and apply objective checks.
+// through Claude Code or Codex, save the outputs, and apply objective checks.
 // Objective checks are heuristics. Writing quality is judged separately by reading the
 // outputs against each scenario's rubric (read each output against its scenario rubric).
 //
@@ -23,6 +23,9 @@ const concurrency = Number(opt("concurrency", "4"));
 const repeat = Math.max(1, Number(opt("repeat", "1")));
 const keepProjects = args.includes("--keep-projects");
 const model = opt("model", undefined);
+const backend = opt("backend", "claude");
+if (!["claude", "codex"].includes(backend)) { console.error("--backend must be claude or codex"); process.exit(2); }
+if (!Number.isInteger(concurrency) || concurrency < 1) { console.error("--concurrency must be a positive integer"); process.exit(2); }
 const TIMEOUT_MS = 10 * 60 * 1000;
 
 const scenarios = JSON.parse(readFileSync(path.join(ROOT, "evals", "scenarios.json"), "utf8")).filter((s) => !only.length || only.includes(s.id));
@@ -31,23 +34,32 @@ const scenarios = JSON.parse(readFileSync(path.join(ROOT, "evals", "scenarios.js
 const recheck = opt("recheck", undefined);
 if (recheck) {
   const all = JSON.parse(readFileSync(path.join(ROOT, "evals", "scenarios.json"), "utf8"));
+  const metaFile = path.join(recheck, "run.json");
+  const savedBackend = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, "utf8")).backend : "claude";
+  const summaryFile = path.join(recheck, "summary.json");
+  const previous = existsSync(summaryFile) ? JSON.parse(readFileSync(summaryFile, "utf8")) : [];
   let passed = 0;
+  let checked = 0;
   for (const s of all) {
     const mdFile = path.join(recheck, `${s.id}.md`);
     if (!existsSync(mdFile)) continue;
+    checked++;
     const md = readFileSync(mdFile, "utf8");
     const streamFile = path.join(recheck, `${s.id}.stream.jsonl`);
-    const a = existsSync(streamFile) ? analyse(readFileSync(streamFile, "utf8")) : { text: "", filesRead: [], skillFilesRead: [], skillUsed: false };
+    const a = existsSync(streamFile) ? analyse(readFileSync(streamFile, "utf8"), savedBackend) : { text: "", filesRead: [], skillFilesRead: [], skillUsed: false };
     a.text = md.slice(md.indexOf("\n---\n") + 5);
     const firstStream = path.join(recheck, `${s.id}.turn1.stream.jsonl`);
-    const first = existsSync(firstStream) ? analyse(readFileSync(firstStream, "utf8")) : null;
+    const first = existsSync(firstStream) ? analyse(readFileSync(firstStream, "utf8"), savedBackend) : null;
     const checks = s.checks.map((c) => ({ ...c, ...check(c, c.turn === 1 ? (first ?? { text: "", filesRead: [], skillFilesRead: [], skillUsed: false }) : a) }));
+    const runFailure = previous.find((item) => item.id === s.id)?.checks?.find((c) => c.type === "run" && !c.pass);
+    if (runFailure) checks.push(runFailure);
+    else if (existsSync(streamFile) && a.isError) checks.push({ type: "run", pass: false, detail: "saved stream did not complete successfully" });
     const ok = checks.every((c) => c.pass);
     if (ok) passed++;
-    console.log(`${ok ? "PASS" : "FAIL"} ${s.id}  files: ${a.skillFilesRead.join(", ") || "SKILL.md only"}${ok ? "" : "  " + checks.filter((c) => !c.pass).map((c) => `[${c.type}: ${c.detail}]`).join(" ")}`);
+    console.log(`${ok ? "PASS" : "FAIL"} ${s.id}  files: ${a.skillFilesRead.join(", ") || "none"}${ok ? "" : "  " + checks.filter((c) => !c.pass).map((c) => `[${c.type}: ${c.detail}]`).join(" ")}`);
   }
-  console.log(`\n${passed} scenario(s) passed objective checks (recheck).`);
-  process.exit(0);
+  console.log(`\n${passed}/${checked} scenario(s) passed objective checks (recheck).`);
+  process.exit(checked > 0 && passed === checked ? 0 : 1);
 }
 
 if (!existsSync(path.join(ROOT, "dist", "cli.js"))) {
@@ -61,7 +73,8 @@ function makeProject(s) {
   const proj = realpathSync(mkdtempSync(path.join(os.tmpdir(), `vpd-eval-${s.id}-`)));
   mkdirSync(path.join(proj, ".git")); // mark as project root
   // Install exactly as a user would, through the CLI's --project path.
-  const r = spawnSync(process.execPath, [path.join(ROOT, "dist", "cli.js"), "install", "--project"], { cwd: proj, encoding: "utf8" });
+  const destination = backend === "codex" ? ["--dir", path.join(proj, ".agents", "skills")] : ["--project"];
+  const r = spawnSync(process.execPath, [path.join(ROOT, "dist", "cli.js"), "install", ...destination], { cwd: proj, encoding: "utf8" });
   if (r.status !== 0) throw new Error(`install failed: ${r.stderr}`);
   for (const f of s.fixtures ?? []) cpSync(path.join(ROOT, "evals", "fixtures", f), proj, { recursive: true });
   return proj;
@@ -74,21 +87,22 @@ function removeProject(dir) {
   rmSync(dir, { recursive: true, force: true });
 }
 
-function runClaude(prompt, cwd, resumeSession) {
+function runAgent(prompt, cwd, resumeSession) {
   return new Promise((resolve) => {
-    const cliArgs = [
+    const cliArgs = backend === "codex" ? ["exec", "--skip-git-repo-check", "--sandbox", "read-only", "--ephemeral", "--disable", "plugins", "--json", "-c", 'web_search="disabled"', ...(model ? ["--model", model] : []), prompt] : [
       "-p", prompt,
       "--output-format", "stream-json", "--verbose",
       "--allowedTools", "Skill", "Read", "Glob", "Grep", "Bash(node:*)",
       "--disallowedTools", "Write", "Edit", "WebSearch", "WebFetch", "Agent",
       "--setting-sources", "project,local",
     ];
-    if (model) cliArgs.push("--model", model);
+    if (backend === "claude" && model) cliArgs.push("--model", model);
+    if (resumeSession && backend === "codex") throw new Error("Codex multi-turn scenarios are not supported yet");
     if (resumeSession) cliArgs.push("--resume", resumeSession);
     const mockScript = process.env.VIDEO_PROMPT_DIRECTOR_EVAL_CLI_SCRIPT;
     const child = mockScript
       ? spawn(process.execPath, [mockScript, ...cliArgs], { cwd, stdio: ["ignore", "pipe", "pipe"] })
-      : spawn("claude", cliArgs, { cwd, stdio: ["ignore", "pipe", "pipe"] });
+      : spawn(backend, cliArgs, { cwd, stdio: ["ignore", "pipe", "pipe"] });
     let stdout = "";
     let stderr = "";
     const timer = setTimeout(() => child.kill("SIGTERM"), TIMEOUT_MS);
@@ -102,8 +116,9 @@ function runClaude(prompt, cwd, resumeSession) {
   });
 }
 
-function analyse(stream) {
+function analyse(stream, host = backend) {
   const events = stream.split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  if (host === "codex") return analyseCodex(events);
   const toolUses = [];
   const toolNames = new Map(); // tool_use id -> tool name
   for (const e of events) {
@@ -151,6 +166,28 @@ function analyse(stream) {
     skillFilesRead: [...new Set(filesRead.filter((f) => f.includes("video-prompt-director")).map((f) => f.split("video-prompt-director/").pop()))],
     filesRead,
     toolUses: toolUses.map((t) => t.name),
+  };
+}
+
+function analyseCodex(events) {
+  const commands = events.filter((e) => e.type === "item.completed" && e.item?.type === "command_execution" && e.item?.exit_code === 0).map((e) => e.item.command ?? "");
+  const filesRead = [];
+  for (const cmd of commands) {
+    for (const m of cmd.matchAll(/[\w./-]+\.md\b/g)) {
+      const file = m[0];
+      if (file.includes("video-prompt-director/")) filesRead.push(file);
+      else if (/^(references|examples)\//.test(file)) filesRead.push(`video-prompt-director/${file}`);
+    }
+  }
+  const messages = events.filter((e) => e.type === "item.completed" && e.item?.type === "agent_message");
+  return {
+    text: messages.at(-1)?.item?.text ?? "",
+    sessionId: events.find((e) => e.type === "thread.started")?.thread_id,
+    isError: !events.some((e) => e.type === "turn.completed") || events.some((e) => e.type === "turn.failed"),
+    skillUsed: false,
+    filesRead,
+    skillFilesRead: [...new Set(filesRead.filter((f) => f.includes("video-prompt-director/")).map((f) => f.split("video-prompt-director/").pop()))],
+    toolUses: commands.map(() => "command_execution"),
   };
 }
 
@@ -220,25 +257,26 @@ async function runOne(s) {
   const started = Date.now();
   let first;
   if (s.first_prompt) {
-    const initial = await runClaude(s.first_prompt, proj);
+    const initial = await runAgent(s.first_prompt, proj);
     first = analyse(initial.stdout);
     writeFileSync(path.join(outDir, `${s.id}.turn1.stream.jsonl`), initial.stdout);
     if (initial.code !== 0 || first.isError || !first.sessionId) {
       throw new Error(`First turn failed or returned no session ID: ${first.text || initial.stderr.slice(0, 500)}`);
     }
   }
-  const r = await runClaude(s.prompt, proj, first?.sessionId);
+  const r = await runAgent(s.prompt, proj, first?.sessionId);
   const a = analyse(r.stdout);
   const checks = s.checks.map((c) => ({ ...c, ...check(c, c.turn === 1 ? first : a) }));
   if (r.code !== 0 || a.isError) checks.push({ type: "run", pass: false, detail: a.text || r.stderr.slice(0, 500) || `exit ${r.code}` });
+  const activated = a.skillUsed || a.skillFilesRead.length > 0 || !!first?.skillUsed || !!first?.skillFilesRead.length;
   const md = [
     `# ${s.id}: ${s.title}`, "", ...(first ? [`**First prompt:** ${s.first_prompt}`, "", `**First response:** ${first.text}`, ""] : []), `**Prompt:** ${s.prompt}`, "", `**Rubric:** ${s.rubric}`, "",
-    `**Skill activated:** ${a.skillUsed || !!first?.skillUsed} · **Skill files read:** ${[...(first?.skillFilesRead ?? []), ...a.skillFilesRead].join(", ") || "none"}`,
+    `**Skill activated:** ${activated} · **Skill files read:** ${[...(first?.skillFilesRead ?? []), ...a.skillFilesRead].join(", ") || "none"}`,
     `**Checks:** ${checks.map((c) => `${c.pass ? "PASS" : "FAIL"} ${c.type} (${c.detail})`).join("; ")}`, "", "---", "", a.text || `(no result)\n\n${r.stderr.slice(0, 2000)}`,
   ].join("\n");
   writeFileSync(path.join(outDir, `${s.id}.md`), md);
   writeFileSync(path.join(outDir, `${s.id}.stream.jsonl`), r.stdout);
-  const summary = { id: s.id, title: s.title, ok: !a.isError, seconds: Math.round((Date.now() - started) / 1000), costUsd: (first?.costUsd ?? 0) + (a.costUsd ?? 0), skillUsed: a.skillUsed || !!first?.skillUsed, skillFilesRead: [...(first?.skillFilesRead ?? []), ...a.skillFilesRead], toolUses: [...(first?.toolUses ?? []), ...a.toolUses], checks };
+  const summary = { backend, model: model ?? null, id: s.id, title: s.title, ok: !a.isError && r.code === 0, seconds: Math.round((Date.now() - started) / 1000), costUsd: backend === "codex" ? null : (first?.costUsd ?? 0) + (a.costUsd ?? 0), skillUsed: activated, skillFilesRead: [...(first?.skillFilesRead ?? []), ...a.skillFilesRead], toolUses: [...(first?.toolUses ?? []), ...a.toolUses], checks };
   const status = checks.every((c) => c.pass) ? "PASS" : "FAIL";
   console.log(`${status} ${s.id} (${summary.seconds}s) ${checks.filter((c) => !c.pass).map((c) => `[${c.type}: ${c.detail}]`).join(" ")}`);
   return summary;
@@ -249,6 +287,7 @@ for (let rep = 1; rep <= repeat; rep++) {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   outDir = path.join(ROOT, "evals", "results", stamp);
   mkdirSync(outDir, { recursive: true });
+  writeFileSync(path.join(outDir, "run.json"), JSON.stringify({ backend, model: model ?? null, pluginsDisabled: backend === "codex", scenarios: scenarios.map((s) => s.id) }, null, 2));
   if (repeat > 1) console.log(`\n=== Run ${rep} of ${repeat} ===`);
   let runScenarios = [];
   // Set up every project before any Claude run, so later rebuilds of dist/ can't interfere.
@@ -271,6 +310,7 @@ for (let rep = 1; rep <= repeat; rep++) {
   writeFileSync(path.join(outDir, "summary.json"), JSON.stringify(results, null, 2));
   const passed = results.filter((r) => r.checks.every((c) => c.pass)).length;
   console.log(`\n${passed}/${results.length} scenarios passed objective checks. Outputs: ${outDir}`);
+  if (results.length === 0 || passed !== results.length) process.exitCode = 1;
   for (const r of results) tally.set(r.id, (tally.get(r.id) ?? 0) + (r.checks.every((c) => c.pass) ? 1 : 0));
   // The temporary projects are throwaway copies this run created. Remove only those, so repeated runs do not fill the disk.
   if (!keepProjects) for (const s of runScenarios) removeProject(s.project);

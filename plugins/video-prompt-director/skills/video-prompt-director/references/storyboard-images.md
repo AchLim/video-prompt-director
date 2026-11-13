@@ -14,7 +14,7 @@ Contents:
 
 ## 1. Rules that hold for every image
 
-- **One canonical plan.** Every sheet and keyframe comes from the same approved shot plan and mapping (`references/storyboard.md` sections 12 and 13). They must show exactly the same sequence. Do not plan twice.
+- **One canonical plan.** Every sheet and keyframe comes from the same approved shot plan and the current mapping draft or approved mapping (`references/storyboard.md` sections 12 and 13). They must show exactly the same sequence. Do not plan twice.
 - **Tool independent.** Write each image prompt as intent: layout, panel contents, style, exclusions. Do not rely on one image generator's syntax, parameters or weighting. The image generator is not assumed to be the video generator. Say plainly which settings the user should look for in their tool (aspect ratio, resolution, panel legibility) and let them map them.
 - **No text inside the image.** No panel numbers, captions, labels, arrows, speech bubbles, dialogue or sound words in the picture. Panels are numbered by reading order (left to right, then top to bottom), and the annotations live in the conversation (`references/storyboard.md` section 14). The Seedance 2.5 prompt guide recommends keeping text off a storyboard sheet; the same holds for the production sheet so the two stay interchangeable.
 - **Vertical by design.** For vertical drama each panel is composed for 9:16: subject placement, depth layering and clear foreground for the vertical frame, not a landscape picture cropped later.
@@ -29,7 +29,7 @@ Contents:
 | **Reference sheet for a video model** | Guiding one generation that holds several shots (mapping type M) | One sheet per multi-shot generation, cut from the same plan. Not needed for a single-shot generation |
 | **Keyframe images** | Strict alignment: a contact moment, a key pose, a reveal, or a first or last frame (mapping type K) | Only for the panels the mapping marks K. Each is a separate image |
 
-A video model treats a multi-panel sheet as a high-level reference for structure and rhythm, not as a frame-by-frame script. When the picture must match closely, use keyframes. Whether a model accepts sheets, keyframes or both, and how many images it takes, is in its profile (`references/models/`); the images count against its reference limits.
+A video model treats a multi-panel sheet as a high-level reference for structure and rhythm, not as a frame-by-frame script. When the picture must match closely, use independent keyframes if the selected model supports them; alignment is an aim, not a guarantee. Whether a model accepts sheets, keyframes or both, and how many images it takes, is in its profile (`references/models/`); the images count against its reference limits.
 
 ## 3. Layout
 
@@ -99,7 +99,7 @@ Because a video model may copy the sheet's look, the video prompt must say that 
 
 ## 6. Independent keyframe images
 
-One image per keyframe panel, for strict alignment. Each is a single full-frame picture, not a sheet.
+One image per keyframe panel, when closer alignment is important; the result still needs review. Each is a single full-frame picture, not a sheet.
 
 Template:
 
@@ -119,10 +119,10 @@ Before showing any sheet or keyframe:
 - The panel count and order match the approved plan and mapping.
 - Each character's face, hair, clothing and identity anchor are the same in every panel.
 - Room layout, light direction and screen sides are the same, and a person who exits one panel enters the next from the right side (`references/continuity.md` section 4).
-- Every panel reads in a vertical frame, and the shot sizes are clearly different where the plan says they differ.
+- Every panel reads in the chosen project frame, and the shot sizes are clearly different where the plan says they differ.
 - No text, numbers or labels appear in the images.
 - The reference sheet has no identity detail, and the production sheet has no cartoon or sketch look unless the project look says so.
 
 ## 8. Review and changes
 
-Show the sheet or sheets with the panel annotations in the conversation. The user reviews panel by panel. A change to one panel is made on that panel's image (or its keyframe) and does not regenerate the whole sheet. A change that alters the sequence, the order or the mapping goes back through approval (`references/storyboard.md` section 6), and the neighboring panels' carries in and out are updated.
+Show the sheet or sheets with the panel annotations in the conversation. The user reviews panel by panel. If the image tool supports localized editing, revise the affected panel or keyframe and verify its neighbors. Otherwise regenerate the affected sheet and check all unchanged panels for drift. A change that alters the sequence, the order or the mapping goes back through approval (`references/storyboard.md` section 6), and the neighboring panels' carries in and out are updated.

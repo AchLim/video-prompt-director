@@ -32,7 +32,7 @@ Text-to-video, first-frame, first-and-last-frame, omni reference (image, video, 
 | Video editing | Locked | Aspect ratio and (approximately) duration follow the source | At least one `reference_video` of 4 to 30 s; `ratio` = `adaptive`; `duration` = -1; `.mov` recommended | edit the video, add, insert, remove, delete, modify, replace, change to |
 | Video extension | Locked | Aspect ratio follows the source | At least one `reference_video`; `ratio` = `adaptive`; `.mov` recommended | extend forward, extend backward, continue, continue from, extend the story |
 
-- The model picks which input video to edit or extend from the prompt.
+- The model picks which input video to edit or extend from the prompt. For API content items, `role` belongs at the content-item level, alongside `video_url`; it does not belong inside the `video_url` object (API `content.role`).
 - First-frame, first-and-last-frame and omni reference cannot be mixed in one request (API).
 - Set `omni_reference_task_type` (`auto`, `reference`, `edit`, `extend`; default `auto`) to state the task explicitly. With `edit` or `extend` set, a violated constraint is rejected at submission with an error. With `auto`, the model infers the type and a violation fails later.
 
@@ -44,7 +44,7 @@ Text-to-video, first-frame, first-and-last-frame, omni reference (image, video, 
 | `InvalidParameter.TaskTypeConstraint` | Parameters are incompatible with the task type. Raised after the task starts. | Apply the settings in the table above. |
 | HTTP 429 | Rate limit exceeded. | Wait or queue. See limits below. |
 
-The full error-code list is on a separate page that was not opened. Face-moderation rejections are covered under real faces below.
+The separate [ModelArk inference error-code list](https://docs.byteplus.com/en/docs/modelark/error-codes) was checked on 2026-11-13. Its English page did not expose the table in the available reader; the official Korean-language page exposed it. General codes include `MissingParameter` and `InvalidParameter` (400: inspect the request), `AccountRateLimitExceeded` (429: reduce request frequency and retry), and `InternalServiceError` (500: retry later). These are general API errors, not Seedance-specific guarantees. Consult the current list for the actual code and message. Face-moderation rejections are covered under real faces below.
 
 ## Reference inputs
 
@@ -117,7 +117,7 @@ Other output facts:
 1. Create the draft with `draft` = true and `resolution` = 480p. Any other resolution errors. It is billed as a 480p video.
 2. Create the final with content `{"type": "draft_task", "draft_task": {"id": ...}}` and `resolution` = 1080p. Any other resolution errors. The two steps are billed separately.
 3. Do not re-send the prompt, the image, video or audio items, `duration`, `ratio`, `seed`, `generate_audio` or `omni_reference_task_type` in step 2. T25 says an error occurs even if the values match.
-4. These may be re-sent in step 2: `return_last_frame`, `output_format`, `watermark`, `service_tier`, `execution_expires_after`, `priority`, `callback_url`, `safety_identifier`. If `return_last_frame` is omitted, the model default applies, not the draft's value.
+4. The draft instructions list `return_last_frame`, `output_format`, `watermark`, `service_tier`, `execution_expires_after`, `priority`, `callback_url`, and `safety_identifier` as fields that may be re-sent in step 2. This general permission does not confirm that every field supports flagship 2.5: callback, expiry and safety identifier remain UNVERIFIED under DISC-11. If `return_last_frame` is omitted, the model default applies, not the draft's value.
 5. A draft ID is valid for 14 days if created at or after 2026-10-28 10:00 (UTC+8), otherwise 7 days, counted from creation. An expired ID cannot be used.
 
 ## Audio, languages and markup

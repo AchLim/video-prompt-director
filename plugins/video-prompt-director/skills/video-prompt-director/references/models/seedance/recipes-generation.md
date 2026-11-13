@@ -11,7 +11,7 @@ The storyboard planning (modes, mapping types, caps) is in `references/storyboar
 | Need | Use | Why |
 |---|---|---|
 | The structure and rhythm of a multi-shot generation, with some freedom | G5 or G6, a line-art sheet | The sheet is a high-level reference, "not followed exactly frame by frame" (G25) |
-| The picture must match the plan closely | G4, independent keyframes | Keyframes "align" with the output; sheets do not (G25) |
+| The picture should follow key poses closely | G4, independent keyframes | Keyframes aim at closer alignment than sheets; an exact match is not guaranteed (G25) |
 | A hard first frame, or first and last frame | `first_frame` and `last_frame` roles (registry G3) | They lock the aspect ratio, and cannot be mixed with other references (P1) |
 | Strict first frame together with a motion or camera video | `reference_image` plus "Image 1 is the first frame" | Not locked, may not match exactly (G25) |
 
@@ -105,11 +105,11 @@ Note: identity is carried by the three images, so no separate character referenc
 ```
 
 ```
-Use Images 1 to 3 in order as keyframes. A realistic vertical drama, soft hallway light, muted colour, one continuous take, locked-off camera, no cuts.
+Use Images 1 to 3 in order as keyframes. A realistic vertical drama, soft hallway light, muted colour. Three ordered shots: a close-up of the approaching hand, a close-up of the eyes, then a close-up of the grip. Each shot is locked off; cut between them.
 
 Image 1: Marco's right hand rises from his side and moves slowly toward Lina's left wrist. Image 2: Lina's eyes drop to the hand, and her breath stops. Image 3: Marco's fingers close around her left wrist, and her arm tenses.
 
-Keep the movement between the images smooth and continuous. Keep the same two people, the same clothes and the same hallway throughout. No flicker, no stutter. No music. No subtitles or on-screen text.
+Keep movement within each shot natural and the cuts clear. Keep the same two people, the same clothes and the same hallway throughout. No flicker, no stutter. No music. No subtitles or on-screen text.
 ```
 
 11. **Compatibility.** Not with `first_frame` or `last_frame` roles in the same request. A first and last frame pair can be given as `reference_image` with "Image 1 is the first frame. Image 3 is the last frame", which does not lock the ratio (registry G3). Combination with a sheet or other references: UNVERIFIED.
@@ -142,3 +142,20 @@ Validation test: `PLANNED:P3` (no scenario yet; the sequence reference is 2.0-on
 - No text on any sheet or keyframe; readable text is an overlay planned in the edit.
 - The assets are numbered in upload order of first appearance, and each carries a role and an exclusion.
 - Anything the documentation does not show (a sheet with keyframes, timestamps or keyframes on Flash) is labelled UNVERIFIED, with a fallback and an offer to test.
+
+## Core generation and continuity operations
+
+These are skill-authored operation templates, not tested generations. Consult the registry row, model profile and interface before using them. The 2.5 flagship facts below do not automatically apply to Flash.
+
+| ID | Operation and binding | Prompt / control pattern | Limits and validation |
+|---|---|---|---|
+| G1 | Text-to-video, no visual reference | Describe subject, setting, ordered action, camera, look and chosen audio policy. | Set documented duration and output controls in the interface; Flash's minimum and specific modes remain UNVERIFIED. |
+| G2 | First-frame image | Supply the image in the `first_frame` role; animate forward without changing the approved opening state. | On flagship, ratio is `adaptive`; this locked task cannot be mixed with omni references. Flash support is UNVERIFIED. |
+| G3 | First and last images | Use `first_frame` and `last_frame`, then describe plausible movement between them. | Locked roles cannot be combined with omni references. The alternative uses reference images plus text, but is not exact; see DISC-04 and the profile. |
+| G8 | Longer coherent generation | Design action and speech for the selected duration; split if the shot is overloaded. | Flagship documents 4-30 seconds or -1 in the applicable task. Flash states only a maximum of 30 seconds; shorter values and minimum are UNVERIFIED unless the interface confirms them. |
+| G9 | Draft then final | Generate a draft for structural review, then use its draft task ID for the final step. | Flagship: draft at 480p, final at 1080p, separately billed, with restrictions on parameters resent; see profile. Flash support is UNVERIFIED. |
+| G10 | Preserve the ending for a connected generation | If supported, request the final frame and use the returned image as the next generation's starting reference. | Flagship API supports `return_last_frame`; exact downstream continuity is not guaranteed. Flash support and surface controls are UNVERIFIED. |
+
+### G12: on-screen text
+
+The 2.0 guide documents text, slogan and subtitle templates. For a user-requested visible phrase, name its exact text, language, position and duration; otherwise do not add text. The 2.5 guide discusses text errors and troubleshooting but does not establish the 2.0 template as supported; 2.5 and Flash are UNVERIFIED for this specific template. For critical readable text, generate a clean surface and overlay the exact text in post. This is a skill-authored plan, not a tested generation.

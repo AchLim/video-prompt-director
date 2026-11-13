@@ -26,6 +26,9 @@ function scratchSkill(): { skill: string; registry: string; file: (name: string)
   const skill = path.join(tmpDir("vpd-registry-"), "skill");
   mkdirSync(path.join(skill, "references", "models"), { recursive: true });
   cpSync(path.join(SKILL_SRC, FOLDER), path.join(skill, FOLDER), { recursive: true });
+  for (const name of ["audio-direction.md", "density-and-budget.md"]) {
+    cpSync(path.join(SKILL_SRC, "references", name), path.join(skill, "references", name));
+  }
   const file = (name: string): string => path.join(skill, FOLDER, name);
   return { skill, registry: file("capability-registry.md"), file };
 }

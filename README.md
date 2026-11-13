@@ -2,7 +2,7 @@
 
 # video-prompt-director
 
-### A Claude Code skill that turns scripts and approved storyboards into AI video prompts a model can perform.
+### An Agent Skill for Codex and Claude Code that turns scripts and approved storyboards into AI video prompts a model can perform.
 
 Camera direction, timed action, natural acting, exact dialogue, continuity between shots, and a quality check before each prompt reaches you.
 
@@ -17,10 +17,12 @@ Camera direction, timed action, natural acting, exact dialogue, continuity betwe
 
 ## What it does
 
-Ask Claude for video prompts and video-prompt-director works the way a director would: storyboard first, then one prompt per approved panel, each with a beginning, a development and an ending.
+Ask your agent for video prompts and video-prompt-director plans a storyboard and maps its panels to generations before writing prompts.
 
 - **Storyboard first.** Give it a script, a scene, a shot list or an existing storyboard. If there is no approved storyboard it proposes panels and waits for your changes before it writes prompts.
 - **Prompts that direct a performance.** Camera and subject movement are described separately. Emotion is written as visible behavior, so people do not freeze, stare or smile through a scene.
+- **Audio and references.** Choose native audio, dialogue-only, supplied recordings or silence. Bind subject, motion, camera, style, audio, scene and clay references separately, with version-specific uncertainty.
+- **Editing and assembly.** Plan targeted video and audio edits, extensions, transitions and multi-asset workflows, including what to preserve and how to verify it.
 - **Exact dialogue.** Your lines stay word for word, attributed to the right speaker, with the listener reacting.
 - **Continuity across shots.** Identity, wardrobe, props, positions, light and screen direction carry from shot to shot, with a ledger when you want to check it.
 - **A check before you see anything.** Every prompt is validated for action, progression, plausibility, contradictions and fit with the target model, then fixed.
@@ -46,9 +48,20 @@ The first gives a video model a pose. The second gives it a performance with a s
 
 ## Install
 
-Pick one route. Installing the same skill twice gives Claude two copies with the same name.
+Pick one route per host and scope to avoid duplicate copies of the same skill.
 
-### Claude Code plugin (recommended)
+### Codex
+
+Copy the complete skill folder to `<project>/.agents/skills/video-prompt-director/` for one project or `~/.agents/skills/video-prompt-director/` for all projects. With the npm CLI, use `--dir` to select the parent skills directory:
+
+```bash
+npx @akoru/video-prompt-director install --dir .agents/skills
+npx @akoru/video-prompt-director install --dir ~/.agents/skills
+```
+
+Start a new Codex session to discover it. These commands install the published package; use the local repository CLI when testing unpublished changes.
+
+### Claude Code plugin
 
 Inside Claude Code:
 
@@ -89,6 +102,9 @@ Or install the CLI once with `npm install -g @akoru/video-prompt-director` and r
 | A dialogue scene | "Write the shot prompts for this exchange. Keep my lines exactly." |
 | Repair | "This prompt gives me a frozen character. Fix it." |
 | Another model | "Adapt shot 3 for Runway." |
+| References | "Use this character image, this motion clip and this camera reference with Seedance 2.5 Flash. What is verified?" |
+| Edit or extend | "Replace the bag between seconds 3 and 5 while preserving everything else." |
+| Audio | "Keep my Indonesian recording unchanged and plan the video and post-production audio." |
 | Continuity | "Check these five prompts for continuity and fix them." |
 
 Give it your reference images and say what each one controls (face, wardrobe, location). It accepts existing scripts, storyboards and shot descriptions from any source.
@@ -103,7 +119,7 @@ Give it your reference images and say what each one controls (face, wardrobe, lo
 | Kling (4.0, 4.0 Flash, 3.0 text to video) | Documented facts, sourced and dated | [`kling.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/kling.md) |
 | Anything else | Ask for current limits, write a model-neutral prompt | [`other.md`](plugins/video-prompt-director/skills/video-prompt-director/references/models/other.md) |
 
-Video models change often. Each file carries the date its facts were checked, and the skill tells you when something is missing or old. Pricing is not recorded.
+Video models change often. Each file carries the date its facts were checked, and the skill tells you when something is missing or old. Flash is a separate profile: individual modes and combinations remain unverified unless Flash-specific evidence establishes them. Skill-authored recipes are not proof of a successful model generation. Pricing is not recorded.
 
 ## Update
 
@@ -113,7 +129,7 @@ Video models change often. Each file carries the date its facts were checked, an
 | Skills directory | `npx skills update video-prompt-director` |
 | npm | `npx @akoru/video-prompt-director@latest update --global` (or `--project`) |
 
-Skills load when a session starts, so open a new Claude Code session after updating. To check your version, read the `VERSION` file in the installed skill folder.
+Skills load when a session starts, so open a new session in your host after updating. For a Codex copy installed with npm, pass the same `--dir` to `update`. To check your version, read the `VERSION` file in the installed skill folder.
 
 ## FAQ
 
@@ -127,7 +143,7 @@ No. They are separate and independently installable. Use video-prompt-director w
 Yes. Edit the files in the installed folder. If you installed with the npm CLI, `update` stops and lists your edits instead of overwriting them.
 
 **Does it work in Claude.ai?**
-Claude Code is the target for now. The npm CLI can build a ZIP for Claude.ai (`video-prompt-director export-zip`); that upload is a separate copy that never syncs with a Claude Code install.
+The npm CLI can build a ZIP for Claude.ai (`video-prompt-director export-zip`); that upload is a separate copy that never syncs with a Claude Code install.
 
 ## Project
 

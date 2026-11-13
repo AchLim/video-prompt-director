@@ -44,6 +44,7 @@ console.log(JSON.stringify({type:'result', session_id:'s', is_error:false, resul
 `);
   const r = runEval(mock, "09-no-activation");
   assert.match(r.stdout, /FAIL 09-no-activation/);
+  assert.equal(r.status, 1, "a failed scenario must fail the evaluation command");
 });
 
 // The evaluator must not depend on which tool the model used to reach a reference file.
@@ -97,6 +98,86 @@ it("a knowledge check passes when the answer carries the reference facts and fai
   const r = runEval(bad, "19-seedance-unwanted-bgm");
   assert.match(r.stdout, /FAIL 19-seedance-unwanted-bgm/);
   assert.match(r.stdout, /knowledge/);
+});
+
+it("requires uncertainty and a post-production fallback for a supplied recording", () => {
+  const good = mockClaude(tmpDir("vpd-eval-cli-"), stream(skill, done(
+    "For this model, exact lip-sync is not guaranteed. Mix the original recording in post. Iwan says: That isn't yours to open.",
+  )));
+  assert.match(runEval(good, "32-recorded-dialogue-evidence").stdout, /PASS 32-recorded-dialogue-evidence/);
+  const bad = mockClaude(tmpDir("vpd-eval-cli-"), stream(skill, done(
+    "The model preserves the recording exactly. Iwan says: That isn't yours to open.",
+  )));
+  assert.match(runEval(bad, "32-recorded-dialogue-evidence").stdout, /FAIL 32-recorded-dialogue-evidence/);
+});
+
+it("accepts equivalent reference-mapping and audio-fallback wording", () => {
+  const mapping = mockClaude(tmpDir("vpd-eval-cli-"), stream(skill, done(
+    "Upload subjects in order they first appear, using a one-to-one manifest. Explicitly write Image 1 as A and Audio 1 as A's voice. This reduces swaps rather than guaranteeing they never occur.",
+  )));
+  assert.match(runEval(mapping, "20-seedance-character-swap").stdout, /PASS 20-seedance-character-swap/);
+  const audio = mockClaude(tmpDir("vpd-eval-cli-"), stream(skill, done(
+    "Flash audio-reference behavior is undocumented. Even for the flagship the recording is a voice or timbre reference, not as a guaranteed word-for-word playback. Run a short low-resolution Flash test, or attach the original recording and use a dubbing pass in post.",
+  )));
+  assert.match(runEval(audio, "22-seedance-audio-reference-honesty").stdout, /PASS 22-seedance-audio-reference-honesty/);
+});
+
+it("scores and rechecks a Codex JSON stream using the Codex project installation", () => {
+  const dir = tmpDir("vpd-eval-cli-");
+  const mock = mockClaude(dir, `
+const fs = require('node:fs');
+if (!fs.existsSync('.agents/skills/video-prompt-director/SKILL.md')) process.exit(2);
+console.log(JSON.stringify({type:'thread.started', thread_id:'test'}));
+console.log(JSON.stringify({type:'item.completed', item:{type:'command_execution', command:'cat .agents/skills/video-prompt-director/references/camera-language.md', exit_code:0}}));
+console.log(JSON.stringify({type:'item.completed', item:{type:'agent_message', text:'The camera backs away, steady with slight sway, 50 mm.'}}));
+console.log(JSON.stringify({type:'turn.completed'}));
+`);
+  const r = spawnSync(process.execPath, ["evals/run-evals.mjs", "--backend", "codex", "--only", "12-camera-follow-smoothness"], {
+    cwd: ROOT, encoding: "utf8", env: { ...process.env, VIDEO_PROMPT_DIRECTOR_EVAL_CLI_SCRIPT: mock },
+  });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /PASS 12-camera-follow-smoothness/);
+  const outputDir = r.stdout.match(/Outputs: (.+)/)?.[1];
+  assert.ok(outputDir);
+  const report = readFileSync(path.join(outputDir, "12-camera-follow-smoothness.md"), "utf8");
+  assert.match(report, /Skill activated:\*\* true/);
+  const summary = JSON.parse(readFileSync(path.join(outputDir, "summary.json"), "utf8"));
+  assert.equal(summary[0].costUsd, null);
+  const recheck = spawnSync(process.execPath, ["evals/run-evals.mjs", "--recheck", outputDir], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(recheck.status, 0, recheck.stdout + recheck.stderr);
+  assert.match(recheck.stdout, /PASS 12-camera-follow-smoothness/);
+});
+
+it("does not treat an incomplete Codex stream as a successful run", () => {
+  const mock = mockClaude(tmpDir("vpd-eval-cli-"), stream(
+    { type: "thread.started", thread_id: "test" },
+    { type: "item.completed", item: { type: "agent_message", text: "Rain on glass." } },
+    { type: "turn.failed", error: { message: "unavailable" } },
+  ));
+  const r = spawnSync(process.execPath, ["evals/run-evals.mjs", "--backend", "codex", "--only", "09-no-activation"], {
+    cwd: ROOT, encoding: "utf8", env: { ...process.env, VIDEO_PROMPT_DIRECTOR_EVAL_CLI_SCRIPT: mock },
+  });
+  assert.equal(r.status, 1);
+  const outputDir = r.stdout.match(/Outputs: (.+)/)?.[1];
+  assert.ok(outputDir);
+  const recheck = spawnSync(process.execPath, ["evals/run-evals.mjs", "--recheck", outputDir], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(recheck.status, 1);
+});
+
+it("retains a failed CLI exit when a completed stream is rechecked", () => {
+  const mock = mockClaude(tmpDir("vpd-eval-cli-"), `${stream(
+    { type: "thread.started", thread_id: "test" },
+    { type: "item.completed", item: { type: "agent_message", text: "Rain on glass." } },
+    { type: "turn.completed" },
+  )}\nprocess.exit(2);`);
+  const r = spawnSync(process.execPath, ["evals/run-evals.mjs", "--backend", "codex", "--only", "09-no-activation"], {
+    cwd: ROOT, encoding: "utf8", env: { ...process.env, VIDEO_PROMPT_DIRECTOR_EVAL_CLI_SCRIPT: mock },
+  });
+  assert.equal(r.status, 1);
+  const outputDir = r.stdout.match(/Outputs: (.+)/)?.[1];
+  assert.ok(outputDir);
+  const recheck = spawnSync(process.execPath, ["evals/run-evals.mjs", "--recheck", outputDir], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(recheck.status, 1);
 });
 
 it("scenario 02 is the unchanged baseline and its Flash variant is marked as not comparable", () => {

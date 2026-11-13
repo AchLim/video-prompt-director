@@ -20,7 +20,7 @@ Sections 1 to 7 keep their numbers because other files cite them. Sections 8 to 
 
 ## 1. Why the storyboard comes first
 
-A video prompt describes one continuous clip. Decisions about what to show, in what order and for how long belong to the storyboard, not the prompt. If those decisions are made while writing the prompt, shots get overloaded, stories skip beats, and continuity breaks. Settle the sequence first, get it approved, then write the prompts from the approved plan.
+A video prompt describes one generation, which may be a continuous take or contain several planned shots. Decisions about what to show, in what order and for how long belong to the storyboard, not the prompt. If those decisions are made while writing the prompt, shots get overloaded, stories skip beats, and continuity breaks. Settle the sequence first, get it approved, then write the prompts from the approved plan.
 
 A storyboard here is a production plan: it shows how the video will actually unfold, shot by shot, and how each shot becomes a generation. It is not a summary of the beginning, middle and end.
 
@@ -60,7 +60,7 @@ Carries in: coat on, keys in right hand. Carries out: hand above envelope.
 | Panel number | Order in the sequence; never renumbered after approval |
 | Shot size | Per `references/cinematography.md` |
 | Camera angle | Eye level, high, low, over the shoulder, and which side |
-| Composition | Where the subject sits in the vertical frame, depth layers, what is kept clear |
+| Composition | Where the subject sits in the chosen frame, depth layers, what is kept clear |
 | Character positions | Who stands where, tied to a landmark or screen side |
 | Character orientation | Who faces which way and where each person looks |
 | Facial expression | The visible face, not a label (`references/performance.md`) |
@@ -103,11 +103,11 @@ A short drama has four parts: the **hook**, the **context**, the **escalation** 
 3. **Escalation:** each panel makes things worse, tighter or costlier than the one before; no run of panels repeats one emotion.
 4. **Cliffhanger:** the last panel shows a change and ends on the inhale, as a clear visual state, with one specific question left.
 
-Story-critical evidence (a signature, message or document) gets its own readable insert panel. Do not add a panel for a part the script already covers, and do not force the structure on a source that is not a short drama.
+When a signature, message or document must be readable, plan an insert and choose whether the exact text is added in post or generated, with a model-specific caveat (`references/constraints.md` section 3). Do not add a panel for a part the script already covers, and do not force the structure on a source that is not a short drama.
 
 ## 6. The approval step
 
-Present the panels and the mapping table (section 12), then stop. Say what you assumed and which mode you chose and why. Say plainly that a panel is a shot or a beat and not automatically one clip, and that the mapping shows which panels become clips, shots inside one generation, keyframes or post-production work. Offer the user a chance to change the mode, length, order, shot sizes, beats or the mapping. Do not write video prompts until they approve, unless they asked for the whole thing in one pass. Sheets and keyframe images (section 14) are made from the approved plan.
+Present the canonical shot plan for approval. Draft the mapping table (section 12) before final video prompts; the user can review it with the plan or separately. If a supplied storyboard has no mapping, it approves the shots, not an invented mapping. Say what you assumed and which mode you chose and why. Say plainly that a panel is a shot or a beat and not automatically one clip, and that the mapping shows which panels become clips, shots inside one generation, keyframes or post-production work. Offer the user a chance to change the mode, length, order, shot sizes, beats or the mapping. Do not write video prompts until they approve, unless they asked for the whole thing in one pass. After shot-plan approval, derive any requested sheets and keyframes from it. Lock the mapping on approval before final video prompts; do not treat an image draft as mapping approval.
 
 The mapping is drafted while you plan the shots and locked at approval. If the user changes a panel, update the neighbors' "carries in" and "carries out" lines and the mapping rows it touches, and say what moved.
 
@@ -144,7 +144,7 @@ A **visual beat** is a moment the viewer must see for the story to land: somethi
 1. List the beats in order, each in one line.
 2. For each beat, name the shot's purpose (establish, action, insert, reaction, close-up, reveal, dialogue coverage). The definitions and when to use each are in `references/cinematography.md` section 10.
 3. Cover by purpose. A scene needs the shots that show its beats, not every angle available. An establishing shot is there to place the audience; an insert is there for an object that matters; a reaction is there because the story turns on a face.
-4. Check the vertical frame: mostly mediums and close-ups, with a wide shot only to place people (`references/camera-language.md` section 10).
+4. Check the chosen aspect ratio and composition; for vertical drama, use mediums and close-ups where they help, and a wide shot where geography matters (`references/camera-language.md` section 10).
 5. Check pressure and variety: if three adjacent panels repeat one framing and one emotion, replace one with a new fact or a new size.
 
 ## 10. Action decomposition
@@ -189,7 +189,7 @@ A panel does not automatically equal a video generation. Map each panel to one o
 | **K** | The panel is a keyframe, not a complete shot: an independent image used as a first or last frame or in an ordered keyframe set | Strict visual alignment: a contact moment, a key pose, a reveal. It costs a reference slot |
 | **X** | The panel is done in post-production | Readable text and overlays, held frames, transitions, sound. The generated shot supplies only the surface |
 
-A panel can combine types (P plus X: a generated insert of a blank phone screen, with the message overlaid in the edit). A continuous take is a P generation whose panels are beats of one unbroken shot, not cuts: mark it "P, continuous". Generations that continue one another start from the previous generation's last frame or ending state.
+A panel can combine types (P plus X: a generated insert of a blank phone screen, with the message overlaid in the edit). A continuous take is a P generation whose panels are beats of one unbroken shot, not cuts: mark it "P, continuous". A K row names a still asset and the generation that consumes it; it is not itself a clip. Label that generation P or M separately. Keyframes guide intended poses; do not say they lock or guarantee the generated frame, even in a mapping table. When shots are intended to connect directly, carry forward the previous ending state or last frame; a time jump or deliberate discontinuity need not match.
 
 Choose the generation structure from the scene, not from habit:
 
@@ -208,7 +208,8 @@ Show the mapping as a table:
 | 01 | P | G1 | 1 of 1 | 4 s | character references | establishing; ends on both still |
 | 02 | M | G2 | 1 of 2 | 7 s total | reference sheet + references | speaker line; starts from P01's end |
 | 03 | M | G2 | 2 of 2 | (in G2) | (in G2) | listener reaction, one pause |
-| 06 | K | G3 | keyframe 3 | 5 s | independent image | contact moment, strict alignment |
+| 06 | K | G3 | keyframe 3 | still | independent image | contact pose; consumed by G3 |
+| 06 | P + K | G3 | 1 of 1 | 5 s | keyframe assets | video generation using keyframes; exact match not guaranteed |
 | 09 | P + X | G6 | 1 of 1 | 3 s | phone reference | blank screen; message overlaid in the edit |
 ```
 
@@ -217,12 +218,12 @@ Check the mapping before approval:
 2. **Dialogue:** each line fits its clip (`references/pacing.md`).
 3. **References:** count the images, videos and audio clips each generation needs against the target model's profile. Storyboard sheets and keyframes are images and count. The limits differ by model version (`references/models/seedance.md` routes to them), and a limit the documentation does not give stays UNVERIFIED.
 4. **Sheets:** a model's reference sheet covers the panels of one generation, not the whole scene (section 14).
-5. **Joins:** each generation's opening state equals the previous generation's ending state (`references/continuity.md` section 12).
+5. **Joins:** each directly connected generation's opening state matches the previous generation's ending state (`references/continuity.md` section 12).
 6. **Post work:** every X item says what is added and when.
 
 ## 13. The planning workflow
 
-Quick mode uses steps 1, 2, 5, 6, 10 and 12. Production and Cinematic modes use all of them.
+Quick mode uses steps 1, 2, 5, 6, 7, 9, 10 and 12; image and keyframe steps apply when requested. Production and Cinematic modes use all applicable steps. All modes honor the shot-plan and mapping approval gates unless the user authorizes one-pass completion.
 
 1. **Story and scene breakdown:** read the source, mark the scenes, fill the beat map for a short drama (section 5).
 2. **Visual beats:** list what the viewer must see (section 9).
@@ -230,9 +231,9 @@ Quick mode uses steps 1, 2, 5, 6, 10 and 12. Production and Cinematic modes use 
 4. **Action decomposition:** split the actions whose steps matter (section 10).
 5. **Panel specification:** write each panel (section 3), and recommend the mode (section 8).
 6. **Draft mapping:** assign types and generations while planning (section 12).
-7. **Production storyboard:** make the detailed sheet from the canonical plan (`references/storyboard-images.md`).
-8. **Seedance reference sheets:** for each multi-shot generation that will use one, make a simple line-art sheet from the same plan (`references/storyboard-images.md`).
-9. **Review and approval:** the user reviews panels, mapping and sheets (section 6). The mapping is locked.
+7. **Shot-plan approval:** confirm the canonical panels before deriving the two image outputs. The user may authorize a single-pass workflow.
+8. **Image outputs:** derive the detailed production storyboard and, where useful, a clean line-art Seedance sheet from that approved plan (`references/storyboard-images.md`). A sheet represents the panels assigned to its generation.
+9. **Mapping review and approval:** the user reviews the draft mapping and available image outputs (section 6). Lock the approved mapping before final video prompts.
 10. **Mapping check:** confirm durations, dialogue fit, reference budget and joins (section 12).
 11. **Keyframes:** make independent keyframe images for the K panels (`references/storyboard-images.md`).
 12. **Prompts:** write one prompt per generation from the approved mapping (section 7).
