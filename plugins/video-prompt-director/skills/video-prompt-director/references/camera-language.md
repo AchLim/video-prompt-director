@@ -131,7 +131,7 @@ For each clip, state once at the start where people stand at the opening moment:
 
 ## 10. Coverage: which shot for which beat
 
-TV-drama coverage the observed pipeline uses as a baseline:
+Shot purposes and the building blocks of dialogue coverage are defined in `references/cinematography.md` sections 10 and 11. This section keeps the baseline the observed vertical-drama pipeline used:
 
 - **Close-ups** for emotional lines and reactions.
 - **Medium shots** for conversations.
