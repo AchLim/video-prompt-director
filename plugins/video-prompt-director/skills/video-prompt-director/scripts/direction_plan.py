@@ -309,7 +309,7 @@ def validate(plan: dict[str, Any]) -> tuple[Report, list[dict[str, Any]]]:
             gcam = str(plan.get("global", {}).get("look", {}).get("camera", ""))
             if re.search(r"handheld", gcam, re.I) and re.search(r"\b(locked[- ]off|tripod)\b", str(shot.get("move", "")), re.I) and not re.search(r"\b(locked[- ]off|tripod)\b", gcam, re.I):
                 r.add("warn", "camera-global-conflict", f"{sid} asks for a locked-off camera while the global look asks for handheld movement. Say which wins (for example 'held still' with the global handheld breathing).", where)
-            if OTS.search(cam):
+            if OTS.search(cam) and len([w for w in in_frame if w in cast]) >= 2:  # a single seen from behind is not an over-the-shoulder
                 behind = shot.get("over")
                 if not behind:
                     r.add("warn", "ots-unnamed", f"{sid} is over a shoulder: name whose (over).", where)
