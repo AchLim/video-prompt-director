@@ -96,6 +96,11 @@ describe("direction plan: individual checks", () => {
   it("the model's documented duration", { skip }, () => {
     assert.ok(errorsOf((p) => { p.global.model.seconds = [4, 10]; }).includes("model-duration"));
   });
+  it("a writer's handoff shot with an action and no beats asks for blocking, and still compiles the action in order", { skip }, () => {
+    const f = variant((p) => { const s = shot(p, "2B.1"); s.action = "He turns from the window to the table set for one."; s.beats = []; });
+    assert.ok(codes(validate(f).findings, "warn").includes("needs-beats"));
+    assert.match(run("compile", f, "--generation", "2B").stdout, /Action \(in this order, across the shot\): He turns from the window/);
+  });
   it("a locked shot under a handheld global look is a warning", { skip }, () => {
     assert.ok(warnsOf((p) => { shot(p, "2B.1").move = "locked off"; }).includes("camera-global-conflict"));
   });

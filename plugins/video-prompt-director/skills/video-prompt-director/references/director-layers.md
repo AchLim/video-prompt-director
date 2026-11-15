@@ -26,7 +26,7 @@ The layers are a way of working, not extra text. A compiled prompt is usually sh
 | **Continuity director** | Positions, facing, wardrobe, what each hand holds, where each prop is and its condition, environment state | derived by replaying the plan (section 4) | `START STATE`, `Across the cut`, `END STATE` |
 | **Validator** | Contradictions, impossible hands, rushed or overlapping actions, unmotivated sounds, missing references | `scripts/direction_plan.py validate` | nothing: it blocks or warns before generation |
 
-The creative intent (what the scene is for, what each person wants, what the audience must notice, what must stay hidden) comes from the writer or the user. It enters the plan as `purpose` on a generation and `must_show` / `keep_hidden` on a shot, and never as camera choices (section 8).
+The creative intent (what the scene is for, what each person wants, what the audience must notice, what must stay hidden) comes from the writer or the user. A creative handoff (for example Snack Short Hub's `npm run production -- <episode> handoff`) arrives as a direction plan whose shots carry `action` (what must happen, in order) but no `beats`: the director blocks each one into timed beats with hands and props, then validates and compiles. Extra keys the writer adds (`story`, `constraints`, a person's `psychology`, a line's `intention`) are for the director to read; the compiler ignores them. It enters the plan as `purpose` on a generation and `must_show` / `keep_hidden` on a shot, and never as camera choices (section 8).
 
 ## 3. The direction plan (the handoff format)
 
@@ -100,6 +100,7 @@ So every clip says, in plain words, where everyone stands, which way they face, 
 | Two looks of one person in one generation; a look change with no declared change | `wardrobe-mixed`, `wardrobe-unexplained` | error |
 | An environment state that contradicts the current one | `env-conflict` | error |
 | A generation outside the model's documented durations or image count | `model-duration`, `too-many-refs` | error |
+| A shot that arrived from the writer with its required action but no timed beats | `needs-beats` | warn |
 
 The timing table behind `beat-rushed` is a planning heuristic (`references/action-blocking.md` section 3), not a model fact. The checker reads the leading verb of a beat; when it misjudges an action, set the beat's window to what the action really needs and say why in `perform`, rather than bending the wording to please the checker.
 

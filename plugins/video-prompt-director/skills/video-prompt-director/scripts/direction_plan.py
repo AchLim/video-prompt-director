@@ -317,6 +317,9 @@ def validate(plan: dict[str, Any]) -> tuple[Report, list[dict[str, Any]]]:
                     for b in shot.get("beats", []):
                         if b.get("who") == behind and FACE_WORDS.search(b.get("do", "")):
                             r.add("error", "ots-face", f"{sid} is shot from behind {behind}, so {behind}'s face cannot be seen, yet a beat directs it: “{b['do']}”. Move the reaction to a shot that sees the face, or play it with the head and shoulders.", where)
+            # a creative handoff names the required action; timing it is the director's job
+            if shot.get("action") and not shot.get("beats"):
+                r.add("warn", "needs-beats", f"{sid} has its required action from the writer (“{shot['action'][:80]}”) but no timed beats yet. Block it (references/action-blocking.md) before compiling.", where)
             # beats: one actor, one action, enough time
             busy: dict[tuple[str, str], list[tuple[float, float, str]]] = {}
             for b in shot.get("beats", []):
@@ -626,6 +629,8 @@ def compile_generation(plan: dict[str, Any], gen: dict[str, Any], ledger: list[d
         for sd in s.get("sounds", []):
             if "at" in sd:
                 events.append((float(sd["at"]), 2, f"{fmt_t(sd['at'])} s: sound of {sd['what']}."))
+        if s.get("action") and not s.get("beats"):
+            lines.append(f"  Action (in this order, across the shot): {s['action'].rstrip('.')}.")
         for _, _, text in sorted(events, key=lambda e: (e[0], e[1])):
             lines.append("  " + text)
         for w, note in s.get("perform", {}).items():
