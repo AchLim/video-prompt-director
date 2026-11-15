@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Added
+- Cinematic Bible (`references/cinematic-bible.md`): one film's look layered on the project look, with camera, lenses, image response, light, grade and design chosen separately, references translated into what a frame shows, light and grade per location, and one sent paragraph without equipment names.
+- Director's breakdown (`references/director-breakdown.md`): per-scene objective, wants, information, landmarks, blocking, starting prop states and camera, light and edit intentions, decided before the storyboard; what the storyboard may not redecide.
+- Storyboards in a staged production (`references/storyboard.md` section 15 and a Cut in field per panel): dialogue by line id, blocking from the breakdown, a reason for every cut, planned lip timing, and alternates for comparing structures on real generations. One dramatic beat per generation and the three-cut cap are labelled as rules under test.
+- One derived continuity ledger (`references/continuity.md` section 7), and two suggested Seedance tests (structure, and dialogue route) in the test log.
+
+
 ## [0.3.0] - 2026-11-14
 
 ### Added

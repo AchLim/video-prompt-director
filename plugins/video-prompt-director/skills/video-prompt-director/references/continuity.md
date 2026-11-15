@@ -71,6 +71,8 @@ Fix what fails by editing the prompts. Do not return a list of continuity proble
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
 
+In a staged production (`references/director-breakdown.md`), keep **one** ledger and derive it rather than writing it by hand: start from the breakdown's starting state of props and people, walk the shot plan, and apply each shot's changes in order. Each row then shows who is where at the start and end, the screen sides, the state of every relevant prop, what the shot changes, how it ends, and why the cut into it exists. A ledger derived this way can't drift from the plan; a hand-written second ledger can. Across episodes, the project's story memory carries what happened.
+
 ```
 | Shot | Where | Who and positions | Wardrobe | Props (hand, state) | Light | Ends on |
 |---|---|---|---|---|---|---|

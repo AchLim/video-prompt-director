@@ -15,8 +15,9 @@ Contents:
 12. Panel to generation mapping
 13. The planning workflow
 14. Sheets and annotations
+15. In a staged production
 
-Sections 1 to 7 keep their numbers because other files cite them. Sections 8 to 14 add adaptive planning, coverage, action steps, dialogue coverage, the mapping from panels to generations, and the sheets made from the approved plan.
+Sections 1 to 7 keep their numbers because other files cite them. Sections 8 to 14 add adaptive planning, coverage, action steps, dialogue coverage, the mapping from panels to generations, and the sheets made from the approved plan. Section 15 covers storyboards inside a staged production.
 
 ## 1. Why the storyboard comes first
 
@@ -70,6 +71,7 @@ Carries in: coat on, keys in right hand. Carries out: hand above envelope.
 | Dramatic purpose | The panel's job: what the viewer learns, feels or fears |
 | Continuity with the previous panel | What carries in; what changed and why |
 | Intended ending state | The visual state the next panel starts from |
+| Cut in | Why the cut into this panel exists: its kind (action, reaction, eyeline, insert, reveal, match, time), what new information it brings, and whether screen direction is kept or deliberately crossed (then how the crossing is shown). The first panel of a scene may leave it empty |
 
 Plus the duration (adjustable), the speaker and the exact line for any dialogue, and the panel's mapping type (section 12).
 
@@ -250,3 +252,17 @@ Two sheets can be made from the one approved plan, and the image-generation prom
 - **Seedance reference storyboard:** simple line art, no text, clean composition and action, cut from one generation. Identity comes from separate reference assets. Seedance treats a multi-panel sheet as high-level guidance, not frame-by-frame replication; use independent keyframes when strict alignment is needed, and supplement the sheet with written instructions for actions, camera movement, style and continuity.
 
 Panel numbers, shot descriptions, the mapping table and continuity notes go in the conversation, outside the images. Save a separate document only when the user asks for one.
+
+## 15. In a staged production
+
+When the project approves stages one at a time (screenplay, Cinematic Bible, director's breakdown, then the shot plan), the storyboard is written from those approved documents and must not redecide them:
+
+- **Dialogue** comes from the approved screenplay by line id, word for word. A storyboard never adds, trims or moves a line.
+- **Blocking, screen sides and prop states** come from the breakdown (`references/director-breakdown.md`). Each panel states positions at its start and end using the breakdown's landmarks.
+- **Look** comes from the Cinematic Bible (`references/cinematic-bible.md`): lens per shot size, the location's light and grade line.
+- **Every cut states its reason** (the Cut in field in section 3). A cut whose only reason is variety is removed.
+- **The continuity ledger is derived** from the breakdown and the panels (`references/continuity.md` section 7), not written separately.
+- **Planned lip timing.** When dialogue is recorded separately and laid in after, record each on-screen line's planned start second in its generation before any video is made.
+
+**Rules still under test are labelled as such.** One primary dramatic beat per generation (several small connected actions allowed) is a sensible default, and so is a cap of about three hard cuts in one 15-second generation. Neither is proven for every model. When a scene could go either way, keep an **alternate**: the same beat planned as a different set of generations (for example one deep-staged continuous take against four cuts), with the same references and settings, and compare real generations before choosing. Record the result in `references/models/seedance/test-log.md`; don't assume either structure is better.
+
