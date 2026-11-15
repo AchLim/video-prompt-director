@@ -704,6 +704,9 @@ def load(path: str) -> dict[str, Any]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("command", choices=["validate", "compile", "ledger"])
     ap.add_argument("plan")

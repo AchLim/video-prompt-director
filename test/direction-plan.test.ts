@@ -137,6 +137,13 @@ describe("direction plan: compiled prompts", () => {
     assert.match(clip(out, "2B"), /Speech: none; no one speaks\./);
     for (const id of ["1A", "2B", "3B"]) assert.match(clip(out, id), /No music/);
   });
+  it("writes UTF-8 even when Python starts with Windows output encoding", { skip }, () => {
+    const r = spawnSync("python3", ["-I", "-c",
+      'import runpy, sys; sys.stdout.reconfigure(encoding="cp1252"); sys.stderr.reconfigure(encoding="cp1252"); sys.argv = sys.argv[1:]; runpy.run_path(sys.argv[0], run_name="__main__")',
+      script, "compile", AFTER], { encoding: "utf8" });
+    assert.equal(r.status, 0, r.stderr);
+    assert.ok(clip(r.stdout, "1A").includes(`says: "Please${String.fromCharCode(0x2014)}just one."`));
+  });
   it("carries the hands and props across clips", { skip }, () => {
     const out = compiled();
     assert.match(clip(out, "1A"), /START STATE[^\n]*The boy holds three small coins in his left mitten and the crayon drawing \(folded once\) in his right mitten/);

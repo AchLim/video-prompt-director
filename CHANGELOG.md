@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Fixed
+- Direction-plan output uses UTF-8 on Windows so compiled dialogue preserves its original punctuation.
+
 ### Added
 - Layered direction (`references/director-layers.md`): global, scene, shot and continuity directors and a validator, with a JSON direction plan as the handoff format from a writer or pipeline, the derived state, and a fixed compiled prompt order in which each fact appears once.
 - `scripts/direction_plan.py`: `validate` (impossible hands, finger work in mittens, rushed, overlapping or chained beats, props that appear from nowhere or float, held props left unstated, sounds without a cause or out of sync, lines that overrun or have no speaker in frame, zooms and conflicting camera instructions, over-the-shoulder shots that direct the hidden face, side flips, mixed or undeclared looks, model durations and image counts), `ledger` and `compile`.
