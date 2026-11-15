@@ -6,8 +6,32 @@ Craft and guardrails for Gemini Omni 1.2 Flash ("OF 1.2") short dramas. Document
 
 - Subjects sit or stand. Allowed motion: slow blink, subtle head turn, hand tremor, one tear, breath, a swallow. No walking, full-body turns, gesturing or object handoffs.
 - Momentum comes from the camera: slow dolly push-in, 30 to 45 degree orbit, slow pull-back that reveals a background clue, rack focus (foreground prop to the eyes).
-- Budget: one camera move per take, plus at most one rack focus. Always "slow".
+- Budget: one camera path per take, plus at most one rack focus. The path is either a single move or one **motivated compound move** travelling a single continuous path at one constant speed (section 1.1). Always "slow", constant velocity, no change of direction mid-take.
 - Why: limb and physics warping grows with body motion; camera motion on a still subject is cheap. This mode overrides the "most shots are locked off" default.
+
+### 1.1 Single-take choreography (HEURISTIC, user's production practice, 2026-11-14)
+
+A 15 s take that only pushes in slowly reads as bland, and a film of such takes reads as one shot repeated. Design each take as a small piece of choreography, and design the takes as a sequence.
+
+**Inside a take: the motivated compound move.**
+- Open on a frame that already holds the face of everyone in the take, with the beat's one action in it: hands and the object (a pot set down, swollen knuckles rubbed, a mug slid across a table) at the lower edge of a medium close-up, not a hands-only insert. A face that enters mid-take is invented from text.
+- Then travel one continuous path to the emotion: a push-in, a crane, a lateral truck or a slow arc toward a tight close-up of the eyes, arriving before the line or the reaction lands; or hold the camera locked and let the face change. Optionally rack focus once along the way (foreground object to the eyes, or one face to the other).
+- Name the start framing, the path, the end framing and the second the camera arrives: "starts on a medium close-up of her, the pot at the lower edge; a slow push-in arrives at 8 s on a tight close-up of her eyes, then holds."
+- One path only: no push then pan then tilt as separate moves, no reversal, no speed change. The body stays still while the camera travels (section 1).
+- Use stabilized-rig wording (section 7.2) for the whole path, so the model keeps constant velocity and does not warp limbs.
+
+**Across takes: vary size and angle.**
+- Alternate shot sizes and angles beat to beat: a wide or medium two-shot, a low-angle medium close-up with an object in the foreground, an over-the-shoulder close-up, a tight face close-up, then wide again for the release.
+- No two consecutive takes share the same size, angle and move. No more than two push-ins in a row in an episode; prefer one push-in per three takes.
+- Keep the 180-degree line (section 7.3) while varying: over-the-shoulder and reverse close-ups stay on the same side of the line.
+- Save the widest frame for the opening context and the ending release; save the tightest frame for the turn.
+
+**Storyboard first** (HEURISTIC, user's production practice, 2026-11-14). Writing camera and staging only in text leaves the set, the table and the empty seats to chance; the model drifts between takes. Plan every take as a photographic storyboard first:
+- One storyboard sheet per take: at least 3 full-colour photographs (4 in a 2 × 2 grid is the default), each a complete frame at the series' aspect ratio, showing moments of the SAME continuous take at named seconds (0, 5, 10, 15 s; or 0, 3, 7, 10 s). Same set, light, people and wardrobe; only the camera along its one path and the action change. No text, numbers or arrows inside the panels.
+- Make it with an image model (Nano Banana 2.1 in Flow, USER-REPORTED free; or the app's image model) from the character master sheets plus the previous take's storyboard, whose last panel is the moment just before this take. Faces are visible in every panel where the person faces the camera.
+- The storyboard prompt stays under 5,000 characters (aim for 2,500 to 4,200): concise, concrete, no repeated boilerplate.
+- Attach the sheet to the video generation. The video prompt ties each panel to its second ("at 0 s the frame matches panel 1 ...; matching panel 2 at 5 s ...; arrives at 15 s on panel 4"), states one smooth camera path between the panels with no cuts or jumps, and carries what a still cannot: the action, the dialogue with exact timing, and the delivery (section 5).
+- Bind only the people on screen as reference images in the video prompt; never an empty-set image, which empties seats that an earlier take showed occupied.
 
 ## 2. Visual wrappers (one per series, repeated in every prompt)
 
@@ -31,6 +55,7 @@ Describe traits, never real stars or titles (`references/constraints.md` section
 | Extension | 3 to 10 s per extension, up to about 30 s total | OFFICIAL |
 | Two keyframes with a duration above 10 s returns an API invalid-argument error | | OFFICIAL (verified) |
 
+- **Episode cap** (HEURISTIC, user rule 2026-11-14): at most four takes of 15 s per episode, every other take 10 s. Give the 15 s takes to the heaviest dialogue and emotional beats; write the 10 s takes for 10 s (one action, at most one or two lines) rather than squeezing a 15 s beat.
 - Never write a duration above 10 s when two keyframes are supplied. If the beat needs more, use one keyframe (up to 15 s), or a 10 s interpolation followed by an extension.
 - Long monologue: do not cut away. Generate a first take, then extend from its final seconds in 3 to 10 s steps (about 30 s total), carrying the speaker tag, tone and framing into each extension prompt. Extension with dialogue works on model-generated videos, not on an uploaded video where someone already speaks.
 
@@ -67,6 +92,7 @@ For a non-realistic wrapper (section 2), keep the sentence exact and let the wra
 ## 4. Take formats
 
 - **15 s continuous take** (default, one image or text only): include the single-shot lock (section 9.1), then `[0-5s]`, `[5-10s]`, `[10-15s]` beats: camera move, micro-acting, line, sound.
+- **Storyboard-first take** (default for a series, section 1.1): the take's photo storyboard is attached; the video prompt opens with the on-screen people's bindings and ties the panels to seconds. A prompt mentions a supplied start or end image only when one is actually passed (first-and-last-frame mode); never otherwise.
 - **10 s first-and-last-frame** (micro-twist): supply Start and End images. The End image has the same framing, lens, light and pose; only the changed detail differs (smile gone, single tear). The prompt describes only the transition. Duration capped at 10 s (section 3.1).
 - 9:16 unless the user says otherwise. Exclusions are written inside the prompt; there is no negative-prompt parameter.
 
@@ -78,6 +104,14 @@ Audio is generated with the picture. Write dialogue, tone and sound in separate 
 `Sound: rain on glass, a clock ticking, a held breath.`
 
 Speaker tag = stable visual description plus name; tone of voice stated; lines verbatim; only the speaker's mouth moves; each sound effect tied to a beat. No music unless the user asks for it.
+
+**Performance and delivery** (HEURISTIC, 2026-11-14). Every take has a `Performance and delivery:` block that makes the emotion unmistakable, in voice and face: an angry line is delivered very angry (raised, clipped, jaw tight), a happy one very happy (bright, laughing, wide smile), grief breaks the voice. Name how the voice changes inside the line ("a catch in her throat on 'he wasn't ready to stop'", "the 'Please' barely above a whisper") and what the face does while it plays. Keep it physically real; no mugging.
+
+**Inner voice-over and off-screen lines** (HEURISTIC, 2026-11-14). A named speaker in the dialogue makes the model move that person's lips, or put an off-screen person into frame.
+- Never write `CHARACTER (@tag) says:` for an inner voice-over. Label it by the mouth that stays shut, with the voice description and no tag: `Off-screen voiceover (while June's mouth remains completely closed), soft husky alto, unhurried, says: "..."`. Then state it outright: `Her lips never move.`
+- An off-screen spoken line is labelled the same way: `Off-screen voice (while Walter's mouth remains completely closed), ...`.
+- Leave the inner voice-over speaker out of any automatic voice or speaker list appended to the prompt.
+- **Solo shots.** When one person is on screen and someone else speaks or is thought about off-screen, never name the off-screen person as a noun ("toward the seated man, who is out of frame", "at the waitress"). Give the eyeline as a direction only ("slightly off-camera to screen-right") and add `Solo shot only, no other people anywhere in frame.`
 
 ## 6. Conversational edit (same location, next beat)
 
@@ -106,9 +140,9 @@ Fallback when `store` is off, the interface has no continue option, or identity 
 
 ## 8. Storyboard output per beat
 
-- **Anchor / Start Frame Image Prompt**: identity, wardrobe, prop, wrapper, lens, light, pose, plus the reference slot map.
-- **End Frame Image Prompt** (optional): identical to the anchor except the micro-twist. Present only when the take is a first-and-last-frame pair (10 s cap).
-- **OF 1.2 Video + Audio Prompt**: pass tag, duration, sketch sentence if a sketch was supplied, camera, micro-acting, dialogue with speaker tag and tone, SFX.
+- **Storyboard Prompt** (section 1.1): a sheet of at least 3 photographs (4 in a 2 × 2 grid by default) of the one take at named seconds; the references to attach (master sheets, the previous take's storyboard); set, people, camera path, one line per panel, faces visible. Under 5,000 characters.
+- **End Frame Image Prompt** (only for a first-and-last-frame pair, 10 s cap): identical to the start except the micro-twist.
+- **OF 1.2 Video + Audio Prompt**: on-screen bindings, pass tag, duration, single-shot lock, camera continuity tying each panel to its second, in frame, timed action, performance and delivery, dialogue with speaker tag and tone, SFX.
 - **Conversational Continuity Note**: what stays fixed, what evolves, the fallback.
 
 ## 9. Prompt syntax and output hygiene
@@ -147,3 +181,8 @@ Source: the official Gemini Omni 1.2 Flash prompt guidance (summarized in `refer
 7. One lens for the episode, stabilized-rig wording with constant velocity, three anchors repeated, eye-line sides stated, one micro-atmosphere cue.
 8. Upscale path respects the ladder (720p to 1080p or 4K; 360p to 720p or 1080p).
 9. Single-shot lock phrase present (unless a montage was requested); timestamps inside the duration (10 s with two keyframes); ends with the no-subtitles clause (or quoted diegetic text with placement); no-music clause present; edits are one change plus `keep everything else the same`.
+10. Camera: one path per take (single or compound move, constant velocity), named start and end framing and arrival second; consecutive takes vary size and angle; no more than two push-ins in a row.
+11. Storyboard: one photo sheet per take (at least 3 panels), under 5,000 characters, faces visible from the first panel; the video prompt ties every panel to its second and mentions a start or end image only when one is passed; no empty-set reference.
+12. Inner voice-over and off-screen lines labelled by the closed mouth, no tag, "lips never move" stated; solo shots name no off-screen person and carry the solo line.
+13. Durations: at most four 15 s takes in the episode, every other take 10 s.
+14. Delivery: every take has a performance and delivery block whose emotion is strong, specific and audible.

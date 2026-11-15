@@ -1,7 +1,7 @@
 [
   {
     "id": "01-storyboard-gate",
-    "title": "Storyboard first when none is supplied",
+    "title": "Plan first when no plan is supplied (a storyboard is optional)",
     "prompt": "I have a scene and no storyboard yet. MIRA (30s, green wool coat, wet dark hair) comes home at night and finds a sealed envelope on the kitchen counter. She hesitates, then picks it up. DANIEL, her husband, appears in the doorway and says: \"You weren't supposed to be home yet.\" Mira says nothing and keeps looking at the envelope. I want to generate this with Seedance in 6-second clips. Please help me get started.",
     "checks": [
       {
@@ -9,16 +9,21 @@
       },
       {
         "type": "regex",
-        "pattern": "Panel",
+        "pattern": "(Panel|Shot)",
         "flags": "i",
         "min": 3
       },
       {
         "type": "not_regex",
         "pattern": "Negative prompt"
+      },
+      {
+        "type": "not_regex",
+        "pattern": "storyboard (is|are) (required|mandatory)|(must|need to) (make|upload|provide|create) (a|the) storyboard (first|before)",
+        "flags": "i"
       }
     ],
-    "rubric": "Proposes numbered storyboard panels with beats, shot sizes, durations that fit 6-second clips, who is in frame and how each panel ends. Keeps Daniel's line exact. Stops for approval or says it will wait, and does not write finished video prompts yet."
+    "rubric": "Proposes a plan: numbered shots (or panels) with timed beats, shot sizes, who is in frame and what each hand holds, how each ends, and a mapping into 6-second clips. Keeps Daniel's line exact. Does not require a storyboard image; may offer one as optional. Stops for approval of the plan before the final prompts, or says it will wait."
   },
   {
     "id": "02-panel-to-prompt-seedance",
@@ -2132,5 +2137,31 @@
       }
     ],
     "rubric": "Gives each of the four beats the four fields (anchor frame image prompt, optional end frame, OF 1.2 video and audio prompt, conversational continuity note). Allocates the six reference images in a clear slot map (Mira, Daniel, kitchen, letter). Beat 3 is a 10 s first-and-last-frame pair; the 15 s request is declined or resolved as one keyframe or an extension, never 15 s with two keyframes. Dialogue is exact with speaker tag and tone, eye-lines face each other (off-camera right and left), bodies stay still with one slow camera move, the subject sits in the upper-middle third with the bottom clear, three anchors repeat, and a 720p draft pass precedes upscale."
+  },
+  {
+    "id": "16-text-only-direction",
+    "title": "Text-only prompts from a production handoff, no storyboard",
+    "prompt": "No storyboard, go straight to the Seedance 2.5 Flash prompt for this one 8-second clip. A BAKER (late 50s, apron over a brown cardigan) stands in his open shop doorway at night in heavy snow. A BOY (7, navy coat, knitted mittens) on the step holds three coins in his left mitten and a folded drawing in his right. The boy looks at the cake on the counter behind the baker and wants the baker to understand he means that one. The baker glances back at the cake, then says: \"That's not for sale.\"",
+    "checks": [
+      {
+        "type": "skill_activated"
+      },
+      {
+        "type": "regex",
+        "pattern": "That's not for sale\\.",
+        "min": 1
+      },
+      {
+        "type": "regex",
+        "pattern": "\\d+(\\.\\d)?\\s*[\\u2013-]\\s*\\d+(\\.\\d)?\\s*s",
+        "min": 3
+      },
+      {
+        "type": "not_regex",
+        "pattern": "index finger",
+        "flags": "i"
+      }
+    ],
+    "rubric": "Writes the prompt without asking for a storyboard. Timed beats with one actor each; the boy gestures with an occupied mitten (or frees a hand first) rather than pointing a finger; the baker's glance comes before the line; the line is exact; who holds what at the start and end is stated; no music."
   }
 ]

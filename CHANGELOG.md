@@ -4,6 +4,33 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+### Fixed
+- Direction-plan output uses UTF-8 on Windows so compiled dialogue preserves its original punctuation.
+
+### Added
+- Layered direction (`references/director-layers.md`): global, scene, shot and continuity directors and a validator, with a JSON direction plan as the handoff format from a writer or pipeline, the derived state, and a fixed compiled prompt order in which each fact appears once.
+- `scripts/direction_plan.py`: `validate` (impossible hands, finger work in mittens, rushed, overlapping or chained beats, props that appear from nowhere or float, held props left unstated, sounds without a cause or out of sync, lines that overrun or have no speaker in frame, zooms and conflicting camera instructions, over-the-shoulder shots that direct the hidden face, side flips, mixed or undeclared looks, model durations and image counts), `ledger` and `compile`.
+- Action blocking (`references/action-blocking.md`): one actor, one action, one time window per beat; how long actions take; hands and objects; behaving like people rather than NPCs.
+- The bakery benchmark: `examples/bakery-direction-plan.json` (six clips, validates clean) and `examples/layered-direction.md` (the original prompts, what the validator and a director's review found, and the compiled prompts).
+
+### Changed
+- A storyboard is optional. The principle is now "plan first, then prompts"; text-only generation is a complete path, and the planning gate asks for an approved plan (a timed shot list or a storyboard), never a storyboard image. Eval 01 follows; eval 16 covers a text-only clip.
+- Continuity tracks what each hand holds (`references/continuity.md` section 13).
+
+### Added
+- Cinematic Bible (`references/cinematic-bible.md`): one film's look layered on the project look, with camera, lenses, image response, light, grade and design chosen separately, references translated into what a frame shows, light and grade per location, and one sent paragraph without equipment names.
+- Director's breakdown (`references/director-breakdown.md`): per-scene objective, wants, information, landmarks, blocking, starting prop states and camera, light and edit intentions, decided before the storyboard; what the storyboard may not redecide.
+- Storyboards in a staged production (`references/storyboard.md` section 15 and a Cut in field per panel): dialogue by line id, blocking from the breakdown, a reason for every cut, planned lip timing, and alternates for comparing structures on real generations. One dramatic beat per generation and the three-cut cap are labelled as rules under test.
+- One derived continuity ledger (`references/continuity.md` section 7), and two suggested Seedance tests (structure, and dialogue route) in the test log.
+
+
+### Changed
+- OF 1.2 drama profile (`references/models/omni-flash-drama.md`): single-take camera choreography (new section 1.1). A take's camera budget is one path, either a single move or a motivated compound move (start on an insert of hands or an object, then tilt, pan or crane in one continuous constant-velocity path to a tight close-up of the eyes, with at most one rack focus), with the start framing, end framing and arrival second named. Consecutive takes vary shot size and angle (wide two-shot, low tabletop insert, over-the-shoulder close-up, tight close-up), never repeat size, angle and move, and use no more than two push-ins in a row. Takes open on a frame that already holds every face in them.
+- OF 1.2 drama profile: storyboard first. Every take gets a photographic storyboard sheet (at least 3 full-colour photographs, 4 in a 2 × 2 grid by default) of the one continuous take at named seconds, made with an image model from the character master sheets and the previous take's storyboard, under 5,000 characters; the video prompt ties each panel to its second, states one smooth camera path between them, binds only the on-screen people (never an empty-set image) and mentions a start or end image only when one is passed. Takes open on a frame that holds every face in them.
+- OF 1.2 drama profile: at most four 15 s takes per episode, every other take 10 s.
+- OF 1.2 drama profile: a `Performance and delivery` block per take makes the emotion strong, specific and audible (very angry when angry, very happy when happy).
+- OF 1.2 drama profile: inner voice-over and off-screen lines are labelled by the mouth that stays shut (`Off-screen voiceover (while June's mouth remains completely closed), ...`), never `CHARACTER (@tag) says:`, with "her lips never move" stated and the speaker left out of any appended voice list. Solo shots never name the off-screen person and carry `Solo shot only, no other people anywhere in frame.` The pre-return checklist gains items 10 to 12.
+
 ## [0.3.0] - 2026-11-14
 
 ### Added

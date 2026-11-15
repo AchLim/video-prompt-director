@@ -13,6 +13,7 @@ Contents:
 10. Attach only what is in the clip
 11. Room map and screen sides
 12. Joining one clip to the next
+13. Hands, ownership and derived state
 
 ## 1. Why each prompt must carry continuity
 
@@ -70,6 +71,8 @@ Fix what fails by editing the prompts. Do not return a list of continuity proble
 ## 7. The continuity ledger
 
 For more than two shots, keep a short ledger and update it per shot. Show it to the user when asked or when it helps them check your work.
+
+In a staged production (`references/director-breakdown.md`), keep **one** ledger and derive it rather than writing it by hand: start from the breakdown's starting state of props and people, walk the shot plan, and apply each shot's changes in order. Each row then shows who is where at the start and end, the screen sides, the state of every relevant prop, what the shot changes, how it ends, and why the cut into it exists. A ledger derived this way can't drift from the plan; a hand-written second ledger can. Across episodes, the project's story memory carries what happened.
 
 ```
 | Shot | Where | Who and positions | Wardrobe | Props (hand, state) | Light | Ends on |
@@ -130,3 +133,12 @@ For each join, check and state in the later prompt:
 In image-to-video, use the last frame of N as the first frame of N+1 where the tool allows it. In text-to-video, write the opening state of N+1 as a copy of the ending state of N.
 
 When two adjacent clips cannot match (a new room, a time jump), start the second with one short establishing or detail beat, and let a sound or an object carry across. Do not hide the jump with a transition effect.
+
+## 13. Hands, ownership and derived state
+
+Track the hands as part of the state, not only the props: for each person, what the left hand and the right hand hold. Most continuity failures in short clips are hand failures: an object that changes hands without a handover, a hand that does a second job while it is full, a held object nobody mentions in the next clip, so the model drops it.
+
+- Every object is somewhere: in a named hand, on a named surface, in a named container, or absent. "Absent" objects cannot appear without a change that brings them in.
+- A handover is a change with an actor: shown on screen, or written as "Across the cut: the boy has handed the drawing up".
+- Each clip states what every person in it holds at the start, and the next clip repeats what the last one ended with.
+- Do not write this by hand for a long sequence: put the starting state in the direction plan and let `scripts/direction_plan.py ledger` derive it (`references/director-layers.md` section 4).
