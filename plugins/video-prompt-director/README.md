@@ -4,7 +4,7 @@ A Claude plugin by akoru containing the **video-prompt-director** skill.
 
 ## video-prompt-director
 
-video-prompt-director helps Claude turn scripts and approved storyboards into AI video generation prompts, the way a director would brief a camera and a cast.
+video-prompt-director helps Claude turn scripts, production handoffs and storyboards (optional) into AI video generation prompts, the way a director would brief a camera and a cast.
 
 - Break a script or scene into storyboard panels and wait for your approval, or start from a storyboard you already have.
 - Turn each approved panel into a self-contained prompt with camera direction, timed action, natural acting, exact dialogue and an ending state.

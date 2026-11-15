@@ -8,7 +8,7 @@ Do not invent story events, character relationships, era or locations the user d
 
 Use only when selected or supported by the brief. Describe the actual traits, not a celebrity or a blanket requirement: cinematic shaped lighting, refined makeup, luminous natural-looking skin, controlled highlights, flattering but believable shadows, deliberate color and stable faces, hair and wardrobe. Adapt the treatment to the characters and scene. This aesthetic can be used with any genre, production format, spoken language or prompt language; none implies it automatically.
 
-For a project look or reference, state what it governs. For a shot, add only changes needed to tell the story. Check the approved storyboard and continuity ledger before generating a reference image or final prompt.
+For one film's own look (camera, lenses, image response, light per location, grade and design, layered on the project look), write a Cinematic Bible: `references/cinematic-bible.md`. For a project look or reference, state what it governs. For a shot, add only changes needed to tell the story. Check the approved storyboard and continuity ledger before generating a reference image or final prompt.
 
 ## Retention wrappers for low-motion drama
 
