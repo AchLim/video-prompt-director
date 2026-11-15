@@ -36,6 +36,8 @@ Each is one short clip at the lowest resolution Flash offers, with the smallest 
 | Extension | X1 | Whether extension exists on Flash |
 | A fictional AI-generated face | P4 | Whether it is accepted as a reference |
 | Prompt just over the interface limit | P6 | How the interface treats an over-limit prompt |
+| One continuous deep-staged take against three or four hard cuts for the same beat, same references | P2 (cuts at written seconds) | Which structure keeps identity, props and action more reliably; whether the cuts land on the written seconds |
+| Silent acting with lips on planned seconds (dialogue laid in after) against the model speaking the lines | R4 | Whether planned lip timing holds, and whether native speech matches the written words |
 
 ## Log
 
