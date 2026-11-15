@@ -1,0 +1,1074 @@
+{
+ "version": "direction-plan/1",
+ "title": "Christmas Orders Are Free (before: the prompts as first written)",
+ "global": {
+  "model": {
+   "name": "seedance-2.5-flash",
+   "seconds": [
+    4,
+    30
+   ],
+   "max_images": 10
+  },
+  "ratio": "9:16",
+  "fps": 24,
+  "language": "en",
+  "look": {
+   "image": "Clean, sharp, grain-free image with no digital noise; warm tungsten highlights against deep cool shadows; soft halation around warm lights; rich shadow detail, no crushed blacks.",
+   "light": "Exteriors are desaturated slate-blue winter twilight; the bakery interior is warm golden-amber tungsten; warm light spills into the cold blue wherever a door or window opens.",
+   "lens": "50–85 mm prime look, shallow depth of field.",
+   "camera": "Eye-level framing; drop to a 7-year-old's eye height for every shot centred on the boy. Subtle motivated handheld micro-movement only. No gimbal glides, no orbits, no drone moves, no zooms. Change framing with hard cuts.",
+   "atmosphere": "Heavy snow falls slowly and steadily through every exterior frame, drifting and turning, never frozen in the air; breath fogs on every exhale outdoors."
+  },
+  "audio": {
+   "dialogue": "native",
+   "music": false
+  },
+  "avoid": [
+   "film grain or noise",
+   "subtitles, captions or any text except the wooden CLOSED sign and the crayon words \"Merry Christmas, Mom\"",
+   "extra people",
+   "background music",
+   "faces, costumes or props changing between shots",
+   "zooms or dissolves",
+   "morphing hands or merged fingers"
+  ],
+  "cast": {
+   "baker": {
+    "tag": "@char_baker",
+    "short": "the baker",
+    "pronoun": "he",
+    "appearance": "a man of about 58, oval weathered face, gentle hazel-brown eyes with crow's feet, rosy cheeks, neatly trimmed salt-and-pepper beard, silver-grey hair combed back",
+    "looks": {
+     "A": {
+      "label": "apron",
+      "costume": "a flour-dusted espresso-brown waxed canvas apron over a chestnut-brown shawl-collar cardigan, sleeves pushed to mid-forearm, charcoal wool trousers"
+     },
+     "B": {
+      "label": "overcoat",
+      "tag": "@char_baker_coat",
+      "costume": "a charcoal herringbone wool overcoat buttoned over the chestnut-brown cardigan, a slate-blue knit scarf, charcoal trousers, brown leather boots; no apron"
+     }
+    },
+    "voice": "warm, quiet, slightly gravelly baritone, unhurried"
+   },
+   "boy": {
+    "tag": "@char_boy",
+    "short": "the boy",
+    "pronoun": "he",
+    "hands_covered": "knitted mittens",
+    "hand_word": "mitten",
+    "appearance": "a 7-year-old boy, heart-shaped face, large warm brown eyes, light freckles, wind-chapped rosy cheeks and nose, tousled chestnut hair",
+    "costume": "an oversized navy duffle coat with wooden toggles, a dark forest-green beanie pulled low, a red-and-navy tartan scarf, dark-charcoal knitted mittens dusted with snow",
+    "voice": "a small, earnest 7-year-old's voice, a little breathless from the cold"
+   },
+   "mother": {
+    "tag": "@char_mother",
+    "short": "the mother",
+    "pronoun": "she",
+    "appearance": "a woman of about 32, slender oval face, pale skin, tired shadows under grey-blue eyes, dark ash-blonde hair in a loose low bun",
+    "costume": "a thin heather-grey wool coat, a long burgundy-and-oatmeal striped scarf wrapped twice, dark grey fingerless gloves",
+    "voice": "soft and tired"
+   }
+  },
+  "props": {
+   "cake": {
+    "tag": "@prop_cake",
+    "short": "the Christmas cake"
+   },
+   "wedge": {
+    "tag": "@prop_cake",
+    "short": "a small wedge of the cake"
+   },
+   "drawing": {
+    "tag": "@prop_drawing",
+    "short": "the folded crayon drawing"
+   },
+   "coins": {
+    "short": "three small coins"
+   },
+   "box": {
+    "short": "the white pastry box"
+   },
+   "carrier": {
+    "short": "the cardboard carrier of three steaming paper cups"
+   },
+   "pine": {
+    "short": "the tiny potted pine branch with one paper star"
+   },
+   "cup_baker": {
+    "short": "a steaming paper cup"
+   },
+   "cup_mother": {
+    "short": "a steaming paper cup"
+   },
+   "cup_boy": {
+    "short": "a steaming paper cup"
+   },
+   "cookies": {
+    "short": "a small paper bag of cookies"
+   },
+   "cups": {
+    "short": "three steaming paper cups"
+   }
+  },
+  "locations": {
+   "bakery": {
+    "tag": "@loc_bakery",
+    "short": "the corner bakery",
+    "layout": "Seen from the street: the glass-paned front door in the centre, the wooden sign hanging inside its glass; inside, the counter runs across the back of the shop; the small table set for one stands by the front window on the right",
+    "light": "Warm tungsten from brass pendants inside; slate-blue twilight outside"
+   },
+   "square": {
+    "tag": "@loc_square",
+    "short": "the snowy town square",
+    "layout": "A wooden bench stands under the tall lit Christmas tree; the bakery's glowing windows face it across the snowy cobbles",
+    "light": "Slate-blue twilight; warm golden bokeh from the tree's bulbs; snow lit by the cast-iron streetlamps"
+   }
+  }
+ },
+ "scenes": [
+  {
+   "id": "S1",
+   "location": "bakery",
+   "time": "Christmas Eve, blue hour",
+   "weather": "Heavy snow falling slowly",
+   "start": {
+    "positions": {
+     "baker": "inside the shop, one step behind the closed glass front door",
+     "boy": "outside on the snowy granite step, facing the door"
+    },
+    "facing": {
+     "baker": "the street"
+    },
+    "wardrobe": {
+     "baker": "A"
+    },
+    "hands": {
+     "boy": {
+      "left": "coins",
+      "right": "drawing"
+     }
+    },
+    "props": {
+     "cake": "on the counter behind the baker, ribbon toward the door",
+     "drawing": "folded once, in the boy's right mitten",
+     "coins": "in the boy's left mitten"
+    },
+    "env": {
+     "door": "closed",
+     "sign": "hanging inside the glass, reading OPEN to the street"
+    }
+   }
+  },
+  {
+   "id": "S2",
+   "location": "square",
+   "time": "a minute later, blue hour",
+   "weather": "Heavy snow falling slowly",
+   "start": {
+    "positions": {
+     "boy": "at the far edge of the square, walking from the bakery toward the bench",
+     "mother": "seated at the left end of the bench under the tree"
+    },
+    "facing": {
+     "mother": "the bakery"
+    },
+    "hands": {
+     "boy": {
+      "right": "drawing"
+     },
+     "mother": {
+      "left": "pine",
+      "right": "pine"
+     }
+    },
+    "props": {
+     "drawing": "folded, in the boy's right mitten",
+     "pine": "in the mother's lap, held in both hands",
+     "coins": "in the boy's coat pocket"
+    },
+    "env": {}
+   }
+  },
+  {
+   "id": "S3",
+   "location": "bakery",
+   "time": "the same minute, inside",
+   "weather": "Snow falling past the windows",
+   "start": {
+    "positions": {
+     "baker": "at the frosted front window, looking out at the square"
+    },
+    "facing": {
+     "baker": "the window"
+    },
+    "wardrobe": {
+     "baker": "A"
+    },
+    "hands": {},
+    "props": {
+     "cake": "on the counter",
+     "box": "open on the counter"
+    },
+    "env": {
+     "door": "closed",
+     "sign": "reads CLOSED to the street",
+     "table": "set for one: one plate, one mug, one chair"
+    }
+   }
+  },
+  {
+   "id": "S4",
+   "location": "square",
+   "time": "a few minutes later, blue hour",
+   "weather": "Heavy snow falling slowly",
+   "start": {
+    "positions": {
+     "baker": "inside the warm doorway",
+     "mother": "on the bench",
+     "boy": "on the bench"
+    },
+    "wardrobe": {
+     "baker": "B"
+    },
+    "hands": {
+     "mother": {
+      "left": "pine",
+      "right": "pine"
+     }
+    },
+    "props": {
+     "box": "closed, on the counter",
+     "cake": "inside the box",
+     "carrier": "on the counter",
+     "cookies": "on the counter",
+     "pine": "in the mother's hands",
+     "cups": "absent (inside the carrier)",
+     "wedge": "absent"
+    }
+   }
+  }
+ ],
+ "generations": [
+  {
+   "id": "1A",
+   "seconds": 12,
+   "scene": "S1",
+   "refs": [
+    "@char_baker",
+    "@char_boy",
+    "@prop_cake",
+    "@prop_drawing",
+    "@loc_bakery"
+   ],
+   "shots": [
+    {
+     "id": "1A.1",
+     "start": 0,
+     "end": 3,
+     "camera": "Exterior, tight medium shot through the frosted glass door.",
+     "in_frame": [
+      "baker",
+      "boy"
+     ],
+     "props": [
+      "coins"
+     ],
+     "hands_hidden": {
+      "boy": [
+       "right"
+      ]
+     },
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        0,
+        1
+       ],
+       "do": "flips the hanging door sign to CLOSED",
+       "hand": "right"
+      },
+      {
+       "id": "b2",
+       "who": "boy",
+       "t": [
+        1,
+        1.5
+       ],
+       "do": "taps sharply on the frosted glass, twice",
+       "hand": "left",
+       "holding_ok": true
+      },
+      {
+       "id": "b3",
+       "who": "boy",
+       "t": [
+        1.5,
+        3
+       ],
+       "do": "breath fog drifts across the glass",
+       "channel": "face"
+      }
+     ],
+     "lines": [
+      {
+       "who": "boy",
+       "at": 1,
+       "text": "Please\u2014just one.",
+       "offscreen": true
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      },
+      {
+       "what": "door creak",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "1A.2",
+     "start": 3,
+     "end": 12,
+     "camera": "Low-angle medium shot at the boy's eye level.",
+     "in_frame": [
+      "baker",
+      "boy"
+     ],
+     "props": [
+      "cake",
+      "coins",
+      "drawing"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        3,
+        5.25
+       ],
+       "do": "pulls the wooden door open; warm light spills onto the snow",
+       "hand": "right"
+      },
+      {
+       "id": "b2",
+       "who": "boy",
+       "t": [
+        5.25,
+        7.5
+       ],
+       "do": "stands shivering on the snowy step, holding out three small coins and the folded drawing in his wet mittens",
+       "hand": "both",
+       "holding_ok": true
+      },
+      {
+       "id": "b3",
+       "who": "boy",
+       "t": [
+        7.5,
+        9.75
+       ],
+       "do": "points past the baker toward the cake on the counter",
+       "hand": "right"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ],
+     "changes": [
+      {
+       "kind": "env",
+       "item": "door",
+       "to": "open"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "1B",
+   "seconds": 12,
+   "scene": "S1",
+   "refs": [
+    "@char_baker",
+    "@char_boy",
+    "@prop_cake",
+    "@prop_drawing",
+    "@loc_bakery"
+   ],
+   "shots": [
+    {
+     "id": "1B.1",
+     "start": 0,
+     "end": 3,
+     "camera": "Tight over-the-shoulder close-up from behind the baker, looking down.",
+     "over": "baker",
+     "in_frame": [
+      "baker",
+      "boy"
+     ],
+     "props": [
+      "coins"
+     ],
+     "hands_hidden": {
+      "boy": [
+       "right"
+      ]
+     },
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        0,
+        3
+       ],
+       "do": "his eyes drop to the coins"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "1B.2",
+     "start": 3,
+     "end": 6,
+     "camera": "Full-frame insert close-up of the open drawing. No hands in frame, only the paper.",
+     "in_frame": [],
+     "props": [
+      "drawing"
+     ],
+     "beats": [],
+     "sounds": []
+    },
+    {
+     "id": "1B.3",
+     "start": 6,
+     "end": 9,
+     "camera": "Medium close-up on the baker's face, bathed in warm bakery light.",
+     "in_frame": [
+      "baker"
+     ],
+     "props": [
+      "cake"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        6,
+        7
+       ],
+       "do": "glances back toward the cake on the counter"
+      },
+      {
+       "id": "b2",
+       "who": "baker",
+       "t": [
+        7,
+        8
+       ],
+       "do": "looks down at the boy"
+      },
+      {
+       "id": "b3",
+       "who": "baker",
+       "t": [
+        8,
+        9
+       ],
+       "do": "gently shakes his head",
+       "channel": "face"
+      }
+     ],
+     "lines": [
+      {
+       "who": "baker",
+       "at": 7,
+       "text": "That's not for sale."
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "1B.4",
+     "start": 9,
+     "end": 12,
+     "camera": "Close-up at the boy's eye level.",
+     "in_frame": [
+      "boy"
+     ],
+     "props": [
+      "drawing",
+      "coins"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "boy",
+       "t": [
+        9,
+        10
+       ],
+       "do": "his face falls into quiet disappointment"
+      },
+      {
+       "id": "b2",
+       "who": "boy",
+       "t": [
+        10,
+        11
+       ],
+       "do": "pockets the coins",
+       "hand": "left",
+       "releases": "coins",
+       "to": "in his pocket"
+      },
+      {
+       "id": "b3",
+       "who": "boy",
+       "t": [
+        11,
+        12
+       ],
+       "do": "steps backward into the swirling snow"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "2A",
+   "seconds": 14,
+   "scene": "S2",
+   "refs": [
+    "@char_boy",
+    "@char_mother",
+    "@prop_drawing",
+    "@loc_bakery",
+    "@loc_square"
+   ],
+   "shots": [
+    {
+     "id": "2A.1",
+     "start": 0,
+     "end": 5,
+     "camera": "Interior medium shot through the frosted window.",
+     "locations": [
+      "bakery"
+     ],
+     "in_frame": [
+      "boy",
+      "mother"
+     ],
+     "props": [
+      "drawing"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "boy",
+       "t": [
+        0,
+        5
+       ],
+       "do": "trudges through fresh snow across the square toward the mother"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ],
+     "changes": [
+      {
+       "kind": "position",
+       "who": "boy",
+       "to": "at the bench"
+      }
+     ]
+    },
+    {
+     "id": "2A.2",
+     "start": 5,
+     "end": 14,
+     "camera": "Exterior medium close-up at the bench.",
+     "in_frame": [
+      "mother",
+      "boy"
+     ],
+     "props": [
+      "drawing",
+      "pine"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "boy",
+       "t": [
+        5,
+        8
+       ],
+       "do": "straightens his face, hides his disappointment, and hands her the folded drawing",
+       "hand": "right",
+       "releases": "drawing"
+      },
+      {
+       "id": "b2",
+       "who": "mother",
+       "t": [
+        8,
+        11
+       ],
+       "do": "looks at it, then at him",
+       "channel": "face"
+      },
+      {
+       "id": "b3",
+       "who": "mother",
+       "t": [
+        11,
+        14
+       ],
+       "do": "pulls him close into a warm embrace",
+       "hand": "both"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "2B",
+   "seconds": 8,
+   "scene": "S3",
+   "refs": [
+    "@char_baker",
+    "@prop_cake",
+    "@loc_bakery"
+   ],
+   "shots": [
+    {
+     "id": "2B.1",
+     "start": 0,
+     "end": 4,
+     "camera": "Medium shot inside the bakery.",
+     "in_frame": [
+      "baker"
+     ],
+     "props": [],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        0,
+        2
+       ],
+       "do": "turns away from the window"
+      },
+      {
+       "id": "b2",
+       "who": "baker",
+       "t": [
+        2,
+        4
+       ],
+       "do": "his eyes settle on his own small table set for one"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "2B.2",
+     "start": 4,
+     "end": 8,
+     "camera": "Medium shot at the wooden counter.",
+     "in_frame": [
+      "baker"
+     ],
+     "props": [
+      "cake",
+      "box"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        4,
+        8
+       ],
+       "do": "lowers the cake, ribbon facing up, carefully into the open box",
+       "hand": "both",
+       "releases": "cake",
+       "to": "in the box"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "3A",
+   "seconds": 13,
+   "scene": "S4",
+   "refs": [
+    "@char_baker_coat",
+    "@char_boy",
+    "@char_mother",
+    "@prop_cake",
+    "@loc_bakery",
+    "@loc_square"
+   ],
+   "shots": [
+    {
+     "id": "3A.1",
+     "start": 0,
+     "end": 4,
+     "camera": "Medium shot inside the warm doorway.",
+     "locations": [
+      "bakery"
+     ],
+     "in_frame": [
+      "baker"
+     ],
+     "props": [
+      "box",
+      "cake",
+      "carrier",
+      "cookies"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        0,
+        1.33
+       ],
+       "do": "picks up the closed white pastry box",
+       "hand": "both",
+       "takes": "box"
+      },
+      {
+       "id": "b2",
+       "who": "baker",
+       "t": [
+        1.33,
+        2.67
+       ],
+       "do": "picks up the cardboard carrier with three steaming paper cups",
+       "hand": "right",
+       "takes": "carrier"
+      },
+      {
+       "id": "b3",
+       "who": "baker",
+       "t": [
+        1.33,
+        2.67
+       ],
+       "do": "picks up a small paper bag of cookies",
+       "hand": "left",
+       "takes": "cookies"
+      },
+      {
+       "id": "b4",
+       "who": "baker",
+       "t": [
+        2.67,
+        4
+       ],
+       "do": "steps out into the snow"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "3A.2",
+     "start": 4,
+     "end": 10,
+     "camera": "Exterior medium shot in the square.",
+     "in_frame": [
+      "baker",
+      "mother",
+      "boy"
+     ],
+     "props": [
+      "box",
+      "cake"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        4,
+        7
+       ],
+       "do": "walks up to the snowy wooden bench"
+      },
+      {
+       "id": "b2",
+       "who": "baker",
+       "t": [
+        7,
+        10
+       ],
+       "do": "gently sets the white pastry box on the bench between the mother and the boy",
+       "hand": "both",
+       "releases": "box",
+       "to": "on the bench"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "3A.3",
+     "start": 10,
+     "end": 13,
+     "camera": "Close-up at the boy's eye level.",
+     "in_frame": [
+      "boy"
+     ],
+     "props": [
+      "box",
+      "cake"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "boy",
+       "t": [
+        10,
+        11.5
+       ],
+       "do": "glances down at the box and sees the crimson ribbon"
+      },
+      {
+       "id": "b2",
+       "who": "boy",
+       "t": [
+        11.5,
+        13
+       ],
+       "do": "looks up in wide-eyed shock"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "3B",
+   "seconds": 14,
+   "scene": "S4",
+   "refs": [
+    "@char_baker_coat",
+    "@char_boy",
+    "@char_mother",
+    "@prop_cake",
+    "@loc_square"
+   ],
+   "shots": [
+    {
+     "id": "3B.1",
+     "start": 0,
+     "end": 4,
+     "camera": "Medium close-up on the baker.",
+     "in_frame": [
+      "baker"
+     ],
+     "props": [],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        0,
+        4
+       ],
+       "do": "smiles a warm, genuine smile"
+      }
+     ],
+     "lines": [
+      {
+       "who": "baker",
+       "at": 1,
+       "text": "Christmas orders are free."
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "3B.2",
+     "start": 4,
+     "end": 7,
+     "camera": "Close-up on the mother.",
+     "in_frame": [
+      "mother"
+     ],
+     "props": [
+      "box",
+      "cake"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "mother",
+       "t": [
+        4,
+        7
+       ],
+       "do": "her eyes fill with tears as she lifts the lid of the white pastry box",
+       "hand": "both"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "3B.3",
+     "start": 7,
+     "end": 10,
+     "camera": "Tight close-up at the boy's eye level.",
+     "in_frame": [
+      "boy"
+     ],
+     "props": [
+      "wedge"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "boy",
+       "t": [
+        7,
+        10
+       ],
+       "do": "holds a small wedge of cake in his mitten and takes a big happy bite"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      }
+     ]
+    },
+    {
+     "id": "3B.4",
+     "start": 10,
+     "end": 14,
+     "camera": "Warm medium shot.",
+     "in_frame": [
+      "mother",
+      "boy",
+      "baker"
+     ],
+     "props": [
+      "cups"
+     ],
+     "beats": [
+      {
+       "id": "b1",
+       "who": "baker",
+       "t": [
+        10,
+        12
+       ],
+       "do": "sits beside them on the snowy bench"
+      },
+      {
+       "id": "b2",
+       "who": "baker",
+       "t": [
+        12,
+        14
+       ],
+       "do": "all three holding steaming paper cups; the cups clink together at 00:13"
+      }
+     ],
+     "sounds": [
+      {
+       "what": "winter wind",
+       "cause": "ambience"
+      },
+      {
+       "at": 13,
+       "what": "paper-cup clink",
+       "cause": "b2"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -73,3 +73,5 @@ A video model sees only the prompt. For a series, where the same people, rooms a
 - The model's own attachment syntax if the pipeline adds it by itself; follow the user's pipeline.
 
 See `examples/production-prompt.md` for a full prompt built this way.
+
+The layered compiler (`references/director-layers.md` section 6) writes these sections from a direction plan in a fixed order: references, look, clip purpose, cast, scene, start state, timed shots, end state, audio, avoid. Each fact appears once.

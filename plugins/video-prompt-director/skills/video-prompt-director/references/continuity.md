@@ -13,6 +13,7 @@ Contents:
 10. Attach only what is in the clip
 11. Room map and screen sides
 12. Joining one clip to the next
+13. Hands, ownership and derived state
 
 ## 1. Why each prompt must carry continuity
 
@@ -132,3 +133,12 @@ For each join, check and state in the later prompt:
 In image-to-video, use the last frame of N as the first frame of N+1 where the tool allows it. In text-to-video, write the opening state of N+1 as a copy of the ending state of N.
 
 When two adjacent clips cannot match (a new room, a time jump), start the second with one short establishing or detail beat, and let a sound or an object carry across. Do not hide the jump with a transition effect.
+
+## 13. Hands, ownership and derived state
+
+Track the hands as part of the state, not only the props: for each person, what the left hand and the right hand hold. Most continuity failures in short clips are hand failures: an object that changes hands without a handover, a hand that does a second job while it is full, a held object nobody mentions in the next clip, so the model drops it.
+
+- Every object is somewhere: in a named hand, on a named surface, in a named container, or absent. "Absent" objects cannot appear without a change that brings them in.
+- A handover is a change with an actor: shown on screen, or written as "Across the cut: the boy has handed the drawing up".
+- Each clip states what every person in it holds at the start, and the next clip repeats what the last one ended with.
+- Do not write this by hand for a long sequence: put the starting state in the direction plan and let `scripts/direction_plan.py ledger` derive it (`references/director-layers.md` section 4).

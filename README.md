@@ -2,7 +2,7 @@
 
 # video-prompt-director
 
-### An Agent Skill for Codex and Claude Code that turns scripts and approved storyboards into AI video prompts a model can perform.
+### An Agent Skill for Codex and Claude Code that turns scripts, production handoffs and storyboards into AI video prompts a model can perform.
 
 Camera direction, timed action, natural acting, exact dialogue, continuity between shots, and a quality check before each prompt reaches you.
 
@@ -19,7 +19,8 @@ Camera direction, timed action, natural acting, exact dialogue, continuity betwe
 
 Ask your agent for video prompts and video-prompt-director plans a storyboard and maps its panels to generations before writing prompts.
 
-- **Storyboard first.** Give it a script, a scene, a shot list or an existing storyboard. If there is no approved storyboard it proposes panels and waits for your changes before it writes prompts.
+- **Plan first, storyboard optional.** Give it a script, a scene, a shot list, a production handoff or an existing storyboard. It plans the shots with timed beats, hands, props and lines, and waits for your changes on a multi-clip plan before it writes prompts. Text-only generation is a complete path; a storyboard image only adds composition.
+- **Layered direction with a validator.** A direction plan separates the film's look, each scene, each shot and the continuity state; `scripts/direction_plan.py` checks it (impossible hands, rushed or overlapping actions, props from nowhere, sounds without a cause, camera conflicts, wardrobe changes) and compiles one self-contained prompt per clip.
 - **Prompts that direct a performance.** Camera and subject movement are described separately. Emotion is written as visible behavior, so people do not freeze, stare or smile through a scene.
 - **Audio and references.** Choose native audio, dialogue-only, supplied recordings or silence. Bind subject, motion, camera, style, audio, scene and clay references separately, with version-specific uncertainty.
 - **Editing and assembly.** Plan targeted video and audio edits, extensions, transitions and multi-asset workflows, including what to preserve and how to verify it.
