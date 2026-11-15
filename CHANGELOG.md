@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-16
+
 ### Fixed
 - Direction-plan output uses UTF-8 on Windows so compiled dialogue preserves its original punctuation.
 
