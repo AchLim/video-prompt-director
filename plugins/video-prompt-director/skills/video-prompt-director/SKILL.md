@@ -4,7 +4,7 @@ description: "Plans and validates model-aware video prompts (text-only or from s
 when_to_use: "Use when the user wants AI video generation prompts from a script, storyboard, shot list, scene description, or reference images, or wants a storyboard planned for AI video (panel counts, shot coverage, dialogue coverage, action broken into steps, storyboard sheets, keyframes, or mapping panels to video generations): storyboard panels, image-to-video or text-to-video prompts, camera direction, human movement and acting direction, dialogue shots, multi-character scenes, continuity between shots, negative prompts, adapting a prompt to Seedance, Veo, Flow, Kling or Runway, Gemini Omni Flash 1.2 (OF 1.2) low-motion drama storyboards and its duration, reference and interpolation limits, or reviewing and fixing an existing video prompt that produces frozen, stiff or inconsistent footage. Also use for questions about what Seedance (2.5, 2.5 Flash, 2.0, Mini) can do or its limits, reference, keyframe, storyboard, editing, extension and audio operations, and for fixing a failed Seedance generation (swapped characters, unwanted music or subtitles, edit length, glowing eyes, image upload errors)."
 license: MIT
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
 ---
 
 # Video Prompt Director
