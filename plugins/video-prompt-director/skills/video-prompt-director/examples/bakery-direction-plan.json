@@ -163,7 +163,7 @@
       "start": {
         "positions": {
           "boy": "at the far edge of the square, walking from the bakery toward the bench",
-          "mother": "seated at the left end of the bench under the tree"
+          "mother": "seated at the screen-left end of the bench under the tree"
         },
         "facing": {
           "mother": "the bakery"
@@ -220,8 +220,8 @@
       "start": {
         "positions": {
           "baker": "in the open front doorway of the bakery",
-          "mother": "seated at the left end of the bench",
-          "boy": "seated on the bench at his mother's right"
+          "mother": "seated at the screen-left end of the bench",
+          "boy": "seated in the middle of the bench, beside his mother"
         },
         "facing": {
           "baker": "the square",
@@ -241,7 +241,7 @@
           "box": "closed, held level in the baker's hands, the cake's crimson ribbon visible through the clear lid",
           "cake": "inside the closed box",
           "carrier": "resting on the box lid",
-          "pine": "on the bench at the mother's left",
+          "pine": "on the bench at the screen-left end, beside the mother",
           "drawing": "folded in the mother's coat pocket",
           "coins": "in the boy's coat pocket"
         }
@@ -265,7 +265,7 @@
           "id": "1A.1",
           "start": 0,
           "end": 4,
-          "camera": "Exterior medium close-up through the frosted glass door from the street, at the boy's eye height; the boy's left shoulder and mitten soft in the left foreground, the baker sharp beyond the glass.",
+          "camera": "Exterior medium close-up through the frosted glass door from the street, at the boy's eye height; the boy's shoulder and mitten soft in the screen-left foreground, the baker sharp beyond the glass.",
           "move": "held still",
           "in_frame": [
             "boy",
@@ -510,7 +510,7 @@
           "id": "1B.1",
           "start": 0,
           "end": 3,
-          "camera": "Over-the-shoulder medium close-up from inside the doorway, behind the baker's right shoulder (the back of his head and shoulder soft on screen-right), looking down at the boy on the step.",
+          "camera": "Over-the-shoulder medium close-up from inside the doorway, behind the baker (the back of his head and his shoulder soft on screen-right), looking down at the boy on the step.",
           "over": "baker",
           "move": "held still",
           "in_frame": [
@@ -856,10 +856,10 @@
                 5.2,
                 6.6
               ],
-              "do": "sets the potted pine on the bench beside her left hip",
+              "do": "sets the potted pine down on the bench at the screen-left end, beside her",
               "hand": "both",
               "releases": "pine",
-              "to": "on the bench at the mother's left"
+              "to": "on the bench at the screen-left end, beside the mother"
             },
             {
               "id": "b2",
@@ -1541,7 +1541,7 @@
             {
               "kind": "position",
               "who": "baker",
-              "to": "seated on the bench at the boy's right",
+              "to": "seated at the screen-right end of the bench, beside the boy",
               "note": "the baker has sat down beside the boy and handed out the cups"
             },
             {
@@ -1552,7 +1552,7 @@
             {
               "kind": "prop",
               "prop": "box",
-              "to": "open on the bench, at the mother's right"
+              "to": "open on the bench between the mother and the boy"
             },
             {
               "kind": "prop",

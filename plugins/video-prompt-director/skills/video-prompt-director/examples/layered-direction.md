@@ -68,7 +68,7 @@ SCENE: The corner bakery, Christmas Eve, blue hour. Heavy snow falling slowly. S
 
 START STATE (continues from the previous clip): The baker: inside the shop, one step behind the closed glass front door, facing the street. The boy: outside on the snowy granite step, facing the door. The boy holds three small coins in his left mitten and the crayon drawing (folded once) in his right mitten. The Christmas cake: on the counter behind the baker, ribbon toward the door. Set: door: closed; sign: hanging inside the glass, reading OPEN to the street.
 
-SHOT 1 (0–4 s): Exterior medium close-up through the frosted glass door from the street, at the boy's eye height; the boy's left shoulder and mitten soft in the left foreground, the baker sharp beyond the glass. Camera: held still. In frame: the boy (screen left), the baker (screen right); no one else.
+SHOT 1 (0–4 s): Exterior medium close-up through the frosted glass door from the street, at the boy's eye height; the boy's shoulder and mitten soft in the screen-left foreground, the baker sharp beyond the glass. Camera: held still. In frame: the boy (screen left), the baker (screen right); no one else.
   0–1.2 s: The baker reaches up with his right hand and flips the hanging wooden sign to CLOSED.
   1 s: sound of the wooden sign knocking against the glass.
   1.3–2 s: The boy taps the glass twice with his left mitten, the coins inside it clicking.
@@ -103,12 +103,12 @@ AVOID: film grain or noise; subtitles, captions or any text except the wooden CL
 
 | Clip | Before, as sent (with the app's added blocks) | After, compiled |
 |---|---|---|
-| 1A | 3,926 | 5,539 |
-| 1B | 4,083 | 5,579 |
-| 2A | 3,943 | 4,624 |
-| 2B | 2,979 | 3,613 |
-| 3A | 4,313 | 5,060 |
-| 3B | 4,188 | 5,822 |
+| 1A | 3,926 | 5,510 |
+| 1B | 4,083 | 5,535 |
+| 2A | 3,943 | 4,645 |
+| 2B | 2,979 | 3,596 |
+| 3A | 4,313 | 5,072 |
+| 3B | 4,188 | 5,857 |
 
 The after prompts are about 30% longer, all of it in two places: the start and end states (what every hand holds, where every prop is) and the timed beats with their sounds. Repetition went down: the look is stated once, the costume once, and faces are left to the reference images. Every clip is far under Flash's 15,000-character limit. Do not shorten them by dropping the states: that is what the before prompts left to the model, and it is where they broke.
 

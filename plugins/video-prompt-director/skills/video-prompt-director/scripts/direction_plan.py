@@ -339,7 +339,7 @@ def validate(plan: dict[str, Any]) -> tuple[Report, list[dict[str, Any]]]:
                 dur = bt1 - bt0
                 dur = round(dur, 2)
                 if dur < need * 0.7 - 0.01:
-                    r.add("error", "beat-rushed", f"“{text}” gets {dur:.1f} s; a natural performance needs about {need:g} s. Lengthen it, split it, or cut away.", where)
+                    r.add("warn", "beat-rushed", f"“{text}” gets {dur:.1f} s; a natural performance needs about {need:g} s. Lengthen it, split it, or cut away.", where)
                 elif dur < need - 0.01:
                     r.add("warn", "beat-tight", f"“{text}” gets {dur:.1f} s against about {need:g} s.", where)
                 if len(re.findall(r",? then |; then | and then ", text)) >= 1:
@@ -424,8 +424,13 @@ def validate(plan: dict[str, Any]) -> tuple[Report, list[dict[str, Any]]]:
                 if state["positions"].get(who) != pos:
                     r.add("error", "end-position", f"{sid} ends with {who} at {pos!r}, but the beats and changes leave them at {state['positions'].get(who)!r}.", where)
             # screen sides are fixed inside a scene unless the line is crossed on purpose
-            if prev_shot and not new_scene and prev_shot.get("sides") and shot.get("sides") and not shot.get("crosses_line"):
+            # a screen side is a relation between people sharing the frame: compare only people framed together in both shots
+            two_prev = [w for w in (prev_shot or {}).get("in_frame", []) if w in cast]
+            two_now = [w for w in in_frame if w in cast]
+            if prev_shot and not new_scene and prev_shot.get("sides") and shot.get("sides") and not shot.get("crosses_line") and len(two_prev) >= 2 and len(two_now) >= 2:
                 for who, side in shot["sides"].items():
+                    if who not in two_prev or who not in two_now:
+                        continue
                     old = prev_shot["sides"].get(who)
                     if old and old != "center" and side != "center" and old != side:
                         r.add("error", "side-flip", f"{who} is screen-{old} in {prev_shot['id']} and screen-{side} in {sid}. Keep the side, or mark crosses_line and show the crossing.", where)

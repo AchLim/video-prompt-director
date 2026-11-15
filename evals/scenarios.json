@@ -19,7 +19,7 @@
       },
       {
         "type": "not_regex",
-        "pattern": "(need|requires?|must (have|make|upload)) (a|the) storyboard",
+        "pattern": "storyboard (is|are) (required|mandatory)|(must|need to) (make|upload|provide|create) (a|the) storyboard (first|before)",
         "flags": "i"
       }
     ],

@@ -2,12 +2,13 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, it } from "node:test";
 import { SKILL_SRC, tmpDir } from "./helpers.ts";
 
 const script = path.join(SKILL_SRC, "scripts", "direction_plan.py");
 const AFTER = path.join(SKILL_SRC, "examples", "bakery-direction-plan.json");
-const BEFORE = path.join(import.meta.dirname, "fixtures", "bakery-before.json");
+const BEFORE = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "bakery-before.json");
 const pythonAvailable = spawnSync("python3", ["--version"], { encoding: "utf8" }).status === 0;
 const skip = !pythonAvailable;
 
@@ -62,7 +63,8 @@ describe("direction plan: individual checks", () => {
     assert.ok(errorsOf((p) => { shot(p, "1A.2").beats[4].do = "points with his index finger at the cake"; }).includes("finger-in-mitten"));
   });
   it("a rushed beat and an overlapping one", { skip }, () => {
-    assert.ok(errorsOf((p) => { shot(p, "1A.2").beats[0].t = [4, 4.4]; }).includes("beat-rushed"));
+    // the timing table is a heuristic, so a rushed beat warns rather than blocks
+    assert.ok(warnsOf((p) => { shot(p, "1A.2").beats[0].t = [4, 4.4]; }).includes("beat-rushed"));
     assert.ok(errorsOf((p) => { shot(p, "1A.2").beats[4].t = [7, 8.2]; }).includes("beat-overlap"));
   });
   it("lines: overflow, absent speaker, unknown speaker", { skip }, () => {
@@ -78,6 +80,9 @@ describe("direction plan: individual checks", () => {
     assert.ok(errorsOf((p) => { shot(p, "2B.1").move = "slow zoom in"; }).includes("camera-zoom"));
     assert.ok(errorsOf((p) => { shot(p, "2B.1").move = "locked off, slow push-in"; }).includes("camera-conflict"));
     assert.ok(errorsOf((p) => { shot(p, "1B.1").beats[0].do = "his eyes drop to the coins"; }).includes("ots-face"));
+  });
+  it("a single next to a two-shot is not a side flip", { skip }, () => {
+    assert.ok(!errorsOf((p) => { const s = shot(p, "1B.2"); s.sides = { baker: "left" }; }).includes("side-flip"));
   });
   it("screen sides may not flip inside a scene unless the crossing is declared", { skip }, () => {
     assert.ok(errorsOf((p) => { shot(p, "1A.2").sides = { boy: "right", baker: "left" }; }).includes("side-flip"));
@@ -159,6 +164,6 @@ describe("direction plan: compiled prompts", () => {
   it("prints the derived ledger", { skip }, () => {
     const r = run("ledger", AFTER);
     assert.equal(r.status, 0);
-    assert.match(r.stdout, /\| 3B\.4 \|.*baker: seated on the bench at the boy's right/);
+    assert.match(r.stdout, /\| 3B\.4 \|.*baker: seated at the screen-right end of the bench, beside the boy/);
   });
 });

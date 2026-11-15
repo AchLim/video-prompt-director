@@ -91,12 +91,12 @@ So every clip says, in plain words, where everyone stands, which way they face, 
 | Something held by a person in frame but not mentioned (the model drops it) | `held-prop-unstated` | warn |
 | A hand used while it holds something; a hand that takes a second object; more than two things in two hands; letting go of something not held | `hand-busy`, `hand-full`, `hand-count`, `release-not-held` | error |
 | Finger work in mittens or gloves | `finger-in-mitten` | error |
-| A beat too short for a natural performance; two body actions of one person at once; one beat chaining several actions | `beat-rushed` (warn `beat-tight`), `beat-overlap`, `beat-compound` | error, warn |
+| A beat too short for a natural performance (a heuristic, so a warning); two body actions of one person at once; one beat chaining several actions | `beat-rushed`, `beat-tight`, `beat-overlap`, `beat-compound` | warn, warn, error, warn |
 | A beat by someone not in frame; a line by someone not in frame and not marked off-screen; lines that overlap or overrun the shot | `beat-offscreen`, `speaker-absent`, `line-overlap`, `line-overflow` | error |
 | A sound with no cause, or out of sync with its beat | `sound-cause`, `sound-sync` | error |
 | A zoom; a locked camera that also moves; several moves in one cut; a locked shot under a handheld global look | `camera-zoom`, `camera-conflict`, `camera-moves`, `camera-global-conflict` | error, warn |
 | An over-the-shoulder shot that directs the face of the person whose back is to camera | `ots-face` | error |
-| Screen sides flipping inside a scene without a declared crossing; two or more people with no sides | `side-flip`, `sides-unset` | error, warn |
+| Screen sides flipping inside a scene without a declared crossing (compared only for people framed together in both shots); two or more people with no sides | `side-flip`, `sides-unset` | error, warn |
 | Two looks of one person in one generation; a look change with no declared change | `wardrobe-mixed`, `wardrobe-unexplained` | error |
 | An environment state that contradicts the current one | `env-conflict` | error |
 | A generation outside the model's documented durations or image count | `model-duration`, `too-many-refs` | error |
