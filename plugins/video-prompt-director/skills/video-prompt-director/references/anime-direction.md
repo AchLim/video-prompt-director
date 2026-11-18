@@ -89,8 +89,8 @@ One generation holds a short scene: usually 15 to 30 s, 6 to 13 cuts, with the d
 [No BGM] <one paragraph: the genre and "clean 2D cel animation", line, fill and shading words, "keep the face, eye shape, build, hairstyle and costume of the model sheet, do not show the sheet on screen", no mid-clip change in people or props, camera uses only the specified moves, no subtitles, text or watermark>
 Total <N>s · 9:16 · <K>-cut multi-shot · real time · no slow motion, no fades
 Reference
-Character : @Name — face, wardrobe and build match 100%. @Name's voice is @Name_Voice.
-Background : @Place — inherit only the space, materials, lighting and mood; do not inherit composition, angle or color.
+Character : @Name: face, wardrobe and build match 100%. @Name's voice is @Name_Voice.
+Background : @Place: inherit only the space, materials, lighting and mood; do not inherit composition, angle or color.
 (Effect or prop references as needed: @FX, @Prop)
 Timeline
 [0-2s] ...
