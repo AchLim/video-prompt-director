@@ -17,7 +17,7 @@ The work is layered (`references/director-layers.md`): a global director states 
 
 This skill writes prompts and storyboards. It does not generate video, and it does not change code or files unless the user asks for a file to be saved.
 
-## 1. Before writing: settle five things
+## 1. Before writing: settle six things
 
 Check what the user already supplied (script, storyboard, shot list, reference images, earlier prompts, project files) before asking. Ask only for what is missing and matters. State any assumption the user can veto.
 
@@ -25,7 +25,8 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 2. **Target model and mode.** Seedance, Veo or Flow, Kling, Runway, or another. Text-to-video or image-to-video. For Seedance, also the version (2.5, 2.5 Flash, or the 2.0 series) and the interface, because each has its own limits. If unnamed, ask once, or write a model-neutral prompt and say so.
 3. **Clip length.** Seconds per generation, as the user states it. Do not assume a model's limit; read `references/models/` and check the date.
 4. **References.** Which images define identity, wardrobe, environment or style, and what each one controls.
-5. **Dialogue and audio.** Exact lines and speakers, spoken language, and the audio plan: native audiovisual, dialogue-only, supplied recording, or silent picture. Check the model and interface; use `references/audio-direction.md`.
+5. **Look: realistic or anime.** Offer the choice once, unless the brief already shows it (a photographic brief is realistic; "anime", "cel-shaded" or "2D animation" is anime). Anime is a style mode of this skill: it changes the look, the motion language and the wording, and every other rule still applies. Load `references/anime-direction.md` for anime only; do not mention it for a realistic brief.
+6. **Dialogue and audio.** Exact lines and speakers, spoken language, and the audio plan: native audiovisual, dialogue-only, supplied recording, or silent picture. Check the model and interface; use `references/audio-direction.md`.
 
 | Request looks like | Workflow | Deliver | Load |
 |---|---|---|---|
@@ -37,6 +38,7 @@ Check what the user already supplied (script, storyboard, shot list, reference i
 | Several shots in one scene | E. Sequence | Panels or prompts plus a continuity ledger | `references/continuity.md` first |
 | A question about Seedance: what it or Flash can do, a limit, a reference or editing operation, or a generation that came out wrong | F. Seedance knowledge | An answer that states each fact's status (official, user-reported, observed, tested or unverified) and the fix or fallback | `references/models/seedance.md` first, which names the version file; never answer Seedance limits from memory |
 | A film's look, or the direction of its scenes before a storyboard (staged production) | H. Cinematic Bible and director's breakdown | A Cinematic Bible (components chosen separately, references translated into visible properties, one sent paragraph, light per location) and a per-scene breakdown (objective, wants, what the audience learns, landmarks, blocking, prop states, camera, light and edit intentions) for the user to approve before the storyboard | `references/cinematic-bible.md`, `references/director-breakdown.md`, `references/visual-direction.md`, `references/continuity.md` |
+| The user wants an anime video, or picks anime at the look question | I. Anime style mode (combines with any workflow above) | The same deliverable as the underlying workflow, written in the anime look: one project look sentence, stable character designs, holds and accents, painted backgrounds and graphic light | `references/anime-direction.md`, `examples/anime-vs-realistic.md`, plus the files the underlying workflow names |
 | Gemini Omni Flash 1.2 (OF 1.2) drama: storyboard or prompts, low-motion, Flow or Gemini API | G. OF 1.2 drama | Per beat: Anchor/Start Frame Image Prompt, optional End Frame Image Prompt, OF 1.2 Video + Audio Prompt, Conversational Continuity Note, with the duration, reference and draft-pass guardrails checked | `references/models/omni-flash-drama.md`, `references/models/veo.md`, `references/visual-direction.md`, `references/audio-direction.md` |
 
 Users describe goals in their own words. They do not need to name a workflow.
@@ -129,6 +131,7 @@ Load only what the current task needs.
 - `references/models/seedance/recipes-assembly.md`: version-aware extensions, transitions and one-click operations.
 - `references/audio-direction.md`: audio plans, dialogue timing, supplied recordings and sound continuity.
 - `references/reference-direction.md`: assign distinct subject, motion, camera, style, audio, scene and clay roles.
+- `references/anime-direction.md`: the anime style mode: when to offer it, sub-looks, the project look sentence, stable character design, holds and accents, camera and light in an anime look, dialogue, constraint wording, compiled order, and logging results.
 - `references/visual-direction.md`: independent creative settings and optional polished short-drama look.
 - `references/cinematic-bible.md`: one film's visual identity: components chosen separately, references translated into what a frame shows, light and grade per location, the sent paragraph, a template and checks.
 - `references/director-breakdown.md`: per-scene direction before the storyboard: objective, wants, information, landmarks, blocking, starting prop states, camera, light and edit intentions, and what the storyboard may not redecide.
@@ -153,6 +156,7 @@ Load only what the current task needs.
 - `examples/bakery-direction-plan.json`: a complete six-clip direction plan (a 73-second Christmas film on Seedance 2.5 Flash) that validates clean and compiles.
 - `examples/layered-direction.md`: the same film before and after the layered direction: the original prompts, what the validator and a director's review found, and the compiled prompts.
 - `examples/storyboard-to-mapping.md`: one scene planned from script to panel specifications, a panel-to-generation mapping with all four types, a production sheet prompt, a reference sheet prompt and a keyframe prompt.
+- `examples/anime-vs-realistic.md`: one beat written in the realistic and the anime look, with what changed.
 - `examples/weak-vs-strong-prompts.md`: weak and strong prompts for natural movement, emotional acting, dialogue and multi-character scenes.
 
 ## Reference loading matrix
@@ -168,6 +172,7 @@ Load the smallest set that covers the task. The Load column in section 1 lists e
 | Approved storyboard to prompts | `references/prompt-anatomy.md`, `references/cinematography.md`, `references/performance.md`, `references/constraints.md`, the target model's file | `references/pacing.md` (dialogue or a tight duration), `references/continuity.md` (more than one shot), `references/camera-language.md` (a move or cuts), `references/physical-realism.md` (objects, hands, contact, crowds), `references/episode-beats.md` (short drama), the examples (to see the level expected) | Files for models the user is not using |
 | Audio plan or supplied recording | `references/audio-direction.md`, `references/constraints.md`, the model profile | `references/pacing.md` (dialogue fit) | Unrelated visual craft files |
 | A film's Cinematic Bible or director's breakdown | `references/cinematic-bible.md`, `references/director-breakdown.md` | `references/visual-direction.md`, `references/continuity.md`, `references/storyboard.md` section 15 | Model profiles (the bible is model-neutral) |
+| Anime look chosen or requested | `references/anime-direction.md` | `examples/anime-vs-realistic.md`, plus the rows for the workflow it combines with | Realistic-look material such as lens and skin wording |
 | Visual aesthetic or project look | `references/visual-direction.md` | `references/continuity.md`, the model profile and `references/reference-direction.md` when assets are supplied | Unrelated model profiles |
 | One dialogue clip | `references/performance.md`, `references/pacing.md`, `references/constraints.md` | `references/prompt-anatomy.md` (a series clip with recorded audio), the model's file | `references/physical-realism.md` unless an object matters |
 | Repair a prompt | `references/prompt-quality.md`, `references/constraints.md` | Only the craft files the diagnosed problems touch | The rest |
