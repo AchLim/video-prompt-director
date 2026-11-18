@@ -5,7 +5,7 @@ All notable changes to this project are documented here. The project follows [Se
 ## [Unreleased]
 
 ### Added
-- Anime style mode: the skill now offers a choice between a realistic and an anime look before writing. `references/anime-direction.md` covers sub-looks, the project look sentence, stable character design, holds and accents, camera and light, dialogue, constraint wording and result logging; `examples/anime-vs-realistic.md` shows one beat both ways. Rules are heuristic until tested generations are logged.
+- Anime style mode: the skill now offers a choice between a realistic and an anime look before writing. `references/anime-direction.md` covers sub-looks, the project look sentence, stable character design, holds and accents, camera and light, dialogue, constraint wording and result logging; `examples/anime-vs-realistic.md` shows one beat both ways. Includes a Seedance multi-cut production template (header, references, timeline, dialogue formats, say-what-does-not-change, failure-to-fix table, retakes and chaining) and `examples/anime-production-prompt.md`.
 
 ## [0.4.0] - 2026-11-16
 

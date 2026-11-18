@@ -131,7 +131,7 @@ Load only what the current task needs.
 - `references/models/seedance/recipes-assembly.md`: version-aware extensions, transitions and one-click operations.
 - `references/audio-direction.md`: audio plans, dialogue timing, supplied recordings and sound continuity.
 - `references/reference-direction.md`: assign distinct subject, motion, camera, style, audio, scene and clay roles.
-- `references/anime-direction.md`: the anime style mode: when to offer it, sub-looks, the project look sentence, stable character design, holds and accents, camera and light in an anime look, dialogue, constraint wording, compiled order, and logging results.
+- `references/anime-direction.md`: the anime style mode: when to offer it, sub-looks, the project look sentence, stable character design, holds and accents, camera and light, the Seedance multi-cut production template (header, references, timeline, dialogue formats, techniques, failure-to-fix table, retakes and chaining), constraint wording, compiled order, and logging results.
 - `references/visual-direction.md`: independent creative settings and optional polished short-drama look.
 - `references/cinematic-bible.md`: one film's visual identity: components chosen separately, references translated into what a frame shows, light and grade per location, the sent paragraph, a template and checks.
 - `references/director-breakdown.md`: per-scene direction before the storyboard: objective, wants, information, landmarks, blocking, starting prop states, camera, light and edit intentions, and what the storyboard may not redecide.
@@ -156,6 +156,7 @@ Load only what the current task needs.
 - `examples/bakery-direction-plan.json`: a complete six-clip direction plan (a 73-second Christmas film on Seedance 2.5 Flash) that validates clean and compiles.
 - `examples/layered-direction.md`: the same film before and after the layered direction: the original prompts, what the validator and a director's review found, and the compiled prompts.
 - `examples/storyboard-to-mapping.md`: one scene planned from script to panel specifications, a panel-to-generation mapping with all four types, a production sheet prompt, a reference sheet prompt and a keyframe prompt.
+- `examples/anime-production-prompt.md`: one complete multi-cut anime clip in the production template, with three lines (one inner voice) and a check list.
 - `examples/anime-vs-realistic.md`: one beat written in the realistic and the anime look, with what changed.
 - `examples/weak-vs-strong-prompts.md`: weak and strong prompts for natural movement, emotional acting, dialogue and multi-character scenes.
 
