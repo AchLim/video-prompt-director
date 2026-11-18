@@ -13,3 +13,5 @@ For one film's own look (camera, lenses, image response, light per location, gra
 ## Retention wrappers for low-motion drama
 
 For Gemini Omni Flash 1.2 and similar low-motion drama, pick one wrapper per series (dark cinematic / neo-noir, stylized 3D, dark webtoon / anime, living miniature / tilt-shift) and repeat its traits in every prompt. Traits and use cases are in `references/models/omni-flash-drama.md` section 2. A wrapper is a creative choice the user can veto, not a default for other models.
+
+For an anime look (a style mode the user can choose at the start of any workflow), use `references/anime-direction.md`; do not blend it with the photographic looks above.

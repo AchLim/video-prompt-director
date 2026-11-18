@@ -117,7 +117,7 @@ A sound line is also a direction. If the sound line says "the bell explodes on i
 ## 12. Look and style wording
 
 - **Say the look once, as the project's look,** and reuse the same wording in every prompt. Do not invent a different style sentence per shot. Light direction and mood belong to the shot; style names, grades and film looks belong to the project look.
-- **Do not name other styles, even to exclude them.** "No anime, no 3D, no cartoon" can pull a model toward them. Describe the look you want, and list only concrete faults to avoid (waxy skin, distorted faces, harsh shadows across faces).
+- **Do not name other styles, even to exclude them** in a realistic prompt. In anime mode the medium is the wanted look and may be named, with a one-line "not a 3D render" (`references/anime-direction.md` section 8). "No anime, no 3D, no cartoon" can pull a model toward them. Describe the look you want, and list only concrete faults to avoid (waxy skin, distorted faces, harsh shadows across faces).
 - **Describe faces, skin, hair and light directly. Never compare people to real people** (stars, idols, named actors, "the lead of a popular drama"). One team's log records a Google Flow prompt rejected for depicting a prominent person after such a comparison (2026-10-31). Characters should be original.
 - **Realistic references still need a style line.** A vendor FAQ notes that realistic reference images with no style words can drift to a different look.
 
