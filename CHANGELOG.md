@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The project follows [Se
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-19
+
+### Added
+- Seedance production template (`references/models/seedance/production-template.md`) for any style: write the whole scene as one generation, with a header, reference block, timed multi-cut timeline, checks (cut count and duration match, every speaker has a voice tag, line count), dialogue formats (spoken, inner voice, off-screen, only-X-speaks), techniques (say what does not change, name the contact, transformations, exit framing), a failure-to-fix table, retakes that change only what failed, and splitting and chaining. Examples: `examples/seedance-production-prompt.md` (realistic).
+- Anime style mode: the skill now offers a choice between a realistic and an anime look before writing. `references/anime-direction.md` covers sub-looks, the project look sentence, stable character design, holds and accents, camera and light, dialogue, constraint wording and result logging; `examples/anime-vs-realistic.md` shows one beat both ways. Includes `examples/anime-production-prompt.md`.
+
 ## [0.4.0] - 2026-11-16
 
 ### Fixed
