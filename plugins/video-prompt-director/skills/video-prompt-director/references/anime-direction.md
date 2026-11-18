@@ -81,76 +81,14 @@ Say the medium once as the wanted look, then list only concrete faults:
 
 > Style: High-quality 2D cel animation, clean linework, flat cel shading, not a 3D render. Lines and cel shading stay clean, no jitter or flicker. The face matches the reference exactly at any distance. No subtitles, on-screen text or watermark.
 
-## 9. Production template (Seedance, multi-cut anime clip)
+## 9. Production template (Seedance, multi-cut clip)
 
-One generation holds a short scene: usually 15 to 30 s, 6 to 13 cuts, with the dialogue it needs. Write it in this order.
+The multi-cut layout, the checks, the dialogue formats, the techniques, the failure-to-fix table, retakes and chaining are not anime-specific and live in `references/models/seedance/production-template.md`. Load it for any Seedance scene written as one prompt. In anime mode, fill it with:
 
-```
-[No BGM] <one paragraph: the genre and "clean 2D cel animation", line, fill and shading words, "keep the face, eye shape, build, hairstyle and costume of the model sheet, do not show the sheet on screen", no mid-clip change in people or props, camera uses only the specified moves, no subtitles, text or watermark>
-Total <N>s · 9:16 · <K>-cut multi-shot · real time · no slow motion, no fades
-Reference
-Character : @Name: face, wardrobe and build match 100%. @Name's voice is @Name_Voice.
-Background : @Place: inherit only the space, materials, lighting and mood; do not inherit composition, angle or color.
-(Effect or prop references as needed: @FX, @Prop)
-Timeline
-[0-2s] ...
-Constraints
-<spoken-line count and who may speak, silence after lines, sound, no music, one lens per cut, one action per beat, identity and line-quality rules>
-Style (unchanged every time)
-Style: ...
-Continuity: Characters, props, environment identical across every cut. No identity drift.
-Audio: ...
-```
-
-Checks before returning:
-- **K equals the number of timeline windows and N equals the last end time.** Fix the header, never leave it stale after trimming a beat.
-- **Every character who speaks has a voice tag.** A character without one is not given another character's voice. If a speaker has no voice reference, anchor the voice in words ("the same low, calm adult man's voice as earlier") and say so.
-- **The spoken-line count matches the `{ }` lines**, inner voice included, and the Constraints name it ("exactly N lines; nobody else speaks").
-
-### Shot line
-
-`[a-bs]` + shot size and angle + who, doing one action + the camera, stated once + `〈sound〉` when a sound matters. Silent beats end "No dialogue." A held frame says "the camera does not move". A cut belongs to its own window; never hide one inside a window ("...and it cuts to a close-up").
-
-### Dialogue
-
-- Spoken: `<shot>. <Name>, <tone>, says in Japanese in @Name_Voice's voice: {line} One second of silence after the line.`
-- Inner voice: "her inner voice is heard in voice-over in @Name_Voice's voice: {line}. She does not move her mouth."
-- Off-screen: "a low, calm adult man's voice is heard from off screen: {line}. The speaker is not shown. @A and @B do not move their mouths."
-- When two people are in frame: "Only @X speaks this line; the others do not move their mouths."
-- Lines stay exactly as supplied, in their language.
-
-### Techniques
-
-- **Say what does not change at the risky moment.** A prop attached to an arm: "the blade is attached to his arm, he does not hold a separate sword". A breakage: "only the blade breaks, the armor stays intact, no wound on her hand". A power-up: "the uniform and hairstyle stay as they are".
-- **Name the contact.** "What he holds is the fabric of the sleeve, not her wrist or her hand."
-- **Transformation:** two references for the two forms; "keep the figure's position and build the same before and after the change"; time it ("covers the body in under one second").
-- **Super-deformed gag:** name the switch in and the return ("returns to the cel animation form"). When it is not wanted: "no exaggerated super-deformed drawing".
-- **Emotion by exclusion where the genre drifts:** "subtle surprise, no blush".
-- **Staging:** place people exactly ("standing behind the desk at the very back", "enters frame from the left"). "In front of" is ambiguous.
-- **Exits:** frame wide enough to show the path ("goes from medium to full shot as he flees up the stairs"); a locked medium shot cannot show it.
-- **Effect shape:** bind a reference (`@FX`) and say what the effect does, not just what it is.
-- **Vary angles on repeated close-ups** of the same face (diagonal, over the shoulder) so consecutive cuts do not read as one frame repeated.
-
-### Failure to fix
-
-| Failure | Fix |
-|---|---|
-| A character appears in a shot where they should not | State "nobody but @X appears" in that shot, or drop their reference from a clip they are not in |
-| A cut happens inside one window | Give the cut its own window or remove it |
-| A hard-to-read beat keeps failing | Remove the beat or move it to its own clip; do not re-roll unchanged more than once |
-| Wrong position or wrong prop shape | Restate the position or prop precisely, with what it is not |
-| Blushing or super-deformed drawing appears unasked | "Her face does not go red", "no super-deformed drawing" in that beat |
-| The wrong person speaks, or the wrong voice | Add "only @X speaks", the voice tag and "the others do not move their mouths" |
-| The scene is too dense for one take | Shorten the clip or split at a natural cut; end clip one and begin clip two on the same moment |
-| The action leaves the frame | Widen the shot to include the path |
-
-### Retakes
-
-Change only what failed, and say what you changed. A prompt resent unchanged is a variance roll, not a fix; say so. The aim is a usable clip in one take, so plan clips small enough to succeed, put hard scene changes at clip boundaries, and avoid asking one take for beats that tend to fail.
-
-### Chaining clips
-
-To continue a scene, begin the next clip with the previous clip's closing beat, nearly verbatim, so the join is the same moment. Trim the overlap in the edit.
+- **Style paragraph:** "A scene from a modern Japanese fantasy comedy anime. Clean 2D cel animation. Thin, smooth outlines, flat even color fills, clear cel shading. Crisp linework with no texture noise, blotches or stray patterning. Keep the face, eye shape, build, hairstyle and costume structure of the attached character model sheet. Do not put the model sheet itself on screen, make one finished scene in which that character appears." Change the genre words to the project's.
+- **Footer style line:** "High-quality 2D cel animation, clean linework, flat cel shading, not a 3D render."
+- **Anime-specific exclusions where the genre drifts:** "no blush", "no super-deformed drawing" in a beat that should stay dry; for a super-deformed gag, name the switch in and "returns to the cel animation form".
+- **Anime beats:** holds, accents and secondary motion (section 4); graphic light and painted backgrounds (section 6).
 
 ## 10. Compiled prompt order for an anime shot
 
@@ -164,7 +102,7 @@ For a single shot or a direction-plan compile, follow the usual order (`referenc
 6. Lines and sounds (section 7).
 7. Closing hold and constraints (section 8).
 
-See `examples/anime-vs-realistic.md` for one beat written both ways and `examples/anime-production-prompt.md` for a full multi-cut clip.
+See `examples/anime-vs-realistic.md` for one beat written both ways and `examples/anime-production-prompt.md` for a full multi-cut clip (`examples/seedance-production-prompt.md` is the same template in a realistic look).
 
 ## 11. Recording what works
 

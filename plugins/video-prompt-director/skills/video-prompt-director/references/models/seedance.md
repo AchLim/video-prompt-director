@@ -22,6 +22,7 @@ Then read `references/models/platforms.md` for the user's own interface limits. 
 | Task | Load |
 |---|---|
 | Write a plain Seedance prompt (text-to-video, first frame) | The version's profile, then `references/models/seedance/syntax.md` |
+| Write a whole scene as one multi-cut prompt (any style) | The version's profile, `references/models/seedance/syntax.md`, then `references/models/seedance/production-template.md`; examples in `examples/seedance-production-prompt.md` and `examples/anime-production-prompt.md` |
 | Anything beyond a text prompt: references, keyframes, storyboard, clay model, editing, audio editing, extension, transitions, one-click creation, combining features | `references/models/seedance/capability-registry.md`, then the profile, then `syntax.md` |
 | "Can Seedance do X?" or "Does Flash do X?" | `references/models/seedance/capability-registry.md`, then the version's profile. Answer from the row's status, not from memory |
 | A generation came out wrong | `references/models/seedance/troubleshooting.md`, then the profile |
